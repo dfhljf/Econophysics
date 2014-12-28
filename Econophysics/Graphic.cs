@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Econophysics
 {
-    public class Class1
+    internal class Graphic
     {
     }
 }
