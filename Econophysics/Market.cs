@@ -6,13 +6,13 @@ namespace Econophysics
 {
     internal class Market
     {
-        public List<double> PriceList { get { return _priceList; } }
+        internal List<double> PriceList { get { return _priceList; } }
         private List<double> _priceList;
-        private double _price;
-        private bool _state;
-        private int _returns;
+        internal double _price;
+        internal bool _state;
+        internal int _returns;
 
-        public MarketInfo GetInfo()
+        internal MarketInfo GetInfo()
         {
             MarketInfo market;
             market.Price = _price;

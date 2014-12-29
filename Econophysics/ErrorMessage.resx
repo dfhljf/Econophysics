@@ -117,6 +117,18 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CashOut" xml:space="preserve">
+    <value>现金不足！</value>
+    <comment>现金不足以购买该数量的股票</comment>
+  </data>
+  <data name="InsufficientStocks" xml:space="preserve">
+    <value>股票数量不足！</value>
+    <comment>没有足够的股票去卖出</comment>
+  </data>
+  <data name="Ruin" xml:space="preserve">
+    <value>您已破产，感谢您的参与！</value>
+    <comment>所有资产</comment>
+  </data>
   <data name="TradeTwice" xml:space="preserve">
     <value>你已经交易，不得重复交易</value>
     <comment>每轮仅能交易一次</comment>

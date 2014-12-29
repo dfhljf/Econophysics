@@ -12,8 +12,8 @@ namespace Econophysics
         public static ExperimentState State { get { return _state; } }
         public static DateTime StartTime { get { return _startTime; } }
         public static double Random { get { return _random.NextDouble(); } }
-        private static Dictionary<int, Agent> _agents=new Dictionary<int,Agent>();
-        private static Market _market=new Market();
+        internal static Dictionary<int, Agent> _agents=new Dictionary<int,Agent>();
+        internal static Market _market=new Market();
         private static int _index;
         private static int _turn;
         private static ExperimentState _state;

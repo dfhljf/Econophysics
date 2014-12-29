@@ -61,6 +61,33 @@ namespace Econophysics {
         }
         
         /// <summary>
+        ///   查找类似 现金不足！ 的本地化字符串。
+        /// </summary>
+        internal static string CashOut {
+            get {
+                return ResourceManager.GetString("CashOut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 股票数量不足！ 的本地化字符串。
+        /// </summary>
+        internal static string InsufficientStocks {
+            get {
+                return ResourceManager.GetString("InsufficientStocks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 您已破产，感谢您的参与！ 的本地化字符串。
+        /// </summary>
+        internal static string Ruin {
+            get {
+                return ResourceManager.GetString("Ruin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 你已经交易，不得重复交易 的本地化字符串。
         /// </summary>
         internal static string TradeTwice {

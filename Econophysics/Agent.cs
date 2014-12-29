@@ -48,30 +48,97 @@ namespace Econophysics
             _cash = init.Cash;
             _stocks = init.Stocks;
             _endowment = init.Endowment;
-            getDividend();
             _tradeStocks = 0;
         }
-        public bool Trade(int tradeStocks)
+        public void Trade(int tradeStocks)
         {
             if (_isTrade)
             {
-                throw 
-                return false;
+                throw new Exception(ErrorMessage.TradeTwice);
             }
 
+            if (!updateCash(tradeStocks))
+            {
+                throw new Exception(ErrorMessage.CashOut);
+            }
+            if (!updateStocks(tradeStocks))
+            {
+                throw new Exception(ErrorMessage.InsufficientStocks);
+            }
+            updateEndowment();
+            _tradeStocks = tradeStocks;
+            _isTrade = true;
         }
-
-        private void getDividend()
+        public void SyncUpdate()
         {
-            _dividend=0;
+            if (Experiment.Turn != 0)
+            {
+                if(!getDividend())
+                {
+                    throw new Exception();
+                }
+            }
+            if ((Experiment.Turn % Experiment.Parameters.AgentPart.PeriodOfUpdateDividend) == 0)
+            {
+                setDividend();
+            }
+            store();
+            _tradeStocks = 0;
+            _isTrade = false;
+        }
+        private void store()
+        {
+
+        }
+        private bool updateCash(int tradeStocks)
+        {
+            double tmp = _cash - tradeStocks * Experiment._market._price - Math.Abs(tradeStocks) * Experiment.Parameters.AgentPart.TradeFee;
+            if (tmp >= 0)
+            {
+                _cash = tmp;
+                return true;
+            }
+            return false;
+        }
+        private bool updateStocks(int tradeStocks)
+        {
+            int tmp = _stocks + tradeStocks;
+            if (tmp >= 0)
+            {
+                _stocks = tmp;
+                return true;
+            }
+            return false;
+        }
+        private void updateEndowment()
+        {
+            _endowment = _cash + _stocks * Experiment._market._price;
+        }
+        private bool getDividend()
+        {
+            _cash += _dividend * _stocks;
+            while (_cash < 0 && _stocks > 0)
+            {
+                _cash += Experiment._market._price;
+                _stocks--;
+            }
+            if (_cash<0)
+            {
+                return false;
+            }
+            updateEndowment();
+            return true;
+        }
+        private void setDividend()
+        {
+            _dividend = 0;
             List<double> priceList = Experiment.GetPriceList();
-            MarketInfo marketInfo = Experiment.GetMarketInfo();
             Parameters.Market market = Experiment.Parameters.MarketPart;
             double dividend = Experiment.Parameters.AgentPart.Init.Dividend;
-            if (marketInfo.State && (priceList[priceList.Count - 1] - priceList[priceList.Count - 1 - market.TimeWindow] == 0 ||
+            if (Experiment._market._state && (priceList[priceList.Count - 1] - priceList[priceList.Count - 1 - market.TimeWindow] == 0 ||
                 ((priceList[priceList.Count - 1] - priceList[priceList.Count - 1 - market.TimeWindow] > 0) ^ market.Leverage)))
             {
-                _dividend = dividend * (Experiment.Random > market.TransP ? (Experiment.Random < market.P ? 1 : -1):
+                _dividend = dividend * (Experiment.Random > market.TransP ? (Experiment.Random < market.P ? 1 : -1) :
                     (Experiment.Random < market.P ? -1 : 1));
             }
         }
