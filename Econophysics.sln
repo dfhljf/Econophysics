@@ -14,6 +14,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		ReadMe.md = ReadMe.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtractData", "ExtractData\ExtractData.csproj", "{63A772FD-7F66-4AD7-AB17-0446D65AC8C0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +34,10 @@ Global
 		{9AC49434-5C96-45FE-AC1C-33045D298BF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9AC49434-5C96-45FE-AC1C-33045D298BF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9AC49434-5C96-45FE-AC1C-33045D298BF9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63A772FD-7F66-4AD7-AB17-0446D65AC8C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63A772FD-7F66-4AD7-AB17-0446D65AC8C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63A772FD-7F66-4AD7-AB17-0446D65AC8C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63A772FD-7F66-4AD7-AB17-0446D65AC8C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
