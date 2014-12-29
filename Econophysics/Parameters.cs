@@ -50,6 +50,14 @@ namespace Econophysics
         public struct Market
         {
             /// <summary>
+            /// 市场的初始值
+            /// </summary>
+            public MarketInfo Init;
+            /// <summary>
+            /// 存储市场价格的数量，画图需要
+            /// </summary>
+            public int Count;
+            /// <summary>
             /// 杠杆效应
             /// </summary>
             public LeverageEffect Leverage;
@@ -85,10 +93,7 @@ namespace Econophysics
         }
         public struct Graphic
         {
-            /// <summary>
-            /// 存储市场价格的数量，画图需要
-            /// </summary>
-            public int Count;
+
         }
         public struct Experiment
         {

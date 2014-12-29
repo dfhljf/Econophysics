@@ -24,6 +24,16 @@ namespace Econophysics
         /// </summary>
         internal int _returns;
 
+        internal Market(Parameters.Market market)
+        {
+            _price = market.Init.Price;
+            _state = market.Init.State;
+            _returns = market.Init.Returns;
+            for(int i=0;i<market.Count;i++)
+            {
+                _priceList.Add(_price);
+            }
+        }
         internal MarketInfo GetInfo()
         {
             MarketInfo market;

@@ -37,13 +37,18 @@ namespace Econophysics
         /// <summary>
         /// 市场情况
         /// </summary>
-        internal static Market _market=new Market();
+        internal static Market _market;
         private static int _index;
         private static int _turn;
         private static ExperimentState _state;
         private static DateTime _startTime;
         private static Random _random = new Random();
 
+        public Experiment(Parameters parameters)
+        {
+            Parameters = parameters;
+            _market = new Market(Parameters.MarketPart);
+        }
         public static List<double> GetPriceList()
         {
             return _market.PriceList;
