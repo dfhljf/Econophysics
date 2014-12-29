@@ -7,7 +7,7 @@ namespace Econophysics
     public struct MarketInfo
     {
         public double Price;
-        public bool State;
+        public MarketState State;
         public int Returns;
     }
 }

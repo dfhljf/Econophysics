@@ -41,8 +41,10 @@
     <Compile Include="Experiment.cs" />
     <Compile Include="ExperimentState.cs" />
     <Compile Include="Graphic.cs" />
+    <Compile Include="LeverageEffect.cs" />
     <Compile Include="Market.cs" />
     <Compile Include="MarketInfo.cs" />
+    <Compile Include="MarketState.cs" />
     <Compile Include="Parameters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ErrorMessage.Designer.cs">

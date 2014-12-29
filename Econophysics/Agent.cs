@@ -47,6 +47,7 @@ namespace Econophysics
             _isTrade = false;
             _cash = init.Cash;
             _stocks = init.Stocks;
+            _dividend = 0;
             _endowment = init.Endowment;
             _tradeStocks = 0;
         }
@@ -71,20 +72,17 @@ namespace Econophysics
         }
         public void SyncUpdate()
         {
-            if (Experiment.Turn != 0)
+            if (!getDividend())
             {
-                if(!getDividend())
-                {
-                    throw new Exception();
-                }
-            }
-            if ((Experiment.Turn % Experiment.Parameters.AgentPart.PeriodOfUpdateDividend) == 0)
-            {
-                setDividend();
+                throw new Exception(ErrorMessage.Ruin);
             }
             store();
             _tradeStocks = 0;
             _isTrade = false;
+            if ((Experiment.Turn % Experiment.Parameters.AgentPart.PeriodOfUpdateDividend) == 0)
+            {
+                setDividend();
+            }
         }
         private void store()
         {
@@ -122,7 +120,7 @@ namespace Econophysics
                 _cash += Experiment._market._price;
                 _stocks--;
             }
-            if (_cash<0)
+            if (_cash < 0)
             {
                 return false;
             }
@@ -131,15 +129,26 @@ namespace Econophysics
         }
         private void setDividend()
         {
-            _dividend = 0;
-            List<double> priceList = Experiment.GetPriceList();
-            Parameters.Market market = Experiment.Parameters.MarketPart;
+            //_dividend = 0;
+            //List<double> priceList = Experiment.GetPriceList();
+            //Parameters.Market market = Experiment.Parameters.MarketPart;
+            //double dividend = Experiment.Parameters.AgentPart.Init.Dividend;
+            //if (Experiment._market._state && (priceList[priceList.Count - 1] - priceList[priceList.Count - 1 - market.TimeWindow] == 0 ||
+            //    ((priceList[priceList.Count - 1] - priceList[priceList.Count - 1 - market.TimeWindow] > 0) ^ market.Leverage)))
+            //{
+            //    _dividend = dividend * (Experiment.Random > market.TransP ? (Experiment.Random < market.P ? 1 : -1) :
+            //        (Experiment.Random < market.P ? -1 : 1));
+            //}
+            Market market=Experiment._market;
+            List<double> priceList = Experiment._market.PriceList;
+            Parameters.Market marketPara = Experiment.Parameters.MarketPart;
             double dividend = Experiment.Parameters.AgentPart.Init.Dividend;
-            if (Experiment._market._state && (priceList[priceList.Count - 1] - priceList[priceList.Count - 1 - market.TimeWindow] == 0 ||
-                ((priceList[priceList.Count - 1] - priceList[priceList.Count - 1 - market.TimeWindow] > 0) ^ market.Leverage)))
+            if (marketPara.Leverage==LeverageEffect.Null)
             {
-                _dividend = dividend * (Experiment.Random > market.TransP ? (Experiment.Random < market.P ? 1 : -1) :
-                    (Experiment.Random < market.P ? -1 : 1));
+                if (market._state==MarketState.Active)
+                {
+                    
+                }
             }
         }
     }

@@ -6,10 +6,22 @@ namespace Econophysics
 {
     internal class Market
     {
+        /// <summary>
+        /// 价格列表，数量由<see cref="Parameters.GraphicPart.Count"></see>确定
+        /// </summary>
         internal List<double> PriceList { get { return _priceList; } }
         private List<double> _priceList;
+        /// <summary>
+        /// 本轮价格
+        /// </summary>
         internal double _price;
-        internal bool _state;
+        /// <summary>
+        /// 市场状态
+        /// </summary>
+        internal MarketState _state;
+        /// <summary>
+        /// 收益率
+        /// </summary>
         internal int _returns;
 
         internal MarketInfo GetInfo()

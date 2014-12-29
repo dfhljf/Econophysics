@@ -11,14 +11,23 @@ namespace Econophysics
     /// </summary>
     public struct Parameters
     {
-        public Agent AgentPart;
-        public Market MarketPart;
-        public Graphic GraphicPart;
-        public Experiment ExperimentPart;
-
         /// <summary>
         /// 代理人参数
         /// </summary>
+        public Agent AgentPart;
+        /// <summary>
+        /// 市场参数
+        /// </summary>
+        public Market MarketPart;
+        /// <summary>
+        /// 画图参数
+        /// </summary>
+        public Graphic GraphicPart;
+        /// <summary>
+        /// 实验参数
+        /// </summary>
+        public Experiment ExperimentPart;
+
         public struct Agent
         {
             /// <summary>
@@ -43,7 +52,7 @@ namespace Econophysics
             /// <summary>
             /// 杠杆效应
             /// </summary>
-            public bool Leverage;
+            public LeverageEffect Leverage;
             /// <summary>
             /// 价格系数
             /// </summary>
