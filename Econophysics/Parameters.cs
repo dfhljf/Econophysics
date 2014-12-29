@@ -66,6 +66,11 @@ namespace Econophysics
             /// </summary>
             public double P10;
             /// <summary>
+            /// 分红存在概率
+            /// </summary>
+            // 0.8
+            public double PDividend;
+            /// <summary>
             /// 分红正负概率
             /// </summary>
             public double P;

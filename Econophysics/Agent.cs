@@ -129,26 +129,27 @@ namespace Econophysics
         }
         private void setDividend()
         {
-            //_dividend = 0;
-            //List<double> priceList = Experiment.GetPriceList();
-            //Parameters.Market market = Experiment.Parameters.MarketPart;
-            //double dividend = Experiment.Parameters.AgentPart.Init.Dividend;
-            //if (Experiment._market._state && (priceList[priceList.Count - 1] - priceList[priceList.Count - 1 - market.TimeWindow] == 0 ||
-            //    ((priceList[priceList.Count - 1] - priceList[priceList.Count - 1 - market.TimeWindow] > 0) ^ market.Leverage)))
-            //{
-            //    _dividend = dividend * (Experiment.Random > market.TransP ? (Experiment.Random < market.P ? 1 : -1) :
-            //        (Experiment.Random < market.P ? -1 : 1));
-            //}
-            Market market=Experiment._market;
+            Market market = Experiment._market;
             List<double> priceList = Experiment._market.PriceList;
             Parameters.Market marketPara = Experiment.Parameters.MarketPart;
             double dividend = Experiment.Parameters.AgentPart.Init.Dividend;
-            if (marketPara.Leverage==LeverageEffect.Null)
+            switch (marketPara.Leverage)
             {
-                if (market._state==MarketState.Active)
-                {
-                    
-                }
+                case LeverageEffect.Null:
+                    _dividend = dividend * ((Experiment.Random < marketPara.TransP) ? (-1) : (1)) *
+                        ((market._state == MarketState.Active ^ Experiment.Random > marketPara.PDividend) ?
+                        ((Experiment.Random < marketPara.P) ? (-1) : (1)) : (0));
+                    break;
+                case LeverageEffect.Leverage:
+                    _dividend = dividend * ((Experiment.Random < marketPara.TransP) ? (-1) : (1)) *
+                        (((market._state == MarketState.Active && priceList[priceList.Count - 1] - priceList[priceList.Count - 1 - marketPara.TimeWindow] <= 0)
+                        ^ Experiment.Random > marketPara.PDividend) ? ((Experiment.Random < marketPara.P) ? (-1) : (1)) : (0));
+                    break;
+                case LeverageEffect.AntiLeverage:
+                    _dividend = dividend * ((Experiment.Random < marketPara.TransP) ? (-1) : (1)) *
+                        (((market._state == MarketState.Active && priceList[priceList.Count - 1] - priceList[priceList.Count - 1 - marketPara.TimeWindow] >= 0)
+                        ^ Experiment.Random > marketPara.PDividend) ? ((Experiment.Random < marketPara.P) ? (-1) : (1)) : (0));
+                    break;
             }
         }
     }
