@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using CommonType;
+using System.Collections;
 
 namespace Econophysics
 {
@@ -34,7 +35,7 @@ namespace Econophysics
         /// <summary>
         /// 所有代理人
         /// </summary>
-        internal static Dictionary<int, Agent> _agents=new Dictionary<int,Agent>();
+        internal static Hashtable _agents = new Hashtable();
         /// <summary>
         /// 市场情况
         /// </summary>

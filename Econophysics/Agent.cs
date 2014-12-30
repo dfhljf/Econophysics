@@ -42,15 +42,15 @@ namespace Econophysics
         private bool _isTrade;
         private int _index;
 
-        public Agent(int index, AgentInfo init)
+        public Agent(AgentInfo init)
         {
-            _index = index;
+            _index = init.Id;
             _isTrade = false;
             _cash = init.Cash;
             _stocks = init.Stocks;
-            _dividend = 0;
+            _dividend = init.Dividend;
             _endowment = init.Endowment;
-            _tradeStocks = 0;
+            _tradeStocks = init.TradeStocks;
         }
         public void Trade(int tradeStocks)
         {

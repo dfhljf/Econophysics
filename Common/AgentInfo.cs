@@ -7,6 +7,10 @@ namespace CommonType
     public struct AgentInfo
     {
         /// <summary>
+        /// 编号
+        /// </summary>
+        public int Id;
+        /// <summary>
         /// 现金数量
         /// </summary>
         public double Cash;
@@ -22,5 +26,9 @@ namespace CommonType
         /// 分红数目
         /// </summary>
         public double Dividend;
+        /// <summary>
+        /// 交易数量
+        /// </summary>
+        public int TradeStocks;
     }
 }

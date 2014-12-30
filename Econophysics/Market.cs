@@ -41,6 +41,7 @@ namespace Econophysics
             market.Price = _price;
             market.Returns = _returns;
             market.State = _state;
+            market.NumberOfPeople = Experiment._agents.Count;
             return market;
         }
     }

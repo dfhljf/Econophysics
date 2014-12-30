@@ -5,19 +5,17 @@ using MySql.Data;
 using MySql.Data.MySqlClient;
 using CommonType;
 using Newtonsoft.Json;
+using System.Collections;
 
 namespace DataIO
 {
     namespace Mysql
     {
-        internal abstract class Mysql : IDataIO
+        internal abstract class MysqlIO
         {
-            private MySqlConnectionStringBuilder _connStr;
-            private MySqlConnection _conn;
-            private MySqlCommand _sql;
-
-            public abstract void Write(object obj);
-            public abstract object Read();
+            protected internal MySqlConnectionStringBuilder _connStr;
+            protected internal MySqlConnection _conn;
+            protected internal MySqlCommand _sql;
         }
     }
 

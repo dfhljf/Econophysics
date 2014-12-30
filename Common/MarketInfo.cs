@@ -18,5 +18,9 @@ namespace CommonType
         /// 收益率
         /// </summary>
         public int Returns;
+        /// <summary>
+        /// 在线人数
+        /// </summary>
+        public int NumberOfPeople;
     }
 }
