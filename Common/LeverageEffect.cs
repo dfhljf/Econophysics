@@ -12,14 +12,14 @@ namespace CommonType
         /// <summary>
         /// 无杠杆效应
         /// </summary>
-        Null,
+        Null=0,
         /// <summary>
         /// 杠杆效应
         /// </summary>
-        Leverage,
+        Leverage=1,
         /// <summary>
         /// 反杠杆效应
         /// </summary>
-        AntiLeverage
+        AntiLeverage=-1
     }
 }

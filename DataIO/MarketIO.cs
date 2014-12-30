@@ -21,7 +21,7 @@ namespace DataIO
             public void Write(int turn, MarketInfo marketInfo)
             {
                 string sql = string.Format("insert into Market values({0},{1},{2},{3},{4},{5})", 
-                    _exp, turn, marketInfo.Price, marketInfo.State, marketInfo.Returns,marketInfo.NumberOfPeople);
+                    _exp, turn, marketInfo.Price, (int)marketInfo.State, marketInfo.Returns,marketInfo.NumberOfPeople);
                 _sql = new MySqlCommand(sql, _conn);
                 _conn.Open();
                 _sql.ExecuteNonQuery();

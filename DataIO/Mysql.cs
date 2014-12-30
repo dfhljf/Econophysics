@@ -11,7 +11,7 @@ namespace DataIO
 {
     namespace Mysql
     {
-        internal abstract class MysqlIO
+        public abstract class MysqlIO
         {
             protected internal MySqlConnectionStringBuilder _connStr;
             protected internal MySqlConnection _conn;

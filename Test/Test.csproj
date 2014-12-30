@@ -49,6 +49,10 @@
       <Project>{b1514b1d-55ca-4daf-997c-fa61c3e8cd01}</Project>
       <Name>CommonType</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DataIO\DataIO.csproj">
+      <Project>{9ac49434-5c96-45fe-ac1c-33045d298bf9}</Project>
+      <Name>DataIO</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
