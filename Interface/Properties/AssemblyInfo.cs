@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
 [assembly: AssemblyTitle("Interface")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Web界面程序")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("JiangHui")]
 [assembly: AssemblyProduct("Interface")]
 [assembly: AssemblyCopyright("版权所有(C)  2014")]
 [assembly: AssemblyTrademark("")]

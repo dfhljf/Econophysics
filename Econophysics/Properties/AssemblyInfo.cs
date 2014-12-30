@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 // 特性集控制。更改这些特性值可修改
 // 与程序集关联的信息。
 [assembly: AssemblyTitle("Econophysics")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("金融物理模拟交易平台核心库")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("JiangHui")]
 [assembly: AssemblyProduct("Econophysics")]
 [assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]
