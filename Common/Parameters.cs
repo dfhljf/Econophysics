@@ -1,4 +1,4 @@
-﻿namespace Econophysics
+﻿namespace Common
 {
     /// <summary>
     /// 实验使用的参数，定义为结构防止更改，在每次试验中保持

@@ -40,16 +40,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Agent.cs" />
-    <Compile Include="AgentInfo.cs" />
     <Compile Include="Experiment.cs" />
-    <Compile Include="ExperimentState.cs" />
     <Compile Include="Graphic.cs" />
-    <Compile Include="GraphicInfo.cs" />
-    <Compile Include="LeverageEffect.cs" />
     <Compile Include="Market.cs" />
-    <Compile Include="MarketInfo.cs" />
-    <Compile Include="MarketState.cs" />
-    <Compile Include="Parameters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ErrorMessage.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -62,6 +55,12 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ErrorMessage.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{b1514b1d-55ca-4daf-997c-fa61c3e8cd01}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

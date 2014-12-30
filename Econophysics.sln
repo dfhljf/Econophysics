@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtractData", "ExtractData\
 		{9AC49434-5C96-45FE-AC1C-33045D298BF9} = {9AC49434-5C96-45FE-AC1C-33045D298BF9}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{B1514B1D-55CA-4DAF-997C-FA61C3E8CD01}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{63A772FD-7F66-4AD7-AB17-0446D65AC8C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63A772FD-7F66-4AD7-AB17-0446D65AC8C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{63A772FD-7F66-4AD7-AB17-0446D65AC8C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1514B1D-55CA-4DAF-997C-FA61C3E8CD01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1514B1D-55CA-4DAF-997C-FA61C3E8CD01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1514B1D-55CA-4DAF-997C-FA61C3E8CD01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1514B1D-55CA-4DAF-997C-FA61C3E8CD01}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

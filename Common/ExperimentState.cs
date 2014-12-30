@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Econophysics
+namespace Common
 {
-    internal enum ExperimentState
+    public enum ExperimentState
 	{
         /// <summary>
         /// 还未建立实验，实验者不得加入和退出

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Econophysics
+namespace Common
 {
     /// <summary>
     /// 市场状态

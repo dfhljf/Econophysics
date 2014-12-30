@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{9AC49434-5C96-45FE-AC1C-33045D298BF9}</ProjectGuid>
+    <ProjectGuid>{B1514B1D-55CA-4DAF-997C-FA61C3E8CD01}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DataIO</RootNamespace>
-    <AssemblyName>DataIO</AssemblyName>
+    <RootNamespace>Common</RootNamespace>
+    <AssemblyName>Common</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -35,8 +35,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataIO.cs" />
-    <Compile Include="Mysql.cs" />
+    <Compile Include="AgentInfo.cs" />
+    <Compile Include="ExperimentState.cs" />
+    <Compile Include="GraphicInfo.cs" />
+    <Compile Include="LeverageEffect.cs" />
+    <Compile Include="MarketInfo.cs" />
+    <Compile Include="MarketState.cs" />
+    <Compile Include="Parameters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
 using SvgNet.SvgGdi;
+using Common;
 
 namespace Econophysics
 {
