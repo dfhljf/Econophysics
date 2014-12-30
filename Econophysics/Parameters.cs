@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Drawing;
-
-namespace Econophysics
+﻿namespace Econophysics
 {
     /// <summary>
     /// 实验使用的参数，定义为结构防止更改，在每次试验中保持
@@ -93,7 +88,10 @@ namespace Econophysics
         }
         public struct Graphic
         {
-
+            /// <summary>
+            /// 图像初始化数据
+            /// </summary>
+            public GraphicInfo Init;
         }
         public struct Experiment
         {

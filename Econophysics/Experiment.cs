@@ -40,11 +40,11 @@ namespace Econophysics
         internal static Market _market;
         private static int _index;
         private static int _turn;
-        private static ExperimentState _state;
+        private static ExperimentState _state=ExperimentState.Unbuilded;
         private static DateTime _startTime;
         private static Random _random = new Random();
 
-        public Experiment(Parameters parameters)
+        public static void Initial(Parameters parameters)
         {
             Parameters = parameters;
             _market = new Market(Parameters.MarketPart);
