@@ -6,6 +6,7 @@ namespace DataIO
 {
     interface IDataIO
 	{
-
+        public void Write(object obj);
+        public object Read();
 	}
 }
