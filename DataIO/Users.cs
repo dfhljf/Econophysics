@@ -4,10 +4,22 @@ namespace DataIO
 {
     namespace Mysql
     {
+        /// <summary>
+        /// 所有可用的用户
+        /// </summary>
     internal class Users
     {
+        /// <summary>
+        /// 提供给代理人写入数据库
+        /// </summary>
         internal static MySqlConnectionStringBuilder Agent = new MySqlConnectionStringBuilder();
+        /// <summary>
+        /// 提供给市场数据写入数据库
+        /// </summary>
         internal static MySqlConnectionStringBuilder Market = new MySqlConnectionStringBuilder();
+        /// <summary>
+        /// 提供对整个数据库的读写
+        /// </summary>
         internal static MySqlConnectionStringBuilder Experiment = new MySqlConnectionStringBuilder();
         static Users()
         {

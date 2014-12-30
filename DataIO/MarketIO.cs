@@ -9,6 +9,9 @@ namespace DataIO
 {
     namespace Mysql
     {
+        /// <summary>
+        /// Mysql实现市场写入
+        /// </summary>
         public class MarketIO:Mysql.MysqlIO
         {
             private int _exp;
@@ -26,10 +29,6 @@ namespace DataIO
                 _conn.Open();
                 _sql.ExecuteNonQuery();
                 _conn.Close();
-            }
-            public Hashtable Read(string sql)
-            {
-                throw new NotImplementedException();
             }
         }
     }

@@ -9,6 +9,9 @@ namespace DataIO
 {
     namespace Mysql
     {
+        /// <summary>
+        /// Mysql实现数据库全局读写
+        /// </summary>
         public class ExperimentIO : Mysql.MysqlIO
         {
             private int _exp;
@@ -32,6 +35,19 @@ namespace DataIO
             public Hashtable Read(string sql)
             {
                 throw new NotImplementedException();
+            }
+            /// <summary>
+            /// 读取数据库中最大的实验编号
+            /// </summary>
+            /// <returns>最大的实验编号，不存在返回0</returns>
+            public int Read()
+            {
+                string sql = "select max(exp) from parameters";
+                _sql = new MySqlCommand(sql, _conn);
+                _conn.Open();
+                object index=_sql.ExecuteScalar();
+                _conn.Close();
+                return (index == DBNull.Value ? 0 :  Convert.ToInt32(index));
             }
         }
     }

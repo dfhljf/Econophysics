@@ -50,6 +50,7 @@ namespace Test
             ei.Write(p, DateTime.Now, "xyz");
             mi.Write(0, p.MarketPart.Init);
             ai.Write(0, p.AgentPart.Init);
+            int index=ei.Read();
         }
     }
 }

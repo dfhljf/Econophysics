@@ -11,6 +11,9 @@ namespace DataIO
 {
     namespace Mysql
     {
+        /// <summary>
+        /// Mysql的抽象实现
+        /// </summary>
         public abstract class MysqlIO
         {
             protected internal MySqlConnectionStringBuilder _connStr;
