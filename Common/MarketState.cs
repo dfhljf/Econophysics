@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Common
+namespace CommonType
 {
     /// <summary>
     /// 市场状态
