@@ -25,6 +25,10 @@ namespace Econophysics
         /// </summary>
         internal int _tradeStocks;
         /// <summary>
+        /// 正在交易，仅供程序检查是否可以进入下一轮
+        /// </summary>
+        internal bool _isTrading;
+        /// <summary>
         /// 现金数量
         /// </summary>
         private double _cash;
@@ -48,6 +52,7 @@ namespace Econophysics
             AgentInfo init = Experiment.Parameters.AgentPart.Init;
             _index = id;
             _isTrade = false;
+            _isTrading = false;
             _cash = init.Cash;
             _stocks = init.Stocks;
             _dividend = init.Dividend;
@@ -68,22 +73,26 @@ namespace Econophysics
         }
         internal void Trade(int tradeStocks)
         {
+            _isTrading = true;
             if (_isTrade)
             {
+                _isTrading = false;
                 throw ErrorList.TradeTwice;
             }
-
             if (!updateCash(tradeStocks))
             {
+                _isTrading = false;
                 throw ErrorList.CashOut;
             }
             if (!updateStocks(tradeStocks))
             {
+                _isTrading = false;
                 throw ErrorList.InsufficientStocks;
             }
             updateEndowment();
             _tradeStocks = tradeStocks;
             _isTrade = true;
+            _isTrading = false;
         }
         internal void SyncUpdate()
         {

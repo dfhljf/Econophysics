@@ -88,6 +88,24 @@ namespace CommonType {
         }
         
         /// <summary>
+        ///   查找类似 当前状态不允许实验暂停或者进入下一轮！ 的本地化字符串。
+        /// </summary>
+        internal static string NotAllowToPauseOrNext {
+            get {
+                return ResourceManager.GetString("NotAllowToPauseOrNext", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 当前状态不允许实验开始，请检查所有设置！ 的本地化字符串。
+        /// </summary>
+        internal static string NotAllowToStart {
+            get {
+                return ResourceManager.GetString("NotAllowToStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 请检查交易数量！ 的本地化字符串。
         /// </summary>
         internal static string TradeStocksOut {

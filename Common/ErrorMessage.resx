@@ -129,6 +129,14 @@
     <value>股票数量不足！</value>
     <comment>没有足够的股票去卖出</comment>
   </data>
+  <data name="NotAllowToPauseOrNext" xml:space="preserve">
+    <value>当前状态不允许实验暂停或者进入下一轮！</value>
+    <comment>下一轮开始前检查</comment>
+  </data>
+  <data name="NotAllowToStart" xml:space="preserve">
+    <value>当前状态不允许实验开始，请检查所有设置！</value>
+    <comment>开始前检查</comment>
+  </data>
   <data name="TradeStocksOut" xml:space="preserve">
     <value>请检查交易数量！</value>
     <comment>交易数量不对</comment>

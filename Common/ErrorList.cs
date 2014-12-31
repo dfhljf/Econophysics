@@ -37,5 +37,13 @@ namespace CommonType
         /// 错误：交易数量溢出
         /// </summary>
         public static Exception TradeStocksOut = new Exception(ErrorMessage.TradeStocksOut);
+        /// <summary>
+        /// 错误：不允许开始实验
+        /// </summary>
+        public static Exception NotAllowToStart = new Exception(ErrorMessage.NotAllowToStart);
+        /// <summary>
+        /// 错误：不允许转到下一轮
+        /// </summary>
+        public static Exception NotAllowToPauseOrNext = new Exception(ErrorMessage.NotAllowToPauseOrNext);
     }
 }
