@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Econophysics {
+namespace CommonType {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Econophysics {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Econophysics.ErrorMessage", typeof(ErrorMessage).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CommonType.ErrorMessage", typeof(ErrorMessage).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -79,20 +79,29 @@ namespace Econophysics {
         }
         
         /// <summary>
-        ///   查找类似 您已破产，感谢您的参与！ 的本地化字符串。
-        /// </summary>
-        internal static string Ruin {
-            get {
-                return ResourceManager.GetString("Ruin", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 你已经交易，不得重复交易 的本地化字符串。
         /// </summary>
         internal static string TradeTwice {
             get {
                 return ResourceManager.GetString("TradeTwice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 用户不存在，不得交易 的本地化字符串。
+        /// </summary>
+        internal static string UserNotExist {
+            get {
+                return ResourceManager.GetString("UserNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 您已破产，感谢您的参与！ 的本地化字符串。
+        /// </summary>
+        internal static string UserRuin {
+            get {
+                return ResourceManager.GetString("UserRuin", resourceCulture);
             }
         }
     }

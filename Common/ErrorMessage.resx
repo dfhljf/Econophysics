@@ -125,12 +125,16 @@
     <value>股票数量不足！</value>
     <comment>没有足够的股票去卖出</comment>
   </data>
-  <data name="Ruin" xml:space="preserve">
-    <value>您已破产，感谢您的参与！</value>
-    <comment>所有资产</comment>
-  </data>
   <data name="TradeTwice" xml:space="preserve">
     <value>你已经交易，不得重复交易</value>
     <comment>每轮仅能交易一次</comment>
+  </data>
+  <data name="UserNotExist" xml:space="preserve">
+    <value>用户不存在，不得交易</value>
+    <comment>该错误理论上永远不会发生，仅测试用</comment>
+  </data>
+  <data name="UserRuin" xml:space="preserve">
+    <value>您已破产，感谢您的参与！</value>
+    <comment>所有资产</comment>
   </data>
 </root>

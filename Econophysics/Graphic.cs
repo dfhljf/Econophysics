@@ -26,6 +26,12 @@ namespace Econophysics
         {
             _url = init.Url;
         }
+        internal void Draw()
+        {
+            init();
+            draw();
+            store();
+        }
         private void  init()
         {
             _width = 900;

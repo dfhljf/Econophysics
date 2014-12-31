@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using CommonType;
 using System.Collections;
+using DataIO.Mysql;
 
 namespace Econophysics
 {
@@ -35,29 +36,50 @@ namespace Econophysics
         /// <summary>
         /// 所有代理人
         /// </summary>
-        internal static Hashtable _agents = new Hashtable();
+        internal static Hashtable _agents;
         /// <summary>
         /// 市场情况
         /// </summary>
         internal static Market _market;
+        private static Graphic _priceGraph;
         private static int _index;
         private static int _turn;
-        private static ExperimentState _state=ExperimentState.Unbuilded;
+        private static ExperimentState _state;
         private static DateTime _startTime;
-        private static Random _random = new Random();
+        private static Random _random;
+        private static ExperimentIO _experimentIO;
 
+        static Experiment()
+        {
+            _index = _experimentIO.Read()+1;
+            _state = ExperimentState.Unbuilded;
+            _random = new Random();
+            _agents = new Hashtable();
+            _experimentIO = new ExperimentIO(_index);
+        }
         public static void Initial(Parameters parameters)
         {
             Parameters = parameters;
             _market = new Market(Parameters.MarketPart);
-        }
-        public static List<double> GetPriceList()
-        {
-            return _market.PriceList;
+            _priceGraph = new Graphic(Parameters.GraphicPart.Init);
         }
         public static MarketInfo GetMarketInfo()
         {
             return _market.GetInfo();
+        }
+        public static bool AddAgent(int id)
+        {
+            if (_agents.ContainsKey(id))
+                return false;
+            _agents.Add(id, Parameters.AgentPart.Init);
+            return true;
+        }
+        public static void Trade(int agentId,int tradeStocks)
+        {
+            if (!_agents.ContainsKey(agentId))
+            {
+                throw ErrorList.UserNotExist;
+            }
         }
     }
 }

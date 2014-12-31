@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using CommonType;
+using DataIO.Mysql;
 
 namespace Econophysics
 {
@@ -17,7 +18,12 @@ namespace Econophysics
         /// <summary>
         /// 本轮是否交易过，限制一轮交易一次
         /// </summary>
-        public bool IsTrade { get { return _isTrade; } }
+        internal bool _isTrade;
+        /// <summary>
+        /// 交易股票数目
+        /// &gt;0-&gt;buy,&lt;0-&gt;sell,==0->null
+        /// </summary>
+        internal int _tradeStocks;
         /// <summary>
         /// 现金数量
         /// </summary>
@@ -34,15 +40,10 @@ namespace Econophysics
         /// 分红数目
         /// </summary>
         private double _dividend;
-        /// <summary>
-        /// 交易股票数目
-        /// >0->buy,<0->sell,==0->null
-        /// </summary>
-        private int _tradeStocks;
-        private bool _isTrade;
         private int _index;
+        private AgentIO _agentIO;
 
-        public Agent(AgentInfo init)
+        internal Agent(AgentInfo init)
         {
             _index = init.Id;
             _isTrade = false;
@@ -51,31 +52,43 @@ namespace Econophysics
             _dividend = init.Dividend;
             _endowment = init.Endowment;
             _tradeStocks = init.TradeStocks;
+            _agentIO = new AgentIO(Experiment.Index);
         }
-        public void Trade(int tradeStocks)
+        internal AgentInfo GetInfo()
+        {
+            AgentInfo agentInfo;
+            agentInfo.Cash = _cash;
+            agentInfo.Dividend = _dividend;
+            agentInfo.Endowment = _endowment;
+            agentInfo.Id = _index;
+            agentInfo.Stocks = _stocks;
+            agentInfo.TradeStocks = _tradeStocks;
+            return agentInfo;
+        }
+        internal void Trade(int tradeStocks)
         {
             if (_isTrade)
             {
-                throw new Exception(ErrorMessage.TradeTwice);
+                throw ErrorList.TradeTwice;
             }
 
             if (!updateCash(tradeStocks))
             {
-                throw new Exception(ErrorMessage.CashOut);
+                throw ErrorList.CashOut;
             }
             if (!updateStocks(tradeStocks))
             {
-                throw new Exception(ErrorMessage.InsufficientStocks);
+                throw ErrorList.InsufficientStocks;
             }
             updateEndowment();
             _tradeStocks = tradeStocks;
             _isTrade = true;
         }
-        public void SyncUpdate()
+        internal void SyncUpdate()
         {
             if (!getDividend())
             {
-                throw new Exception(ErrorMessage.Ruin);
+                throw ErrorList.UserRuin;
             }
             store();
             _tradeStocks = 0;
@@ -87,7 +100,7 @@ namespace Econophysics
         }
         private void store()
         {
-
+            _agentIO.Write(Experiment.Turn,GetInfo());
         }
         private bool updateCash(int tradeStocks)
         {
