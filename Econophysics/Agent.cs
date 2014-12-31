@@ -44,7 +44,6 @@ namespace Econophysics
         /// 分红数目
         /// </summary>
         private double _dividend;
-        
         private AgentIO _agentIO;
 
         internal Agent(int id)

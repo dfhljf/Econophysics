@@ -9,6 +9,7 @@ namespace Econophysics
 {
     public delegate void ExperimentStateChangedDelegate(ExperimentState state);
     public delegate void ExperimentNextTurnDelegate(MarketInfo marketInfo);
+    public delegate void GraphicReadyDelegate(GraphicInfo graphicInfo);
     static class Experiment
     {
         /// <summary>
@@ -23,12 +24,10 @@ namespace Econophysics
         /// 当前轮数
         /// </summary>
         public static int Turn { get { return _turn; } }
-        public static event ExperimentNextTurnDelegate NextTurnReady;
         /// <summary>
         /// 实验状态
         /// </summary>
         public static ExperimentState State { get { return _state; } }
-        public static event ExperimentStateChangedDelegate StateChanged;
         /// <summary>
         /// 实验时间，提供倒计时和暂停计时功能
         /// </summary>
@@ -51,6 +50,9 @@ namespace Econophysics
         /// 获取随机数
         /// </summary>
         public static double Random { get { return _random.NextDouble(); } }
+        public static event GraphicReadyDelegate GraphicReady;
+        public static event ExperimentNextTurnDelegate NextTurnReady;
+        public static event ExperimentStateChangedDelegate StateChanged;
         /// <summary>
         /// 所有代理人
         /// </summary>
@@ -60,6 +62,7 @@ namespace Econophysics
         /// </summary>
         internal static Market _market;
         private static Graphic _priceGraph;
+        
         private static int _index;
         private static int _turn;
         private static ExperimentState _state;
@@ -79,13 +82,12 @@ namespace Econophysics
             _state = ExperimentState.Unbuilded;
             stateChanged(_state);
         }
-        public static ExperimentState Initial(Parameters parameters,GraphicReadyDelegate _priceGraph_Ready)
+        public static ExperimentState Initial(Parameters parameters)
         {
             _index = _experimentIO.Read() + 1;
             Parameters = parameters;
             _market = new Market();
             _priceGraph = new Graphic();
-            _priceGraph.Ready+=_priceGraph_Ready;
             _experimentIO = new ExperimentIO(_index);
             _state = ExperimentState.Builded;
             stateChanged(_state);
@@ -132,6 +134,7 @@ namespace Econophysics
             {
                 _market.SyncUpdate();
                 _priceGraph.Draw();
+                graphicReady(_priceGraph.getInfo());
                 if (_turn == Parameters.ExperimentPart.MaxTurn)
                 {
                     return Exit();
@@ -256,6 +259,13 @@ namespace Econophysics
             if (NextTurnReady!=null)
             {
                 NextTurnReady(marketInfo);
+            }
+        }
+        private static void graphicReady(GraphicInfo graphicInfo)
+        {
+            if (GraphicReady != null)
+            {
+                GraphicReady(graphicInfo);
             }
         }
     }

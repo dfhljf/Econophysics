@@ -90,6 +90,7 @@ namespace DataIO
 
                     //parameters.Add();
                 //}
+                throw new NotImplementedException();
             }
 
             private Hashtable convertToMarket(MySqlDataReader record)
