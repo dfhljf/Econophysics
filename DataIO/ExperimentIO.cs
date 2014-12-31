@@ -15,12 +15,22 @@ namespace DataIO
         public class ExperimentIO : Mysql.MysqlIO
         {
             private int _exp;
+            /// <summary>
+            /// 初始化数据库全局读写
+            /// </summary>
+            /// <param name="expId">实验编号</param>
             public ExperimentIO(int expId)
             {
                 _exp = expId;
                 _connStr = Users.Experiment;
                 _conn = new MySqlConnection(_connStr.ConnectionString);
             }
+            /// <summary>
+            /// 写入实验参数
+            /// </summary>
+            /// <param name="parameters">实验参数</param>
+            /// <param name="startTime">实验开始时间</param>
+            /// <param name="comments">实验注释</param>
             public void Write(Parameters parameters, DateTime startTime, string comments)
             {
                 string sql = string.Format("insert into Parameters values({0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},'{11}','{12}')",
@@ -32,6 +42,11 @@ namespace DataIO
                 _sql.ExecuteNonQuery();
                 _conn.Close();
             }
+            /// <summary>
+            /// 读取数据库
+            /// </summary>
+            /// <param name="sql">sql命令</param>
+            /// <returns>键值为实验编号，值为<see cref="Parameters"></see></returns>
             public Hashtable Read(string sql)
             {
                 throw new NotImplementedException();

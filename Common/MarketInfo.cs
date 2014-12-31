@@ -4,6 +4,9 @@ using System.Text;
 
 namespace CommonType
 {
+    /// <summary>
+    /// 市场信息，对所有代理人公开
+    /// </summary>
     public struct MarketInfo
     {
         /// <summary>

@@ -4,6 +4,9 @@ using System.Text;
 
 namespace CommonType
 {
+    /// <summary>
+    /// 代理人信息
+    /// </summary>
     public struct AgentInfo
     {
         /// <summary>

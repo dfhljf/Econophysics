@@ -4,6 +4,9 @@ using System.Text;
 
 namespace CommonType
 {
+    /// <summary>
+    /// 实验状态
+    /// </summary>
     public enum ExperimentState
 	{
         /// <summary>
@@ -18,6 +21,10 @@ namespace CommonType
         /// 实验运行中，实验者可以加入实验并进行操作
         /// </summary>
         Running,
+        /// <summary>
+        /// 实验挂起，处理当前轮次的交易
+        /// </summary>
+        Suspend,
         /// <summary>
         /// 实验暂停中，实验者可以加入实验，不可以操作
         /// </summary>

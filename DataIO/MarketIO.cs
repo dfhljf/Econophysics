@@ -15,12 +15,21 @@ namespace DataIO
         public class MarketIO:Mysql.MysqlIO
         {
             private int _exp;
+            /// <summary>
+            /// 初始化市场读取
+            /// </summary>
+            /// <param name="expId">实验编号</param>
             public MarketIO(int expId)
             {
                 _exp = expId;
                 _connStr = Users.Market;
                 _conn = new MySqlConnection(_connStr.ConnectionString);
             }
+            /// <summary>
+            /// 写入本轮的实验数据
+            /// </summary>
+            /// <param name="turn">轮次</param>
+            /// <param name="marketInfo">本轮市场信息</param>
             public void Write(int turn, MarketInfo marketInfo)
             {
                 string sql = string.Format("insert into Market values({0},{1},{2},{3},{4},{5})", 

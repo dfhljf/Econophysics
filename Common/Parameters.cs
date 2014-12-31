@@ -23,6 +23,9 @@
         /// </summary>
         public Experiment ExperimentPart;
 
+        /// <summary>
+        /// 代理人相关参数
+        /// </summary>
         public struct Agent
         {
             /// <summary>
@@ -42,6 +45,9 @@
             /// </summary>
             public double TradeFee;
         }
+        /// <summary>
+        /// 市场相关参数
+        /// </summary>
         public struct Market
         {
             /// <summary>
@@ -86,6 +92,9 @@
             /// </summary>
             public int TimeWindow;
         }
+        /// <summary>
+        /// 图像相关参数
+        /// </summary>
         public struct Graphic
         {
             /// <summary>
@@ -93,6 +102,9 @@
             /// </summary>
             public GraphicInfo Init;
         }
+        /// <summary>
+        /// 实验相关参数
+        /// </summary>
         public struct Experiment
         {
             /// <summary>
