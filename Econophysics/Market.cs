@@ -67,7 +67,7 @@ namespace Econophysics
         {
             _returns=getReturns();
             _priceList.RemoveAt(0);
-            _price = Math.Round(_price * Math.Exp(Experiment.Parameters.MarketPart.Lambda * _returns), 2);
+            _price = Math.Round(_price * Math.Exp(Experiment.Parameters.MarketPart.Lambda * _returns / Experiment._agents.Count), 2);
             _priceList.Add(_price);
         }
         private int getReturns()

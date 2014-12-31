@@ -10,6 +10,7 @@ using CommonType;
 
 namespace Econophysics
 {
+    public delegate void GraphicReadyDelegate(GraphicInfo graphicInfo);
     internal class Graphic
     {
         private int _width;
@@ -21,6 +22,7 @@ namespace Econophysics
         private int _priceGapNumber;
         private int _basePrice;
         private string _url;
+        internal event GraphicReadyDelegate Ready;
 
         internal Graphic()
         {
@@ -31,8 +33,9 @@ namespace Econophysics
             init();
             draw();
             store();
+            graphicReady(getInfo());
         }
-        internal GraphicInfo GetInfo()
+        private GraphicInfo getInfo()
         {
             GraphicInfo graphicInfo;
             graphicInfo.Count = Experiment._market.PriceList.Count;
@@ -141,6 +144,13 @@ namespace Econophysics
             StreamWriter sw = new StreamWriter(_url);
             sw.Write(_price.WriteSVGString());
             sw.Close();
+        }
+        private void graphicReady(GraphicInfo graphicInfo)
+        {
+            if (Ready!=null)
+            {
+                Ready(graphicInfo);
+            }
         }
     }
 }

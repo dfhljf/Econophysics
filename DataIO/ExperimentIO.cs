@@ -49,8 +49,26 @@ namespace DataIO
             /// <returns>键值为实验编号，值为<see cref="Parameters"></see></returns>
             public Hashtable Read(string sql)
             {
-                throw new NotImplementedException();
+                _sql = new MySqlCommand(sql, _conn);
+                _conn.Open();
+                MySqlDataReader record=_sql.ExecuteReader();
+                _conn.Close();
+                string tmp=sql.ToLower();
+                if(tmp.Contains("agents"))
+                {
+                    return convertToAgent(record);
+                }
+                else if(tmp.Contains("market"))
+                {
+                    return convertToMarket(record);
+                }
+                else if(tmp.Contains("parameters"))
+                {
+                    return convertToParameters(record);
+                }
+                return null;
             }
+
             /// <summary>
             /// 读取数据库中最大的实验编号
             /// </summary>
@@ -63,6 +81,25 @@ namespace DataIO
                 object index=_sql.ExecuteScalar();
                 _conn.Close();
                 return (index == DBNull.Value ? 0 :  Convert.ToInt32(index));
+            }
+            private Hashtable convertToParameters(MySqlDataReader record)
+            {
+                //Hashtable parameters = new Hashtable();
+                //while (record.Read())
+                //{
+
+                    //parameters.Add();
+                //}
+            }
+
+            private Hashtable convertToMarket(MySqlDataReader record)
+            {
+                throw new NotImplementedException();
+            }
+
+            private Hashtable convertToAgent(MySqlDataReader record)
+            {
+                throw new NotImplementedException();
             }
         }
     }
