@@ -70,11 +70,29 @@ namespace CommonType {
         }
         
         /// <summary>
+        ///   查找类似 实验不在运行，不允许交易！ 的本地化字符串。
+        /// </summary>
+        internal static string ExperimentNotRun {
+            get {
+                return ResourceManager.GetString("ExperimentNotRun", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 股票数量不足！ 的本地化字符串。
         /// </summary>
         internal static string InsufficientStocks {
             get {
                 return ResourceManager.GetString("InsufficientStocks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 请检查交易数量！ 的本地化字符串。
+        /// </summary>
+        internal static string TradeStocksOut {
+            get {
+                return ResourceManager.GetString("TradeStocksOut", resourceCulture);
             }
         }
         

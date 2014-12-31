@@ -29,5 +29,13 @@ namespace CommonType
         /// 错误：用户不存在
         /// </summary>
         public static Exception UserNotExist = new Exception(ErrorMessage.UserNotExist);
+        /// <summary>
+        /// 错误：实验没在运行
+        /// </summary>
+        public static Exception ExperimentNotRun = new Exception(ErrorMessage.ExperimentNotRun);
+        /// <summary>
+        /// 错误：交易数量溢出
+        /// </summary>
+        public static Exception TradeStocksOut = new Exception(ErrorMessage.TradeStocksOut);
     }
 }

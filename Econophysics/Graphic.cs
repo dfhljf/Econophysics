@@ -22,15 +22,24 @@ namespace Econophysics
         private int _basePrice;
         private string _url;
 
-        internal Graphic(GraphicInfo init)
+        internal Graphic()
         {
-            _url = init.Url;
+            _url = Experiment.Parameters.GraphicPart.Init.Url;
         }
         internal void Draw()
         {
             init();
             draw();
             store();
+        }
+        internal GraphicInfo GetInfo()
+        {
+            GraphicInfo graphicInfo;
+            graphicInfo.Count = Experiment._market.PriceList.Count;
+            graphicInfo.Height = _height;
+            graphicInfo.Width = _width;
+            graphicInfo.Url = _url;
+            return graphicInfo;
         }
         private void  init()
         {

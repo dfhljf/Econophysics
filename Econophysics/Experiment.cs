@@ -49,19 +49,20 @@ namespace Econophysics
         private static Random _random;
         private static ExperimentIO _experimentIO;
 
-        static Experiment()
+        static Experiment(Parameters parameters)
         {
             _index = _experimentIO.Read()+1;
+            Parameters = parameters;
             _state = ExperimentState.Unbuilded;
             _random = new Random();
             _agents = new Hashtable();
             _experimentIO = new ExperimentIO(_index);
+            _market = new Market();
+            _priceGraph = new Graphic();
         }
-        public static void Initial(Parameters parameters)
+        public static void Initial()
         {
-            Parameters = parameters;
-            _market = new Market(Parameters.MarketPart);
-            _priceGraph = new Graphic(Parameters.GraphicPart.Init);
+            
         }
         public static MarketInfo GetMarketInfo()
         {
@@ -71,15 +72,43 @@ namespace Econophysics
         {
             if (_agents.ContainsKey(id))
                 return false;
-            _agents.Add(id, Parameters.AgentPart.Init);
+            _agents.Add(id, new Agent(id));
             return true;
         }
         public static void Trade(int agentId,int tradeStocks)
         {
+            if (_state!=ExperimentState.Running)
+            {
+                throw ErrorList.ExperimentNotRun;
+            }
             if (!_agents.ContainsKey(agentId))
             {
                 throw ErrorList.UserNotExist;
             }
+            if(Math.Abs(tradeStocks)>Parameters.AgentPart.MaxStock)
+            {
+                throw ErrorList.TradeStocksOut;
+            }
+            try
+            {
+                ((Agent)_agents[agentId]).Trade(tradeStocks);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        public static AgentInfo GetAgentInfo(int id)
+        {
+            if (!_agents.ContainsKey(id))
+            {
+                throw ErrorList.UserNotExist;
+            }
+            return ((Agent)_agents[id]).GetInfo();
+        }
+        public static GraphicInfo GetGraphicInfo()
+        {
+            return _priceGraph.GetInfo();
         }
     }
 }

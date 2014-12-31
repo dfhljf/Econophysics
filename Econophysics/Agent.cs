@@ -14,7 +14,7 @@ namespace Econophysics
         /// <summary>
         /// 编号，每个代理人都有唯一的编号
         /// </summary>
-        public int Index { get { return _index; } }
+        internal int _index;
         /// <summary>
         /// 本轮是否交易过，限制一轮交易一次
         /// </summary>
@@ -40,12 +40,13 @@ namespace Econophysics
         /// 分红数目
         /// </summary>
         private double _dividend;
-        private int _index;
+        
         private AgentIO _agentIO;
 
-        internal Agent(AgentInfo init)
+        internal Agent(int id)
         {
-            _index = init.Id;
+            AgentInfo init = Experiment.Parameters.AgentPart.Init;
+            _index = id;
             _isTrade = false;
             _cash = init.Cash;
             _stocks = init.Stocks;

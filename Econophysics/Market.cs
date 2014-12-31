@@ -27,14 +27,15 @@ namespace Econophysics
         private List<double> _priceList;
         private MarketIO _marketIO;
 
-        internal Market(Parameters.Market market)
+        internal Market()
         {
-            _price = market.Init.Price;
-            _state = market.Init.State;
-            _returns = market.Init.Returns;
+            MarketInfo init = Experiment.Parameters.MarketPart.Init;
+            _price = init.Price;
+            _state = init.State;
+            _returns = init.Returns;
             _marketIO = new MarketIO(Experiment.Index);
             _priceList=new List<double>();
-            for(int i=0;i<market.Count;i++)
+            for(int i=0;i<Experiment.Parameters.MarketPart.Count;i++)
             {
                 _priceList.Add(_price);
             }

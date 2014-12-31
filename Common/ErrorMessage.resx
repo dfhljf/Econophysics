@@ -121,9 +121,17 @@
     <value>现金不足！</value>
     <comment>现金不足以购买该数量的股票</comment>
   </data>
+  <data name="ExperimentNotRun" xml:space="preserve">
+    <value>实验不在运行，不允许交易！</value>
+    <comment>交易需要在实验运行时</comment>
+  </data>
   <data name="InsufficientStocks" xml:space="preserve">
     <value>股票数量不足！</value>
     <comment>没有足够的股票去卖出</comment>
+  </data>
+  <data name="TradeStocksOut" xml:space="preserve">
+    <value>请检查交易数量！</value>
+    <comment>交易数量不对</comment>
   </data>
   <data name="TradeTwice" xml:space="preserve">
     <value>你已经交易，不得重复交易</value>
@@ -135,6 +143,6 @@
   </data>
   <data name="UserRuin" xml:space="preserve">
     <value>您已破产，感谢您的参与！</value>
-    <comment>所有资产</comment>
+    <comment>所有资产小于0</comment>
   </data>
 </root>
