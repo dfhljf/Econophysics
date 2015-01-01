@@ -10,7 +10,6 @@ using CommonType;
 
 namespace Econophysics
 {
-    
     internal class Graphic
     {
         private int _width;

@@ -13,5 +13,15 @@ namespace Interface
         {
 
         }
+
+        protected void sell_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void buy_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

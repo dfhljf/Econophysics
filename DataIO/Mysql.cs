@@ -11,7 +11,6 @@ namespace DataIO
 {
     namespace Mysql
     {
-        // TODO: 防止SQL注入攻击
         /// <summary>
         /// Mysql的抽象实现
         /// </summary>

@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Econophysics;
+using CommonType;
 
 namespace Interface
 {
@@ -12,6 +13,12 @@ namespace Interface
         protected void Page_Load(object sender, EventArgs e)
         {
 
+        }
+
+        protected void Timer1_Tick(object sender, EventArgs e)
+        {
+            Experiment.SetTimeTick();
+            TimeTick.Text = Experiment.TimeTick.ToString();
         }
     }
 }

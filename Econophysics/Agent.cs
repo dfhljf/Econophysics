@@ -94,10 +94,7 @@ namespace Econophysics
         }
         internal void SyncUpdate()
         {
-            if (!getDividend())
-            {
-                throw ErrorList.UserRuin;
-            }
+            getDividend();
             store();
             _tradeStocks = 0;
             _isTrade = false;
@@ -134,7 +131,7 @@ namespace Econophysics
         {
             _endowment = _cash + _stocks * Experiment._market._price;
         }
-        private bool getDividend()
+        private void getDividend()
         {
             _cash += _dividend * _stocks;
             while (_cash < 0 && _stocks > 0)
@@ -142,12 +139,7 @@ namespace Econophysics
                 _cash += Experiment._market._price;
                 _stocks--;
             }
-            if (_cash < 0)
-            {
-                return false;
-            }
             updateEndowment();
-            return true;
         }
         private void setDividend()
         {
