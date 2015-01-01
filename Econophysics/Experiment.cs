@@ -7,8 +7,20 @@ using DataIO.Mysql;
 
 namespace Econophysics
 {
+    /// <summary>
+    /// 实验状态改变触发的事件委托
+    /// </summary>
+    /// <param name="state">当前的事件状态</param>
     public delegate void ExperimentStateChangedDelegate(ExperimentState state);
+    /// <summary>
+    /// 开始新一轮实验触发的事件委托
+    /// </summary>
+    /// <param name="marketInfo">当前的市场信息</param>
     public delegate void ExperimentNextTurnDelegate(MarketInfo marketInfo);
+    /// <summary>
+    /// 图像准备好触发的事件委托
+    /// </summary>
+    /// <param name="graphicInfo">图像信息</param>
     public delegate void GraphicReadyDelegate(GraphicInfo graphicInfo);
     static class Experiment
     {

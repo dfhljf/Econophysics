@@ -17,7 +17,6 @@ namespace DataIO
             /// <summary>
             /// 初始化市场读取
             /// </summary>
-            /// <param name="expId">实验编号</param>
             public MarketIO()
             {
                 _connStr = Users.Market;
@@ -31,6 +30,7 @@ namespace DataIO
             public void Write(MarketKey marketKey, MarketInfo marketInfo)
             {
                 _sql = new MySqlCommand("insert into Market values(@ExperimentId,@Turn,@Price,@State,@Returns,@NumberOfPeople)", _conn);
+                _conn.Open();
                 _sql.Prepare();
                 _sql.Parameters.AddWithValue("@ExperimentId", marketKey.ExperimentId);
                 _sql.Parameters.AddWithValue("@Turn",marketKey.Turn);
@@ -38,7 +38,6 @@ namespace DataIO
                 _sql.Parameters.AddWithValue("@State",(int)marketInfo.State);
                 _sql.Parameters.AddWithValue("@Returns", marketInfo.Returns);
                 _sql.Parameters.AddWithValue("@NumberOfPeople", marketInfo.NumberOfPeople);
-                _conn.Open();
                 _sql.ExecuteNonQuery();
                 _conn.Close();
             }

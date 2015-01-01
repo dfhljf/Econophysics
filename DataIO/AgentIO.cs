@@ -18,7 +18,6 @@ namespace DataIO
             /// <summary>
             /// 初始化代理人数据库交互
             /// </summary>
-            /// <param name="expId">实验编号</param>
             public AgentIO()
             {
                 _connStr = Users.Agent;
@@ -32,6 +31,7 @@ namespace DataIO
             public void Write(AgentKey agentKey, AgentInfo agentInfo)
             {
                 _sql = new MySqlCommand("insert into Agents values(@ExperimentId,@Turn,@Id,@Cash,@Stocks,@Endowment,@Dividend,@TradeStocks)", _conn);
+                _conn.Open();
                 _sql.Prepare();
                 _sql.Parameters.AddWithValue("@ExperimentId",agentKey.ExperimentId);
                 _sql.Parameters.AddWithValue("@Turn",agentKey.Turn);
@@ -41,7 +41,6 @@ namespace DataIO
                 _sql.Parameters.AddWithValue("@Endowment", agentInfo.Endowment);
                 _sql.Parameters.AddWithValue("@Dividend", agentInfo.Dividend);
                 _sql.Parameters.AddWithValue("@TradeStocks", agentInfo.TradeStocks);
-                _conn.Open();
                 _sql.ExecuteNonQuery();
                 _conn.Close();
             }

@@ -17,7 +17,6 @@ namespace DataIO
             /// <summary>
             /// 初始化数据库全局读写
             /// </summary>
-            /// <param name="expId">实验编号</param>
             public ExperimentIO()
             {
                 _connStr = Users.Experiment;
@@ -26,8 +25,8 @@ namespace DataIO
             /// <summary>
             /// 写入实验参数
             /// </summary>
+            /// <param name="experimentId">实验编号</param>
             /// <param name="parameters">实验参数</param>
-            /// <param name="startTime">实验开始时间</param>
             /// <param name="comments">实验注释</param>
             public void Write(int experimentId,Parameters parameters, string comments)
             {
@@ -35,6 +34,7 @@ namespace DataIO
                     "@PeriodOfUpdateDividend,@TradeFee,@Count,@Leverage,@Lambda," +
                     "@P01,@P10,@PDividend,@P,@TransP,@TimeWindow,@PeriodOfTurn," +
                     "@MaxTurn,@DateTime,@Comments)", _conn);
+                _conn.Open();
                 _sql.Prepare();
                 _sql.Parameters.AddWithValue("@Id",experimentId);
                 _sql.Parameters.AddWithValue("@MaxStock", parameters.AgentPart.MaxStock);
@@ -53,8 +53,6 @@ namespace DataIO
                 _sql.Parameters.AddWithValue("@MaxTurn", parameters.ExperimentPart.MaxTurn);
                 _sql.Parameters.AddWithValue("@DateTime", DateTime.Now);
                 _sql.Parameters.AddWithValue("@Comments", comments);
-
-                _conn.Open();
                 _sql.ExecuteNonQuery();
                 _conn.Close();
             }
@@ -107,7 +105,7 @@ namespace DataIO
                 {
                     Parameters para = new Parameters();
                     para.AgentPart.MaxStock = record.GetInt32("maxstock");
-                    parameters.Add();
+                    //parameters.Add();
                 }
                 throw new NotImplementedException();
             }

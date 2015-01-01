@@ -65,7 +65,6 @@ namespace Econophysics
             agentInfo.Cash = _cash;
             agentInfo.Dividend = _dividend;
             agentInfo.Endowment = _endowment;
-            agentInfo.Id = _index;
             agentInfo.Stocks = _stocks;
             agentInfo.TradeStocks = _tradeStocks;
             return agentInfo;
