@@ -67,7 +67,6 @@ namespace DataIO
                 _sql = new MySqlCommand(sql, _conn);
                 _conn.Open();
                 MySqlDataReader record=_sql.ExecuteReader();
-                _conn.Close();
                 string tmp=sql.ToLower();
                 if(tmp.Contains("agents"))
                 {
@@ -82,9 +81,9 @@ namespace DataIO
                     rtn = convertToParameters(record);
                 }
                 record.Close();
+                _conn.Close();
                 return rtn;
             }
-
             /// <summary>
             /// 读取数据库中最大的实验编号
             /// </summary>
@@ -104,20 +103,59 @@ namespace DataIO
                 while (record.Read())
                 {
                     Parameters para = new Parameters();
-                    para.AgentPart.MaxStock = record.GetInt32("maxstock");
-                    //parameters.Add();
+                    para.AgentPart.MaxStock = record.GetInt32("MaxStock");
+                    para.AgentPart.PeriodOfUpdateDividend = record.GetInt32("PeriodOfUpdateDividend");
+                    para.AgentPart.TradeFee = record.GetDouble("TradeFee");
+                    para.MarketPart.Count = record.GetInt32("Count");
+                    para.MarketPart.Lambda = record.GetDouble("Lambda");
+                    para.MarketPart.Leverage = (LeverageEffect)record.GetInt32("Leverage");
+                    para.MarketPart.P = record.GetDouble("P");
+                    para.MarketPart.P01 = record.GetDouble("P01");
+                    para.MarketPart.P10 = record.GetDouble("P10");
+                    para.MarketPart.PDividend = record.GetDouble("PDividend");
+                    para.MarketPart.TimeWindow = record.GetInt32("TimeWindow");
+                    para.MarketPart.TransP = record.GetDouble("TransP");
+                    para.ExperimentPart.MaxTurn = record.GetInt32("MaxTurn");
+                    para.ExperimentPart.PeriodOfTurn = record.GetInt32("PeriodOfTurn");
+                    parameters.Add(record.GetInt32("Id"),para);
                 }
-                throw new NotImplementedException();
+                return parameters;
             }
-
             private Hashtable convertToMarket(MySqlDataReader record)
             {
-                throw new NotImplementedException();
+                Hashtable market = new Hashtable();
+                while(record.Read())
+                {
+                    MarketKey mk;
+                    MarketInfo mi;
+                    mk.ExperimentId = record.GetInt32("ExperimentId");
+                    mk.Turn = record.GetInt32("Turn");
+                    mi.NumberOfPeople = record.GetInt32("NumberOfPeople");
+                    mi.Price = record.GetDouble("Price");
+                    mi.Returns = record.GetInt32("Returns");
+                    mi.State = (MarketState)record.GetInt32("State");
+                    market.Add(mk, mi);
+                }
+                return market;
             }
-
             private Hashtable convertToAgent(MySqlDataReader record)
             {
-                throw new NotImplementedException();
+                Hashtable agent = new Hashtable();
+                while (record.Read())
+                {
+                    AgentKey ak;
+                    AgentInfo ai;
+                    ak.ExperimentId = record.GetInt32("ExperimentId");
+                    ak.Turn = record.GetInt32("Turn");
+                    ak.Id = record.GetInt32("Id");
+                    ai.Cash = record.GetDouble("Cash");
+                    ai.Dividend = record.GetDouble("Dividend");
+                    ai.Endowment = record.GetDouble("Endowment");
+                    ai.Stocks = record.GetInt32("Stocks");
+                    ai.TradeStocks = record.GetInt32("TradeStocks");
+                    agent.Add(ak, ai);
+                }
+                return agent;
             }
         }
     }

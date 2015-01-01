@@ -4,6 +4,7 @@ using System.Text;
 using CommonType;
 using Newtonsoft.Json;
 using DataIO.Mysql;
+using System.Collections;
 
 namespace Test
 {
@@ -11,9 +12,28 @@ namespace Test
     {
         static void Main(string[] args)
         {
-
+            testDataIORead();
         }
-        static void testDataIO()
+
+        private static void testDataIORead()
+        {
+            ExperimentIO ei = new ExperimentIO();
+            Hashtable eht = new Hashtable();
+            Hashtable mht = new Hashtable();
+            Hashtable aht = new Hashtable();
+            eht = ei.Read("select * from parameters");
+            mht = ei.Read("select * from market");
+            aht = ei.Read("select * from agents");
+            AgentInfo init;
+            init.Cash = 10000;
+            init.Dividend = 1;
+            init.Endowment = 10000;
+            init.Stocks = 1000;
+            init.TradeStocks = 10;
+            Parameters para = (Parameters)eht[1];
+            para.AgentPart.Init = init;
+        }
+        private static void testDataIOWrite()
         {
             ExperimentIO ei = new ExperimentIO();
             MarketIO mi = new MarketIO();
