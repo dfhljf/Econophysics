@@ -14,27 +14,30 @@ namespace DataIO
         /// </summary>
         public class MarketIO:Mysql.MysqlIO
         {
-            private int _exp;
             /// <summary>
             /// 初始化市场读取
             /// </summary>
             /// <param name="expId">实验编号</param>
-            public MarketIO(int expId)
+            public MarketIO()
             {
-                _exp = expId;
                 _connStr = Users.Market;
                 _conn = new MySqlConnection(_connStr.ConnectionString);
             }
             /// <summary>
             /// 写入本轮的实验数据
             /// </summary>
-            /// <param name="turn">轮次</param>
+            /// <param name="marketKey">轮次</param>
             /// <param name="marketInfo">本轮市场信息</param>
-            public void Write(int turn, MarketInfo marketInfo)
+            public void Write(MarketKey marketKey, MarketInfo marketInfo)
             {
-                string sql = string.Format("insert into Market values({0},{1},{2},{3},{4},{5})", 
-                    _exp, turn, marketInfo.Price, (int)marketInfo.State, marketInfo.Returns,marketInfo.NumberOfPeople);
-                _sql = new MySqlCommand(sql, _conn);
+                _sql = new MySqlCommand("insert into Market values(@ExperimentId,@Turn,@Price,@State,@Returns,@NumberOfPeople)", _conn);
+                _sql.Prepare();
+                _sql.Parameters.AddWithValue("@ExperimentId", marketKey.ExperimentId);
+                _sql.Parameters.AddWithValue("@Turn",marketKey.Turn);
+                _sql.Parameters.AddWithValue("@Price", marketInfo.Price);
+                _sql.Parameters.AddWithValue("@State",(int)marketInfo.State);
+                _sql.Parameters.AddWithValue("@Returns", marketInfo.Returns);
+                _sql.Parameters.AddWithValue("@NumberOfPeople", marketInfo.NumberOfPeople);
                 _conn.Open();
                 _sql.ExecuteNonQuery();
                 _conn.Close();

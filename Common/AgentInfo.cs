@@ -10,10 +10,6 @@ namespace CommonType
     public struct AgentInfo
     {
         /// <summary>
-        /// 编号
-        /// </summary>
-        public int Id;
-        /// <summary>
         /// 现金数量
         /// </summary>
         public double Cash;

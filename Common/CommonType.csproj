@@ -37,6 +37,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AgentInfo.cs" />
+    <Compile Include="AgentKey.cs" />
     <Compile Include="ErrorList.cs" />
     <Compile Include="ErrorMessage.Designer.cs">
       <DependentUpon>ErrorMessage.resx</DependentUpon>
@@ -47,6 +48,7 @@
     <Compile Include="GraphicInfo.cs" />
     <Compile Include="LeverageEffect.cs" />
     <Compile Include="MarketInfo.cs" />
+    <Compile Include="MarketKey.cs" />
     <Compile Include="MarketState.cs" />
     <Compile Include="Parameters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

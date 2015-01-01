@@ -15,28 +15,33 @@ namespace DataIO
         /// </summary>
         public class AgentIO : Mysql.MysqlIO
         {
-            private int _exp;
             /// <summary>
             /// 初始化代理人数据库交互
             /// </summary>
             /// <param name="expId">实验编号</param>
-            public AgentIO(int expId)
+            public AgentIO()
             {
-                _exp = expId;
                 _connStr = Users.Agent;
                 _conn = new MySqlConnection(_connStr.ConnectionString);
             }
             /// <summary>
             /// 写入一轮的代理人数据
             /// </summary>
-            /// <param name="turn">轮次</param>
+            /// <param name="agentKey">轮次</param>
             /// <param name="agentInfo">本轮代理人信息</param>
-            public void Write(int turn, AgentInfo agentInfo)
+            public void Write(AgentKey agentKey, AgentInfo agentInfo)
             {
-                string sql = string.Format("insert into Agents values({0},{1},{2},{3},{4},{5},{6},{7})",
-                    agentInfo.Id, turn, _exp, agentInfo.Cash, agentInfo.Stocks, agentInfo.Dividend, agentInfo.TradeStocks, agentInfo.Endowment);
+                _sql = new MySqlCommand("insert into Agents values(@ExperimentId,@Turn,@Id,@Cash,@Stocks,@Endowment,@Dividend,@TradeStocks)", _conn);
+                _sql.Prepare();
+                _sql.Parameters.AddWithValue("@ExperimentId",agentKey.ExperimentId);
+                _sql.Parameters.AddWithValue("@Turn",agentKey.Turn);
+                _sql.Parameters.AddWithValue("@Id", agentKey.Id);
+                _sql.Parameters.AddWithValue("@Cash", agentInfo.Cash);
+                _sql.Parameters.AddWithValue("@Stocks", agentInfo.Stocks);
+                _sql.Parameters.AddWithValue("@Endowment", agentInfo.Endowment);
+                _sql.Parameters.AddWithValue("@Dividend", agentInfo.Dividend);
+                _sql.Parameters.AddWithValue("@TradeStocks", agentInfo.TradeStocks);
                 _conn.Open();
-                _sql = new MySqlCommand(sql, _conn);
                 _sql.ExecuteNonQuery();
                 _conn.Close();
             }

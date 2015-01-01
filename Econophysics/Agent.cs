@@ -57,7 +57,7 @@ namespace Econophysics
             _dividend = init.Dividend;
             _endowment = init.Endowment;
             _tradeStocks = init.TradeStocks;
-            _agentIO = new AgentIO(Experiment.Index);
+            _agentIO = new AgentIO();
         }
         internal AgentInfo GetInfo()
         {
@@ -109,7 +109,7 @@ namespace Econophysics
         }
         private void store()
         {
-            _agentIO.Write(Experiment.Turn,GetInfo());
+            _agentIO.Write(getKey(),GetInfo());
         }
         private bool updateCash(int tradeStocks)
         {
@@ -174,6 +174,14 @@ namespace Econophysics
                         ^ Experiment.Random > marketPara.PDividend) ? ((Experiment.Random < marketPara.P) ? (-1) : (1)) : (0));
                     break;
             }
+        }
+        private AgentKey getKey()
+        {
+            AgentKey agentKey;
+            agentKey.ExperimentId = Experiment.Index;
+            agentKey.Turn = Experiment.Turn;
+            agentKey.Id = _index;
+            return agentKey;
         }
     }
 }

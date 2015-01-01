@@ -14,14 +14,12 @@ namespace DataIO
         /// </summary>
         public class ExperimentIO : Mysql.MysqlIO
         {
-            private int _exp;
             /// <summary>
             /// 初始化数据库全局读写
             /// </summary>
             /// <param name="expId">实验编号</param>
-            public ExperimentIO(int expId)
+            public ExperimentIO()
             {
-                _exp = expId;
                 _connStr = Users.Experiment;
                 _conn = new MySqlConnection(_connStr.ConnectionString);
             }
@@ -31,13 +29,31 @@ namespace DataIO
             /// <param name="parameters">实验参数</param>
             /// <param name="startTime">实验开始时间</param>
             /// <param name="comments">实验注释</param>
-            public void Write(Parameters parameters, DateTime startTime, string comments)
+            public void Write(int experimentId,Parameters parameters, string comments)
             {
-                string sql = string.Format("insert into Parameters values({0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},'{11}','{12}')",
-                   _exp, parameters.ExperimentPart.MaxTurn, parameters.ExperimentPart.PeriodOfTurn, (int)parameters.MarketPart.Leverage,
-                   parameters.MarketPart.Lambda, parameters.MarketPart.P01, parameters.MarketPart.P10, parameters.AgentPart.TradeFee,
-                   parameters.MarketPart.PDividend, parameters.MarketPart.P, parameters.MarketPart.TransP, startTime, comments);
-                _sql = new MySqlCommand(sql, _conn);
+                _sql = new MySqlCommand("insert into Parameters values(@Id,@MaxStock,"+
+                    "@PeriodOfUpdateDividend,@TradeFee,@Count,@Leverage,@Lambda," +
+                    "@P01,@P10,@PDividend,@P,@TransP,@TimeWindow,@PeriodOfTurn," +
+                    "@MaxTurn,@DateTime,@Comments)", _conn);
+                _sql.Prepare();
+                _sql.Parameters.AddWithValue("@Id",experimentId);
+                _sql.Parameters.AddWithValue("@MaxStock", parameters.AgentPart.MaxStock);
+                _sql.Parameters.AddWithValue("@PeriodOfUpdateDividend", parameters.AgentPart.PeriodOfUpdateDividend);
+                _sql.Parameters.AddWithValue("@TradeFee", parameters.AgentPart.TradeFee);
+                _sql.Parameters.AddWithValue("@Count",parameters.MarketPart.Count);
+                _sql.Parameters.AddWithValue("@Leverage",(int)parameters.MarketPart.Leverage);
+                _sql.Parameters.AddWithValue("@Lambda", parameters.MarketPart.Lambda);
+                _sql.Parameters.AddWithValue("@P01", parameters.MarketPart.P01);
+                _sql.Parameters.AddWithValue("@P10", parameters.MarketPart.P10);
+                _sql.Parameters.AddWithValue("@PDividend", parameters.MarketPart.PDividend);
+                _sql.Parameters.AddWithValue("@P", parameters.MarketPart.P);
+                _sql.Parameters.AddWithValue("@TransP", parameters.MarketPart.TransP);
+                _sql.Parameters.AddWithValue("@TimeWindow", parameters.MarketPart.TimeWindow);
+                _sql.Parameters.AddWithValue("@PeriodOfTurn", parameters.ExperimentPart.PeriodOfTurn);
+                _sql.Parameters.AddWithValue("@MaxTurn", parameters.ExperimentPart.MaxTurn);
+                _sql.Parameters.AddWithValue("@DateTime", DateTime.Now);
+                _sql.Parameters.AddWithValue("@Comments", comments);
+
                 _conn.Open();
                 _sql.ExecuteNonQuery();
                 _conn.Close();
@@ -49,6 +65,7 @@ namespace DataIO
             /// <returns>键值为实验编号，值为<see cref="Parameters"></see></returns>
             public Hashtable Read(string sql)
             {
+                Hashtable rtn = new Hashtable();
                 _sql = new MySqlCommand(sql, _conn);
                 _conn.Open();
                 MySqlDataReader record=_sql.ExecuteReader();
@@ -56,17 +73,18 @@ namespace DataIO
                 string tmp=sql.ToLower();
                 if(tmp.Contains("agents"))
                 {
-                    return convertToAgent(record);
+                    rtn = convertToAgent(record);
                 }
                 else if(tmp.Contains("market"))
                 {
-                    return convertToMarket(record);
+                    rtn = convertToMarket(record);
                 }
                 else if(tmp.Contains("parameters"))
                 {
-                    return convertToParameters(record);
+                    rtn = convertToParameters(record);
                 }
-                return null;
+                record.Close();
+                return rtn;
             }
 
             /// <summary>
@@ -84,12 +102,13 @@ namespace DataIO
             }
             private Hashtable convertToParameters(MySqlDataReader record)
             {
-                //Hashtable parameters = new Hashtable();
-                //while (record.Read())
-                //{
-
-                    //parameters.Add();
-                //}
+                Hashtable parameters = new Hashtable();
+                while (record.Read())
+                {
+                    Parameters para = new Parameters();
+                    para.AgentPart.MaxStock = record.GetInt32("maxstock");
+                    parameters.Add();
+                }
                 throw new NotImplementedException();
             }
 

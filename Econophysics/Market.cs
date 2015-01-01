@@ -33,7 +33,7 @@ namespace Econophysics
             _price = init.Price;
             _state = init.State;
             _returns = init.Returns;
-            _marketIO = new MarketIO(Experiment.Index);
+            _marketIO = new MarketIO();
             _priceList=new List<double>();
             for(int i=0;i<Experiment.Parameters.MarketPart.Count;i++)
             {
@@ -61,7 +61,7 @@ namespace Econophysics
         }
         private void store()
         {
-            _marketIO.Write(Experiment.Turn,GetInfo());
+            _marketIO.Write(getKey(),GetInfo());
         }
         private void updatePrice()
         {
@@ -90,6 +90,13 @@ namespace Econophysics
                     _state=(Experiment.Random < Experiment.Parameters.MarketPart.P01)?MarketState.Active:MarketState.Inactive;
                     break;
             }
+        }
+        private MarketKey getKey()
+        {
+            MarketKey marketKey;
+            marketKey.ExperimentId = Experiment.Index;
+            marketKey.Turn = Experiment.Turn;
+            return marketKey;
         }
     }
 }

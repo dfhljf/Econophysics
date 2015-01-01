@@ -61,8 +61,8 @@ namespace Econophysics
         /// 市场情况
         /// </summary>
         internal static Market _market;
+
         private static Graphic _priceGraph;
-        
         private static int _index;
         private static int _turn;
         private static ExperimentState _state;
@@ -79,6 +79,7 @@ namespace Econophysics
             _random = new Random();
             _agents = new Hashtable();
             _pauseList = new Hashtable();
+            _experimentIO = new ExperimentIO();
             _state = ExperimentState.Unbuilded;
             stateChanged(_state);
         }
@@ -88,7 +89,6 @@ namespace Econophysics
             Parameters = parameters;
             _market = new Market();
             _priceGraph = new Graphic();
-            _experimentIO = new ExperimentIO(_index);
             _state = ExperimentState.Builded;
             stateChanged(_state);
             return _state;
@@ -101,7 +101,7 @@ namespace Econophysics
             }
             try
             {
-                _experimentIO.Write(Parameters, DateTime.Now, comments);
+                store(comments);
                 _turn = 0;
                 _state = ExperimentState.Running;
                 stateChanged(_state);
@@ -267,6 +267,10 @@ namespace Econophysics
             {
                 GraphicReady(graphicInfo);
             }
+        }
+        private static void store(string comments)
+        {
+            _experimentIO.Write(_index, Parameters, comments);
         }
     }
 }
