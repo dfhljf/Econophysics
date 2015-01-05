@@ -90,7 +90,7 @@ namespace DataIO
             /// <returns>最大的实验编号，不存在返回0</returns>
             public int Read()
             {
-                string sql = "select max(exp) from parameters";
+                string sql = "select max(Id) from parameters";
                 _sql = new MySqlCommand(sql, _conn);
                 _conn.Open();
                 object index=_sql.ExecuteScalar();

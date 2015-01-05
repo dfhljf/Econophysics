@@ -95,8 +95,12 @@ namespace Econophysics
             _state = ExperimentState.Unbuilded;
             stateChanged(_state);
         }
-        public static ExperimentState Initial(Parameters parameters)
+        public static ExperimentState Build(Parameters parameters)
         {
+            if (_state!=ExperimentState.Unbuilded)
+            {
+                return _state;
+            }
             _index = _experimentIO.Read() + 1;
             Parameters = parameters;
             _market = new Market();
@@ -188,6 +192,28 @@ namespace Econophysics
         }
         public static void Recovery()
         {
+        }
+        public static Hashtable List()
+        {
+            Hashtable eht = _experimentIO.Read("select * from parameters");
+            Hashtable rtn = new Hashtable();
+            foreach (int expId in eht.Keys)
+            {
+                Parameters para = (Parameters)eht[expId];
+                Hashtable aht=_experimentIO.Read(string.Format("select * from Agents where Turn=0 and ExperimentId={0} limit 1", expId));
+                foreach (AgentKey ak in aht.Keys)
+                {
+                    para.AgentPart.Init = (AgentInfo)aht[ak];
+                }
+
+                Hashtable mht=_experimentIO.Read(string.Format("select * from market where ExperimentId={0} order by turn desc limit 1", expId));
+                foreach (MarketKey mk in mht.Keys)
+                {
+                    para.MarketPart.Init = (MarketInfo)mht[mk];
+                    rtn.Add(mk, para);
+                }
+            }
+            return rtn;
         }
         public static MarketInfo GetMarketInfo()
         {
