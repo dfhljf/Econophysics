@@ -25,11 +25,14 @@ namespace Econophysics
 
         internal Graphic()
         {
+            _width = 900;
+            _height = 500;
+            _origin = new Point(_width - 50, _height / 2 - 30 / 2 + 20 / 2);
+            _price = new SvgGraphics();
             _url = Experiment.Parameters.GraphicPart.Init.Url;
         }
         internal void Draw()
         {
-            init();
             draw();
             store();
         }
@@ -41,13 +44,6 @@ namespace Econophysics
             graphicInfo.Width = _width;
             graphicInfo.Url = _url;
             return graphicInfo;
-        }
-        private void  init()
-        {
-            _width = 900;
-            _height = 500;
-            _origin = new Point(_width - 50, _height / 2 - 30 / 2 + 20 / 2);
-            _price = new SvgGraphics();
         }
         private void draw()
         {

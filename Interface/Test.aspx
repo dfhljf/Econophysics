@@ -14,17 +14,19 @@
 
             <asp:ScriptManager ID="ScriptManager1" runat="server">
             </asp:ScriptManager>
-            <asp:Label ID="Label2" runat="server" Text="1"></asp:Label>
+        <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
+            <ContentTemplate>
+                <asp:Label ID="ExpState" runat="server"></asp:Label>
+                                                    <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
+                                        <ContentTemplate>
+                                            <asp:Timer ID="Timer1" runat="server" Interval="1000" OnTick="Timer1_Tick"></asp:Timer>
+                                            <asp:Label ID="TimeTick" runat="server"></asp:Label>
+                                        </ContentTemplate>
+                                    </asp:UpdatePanel>
+                 <asp:Button ID="BuildExp" runat="server" Text="建立实验" OnClick="BuildExp_Click" />
+                            </ContentTemplate>
+        </asp:UpdatePanel>
 
-
-            <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-                <ContentTemplate>
-                    <asp:Timer ID="Timer1" runat="server" Interval="1000" OnTick="Timer1_Tick">
-                    </asp:Timer>
-                    <asp:Label ID="Label1" runat="server" Text="Label"></asp:Label>
-                </ContentTemplate>
-
-            </asp:UpdatePanel>
         </div>
 
     </form>

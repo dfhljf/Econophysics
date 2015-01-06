@@ -11,11 +11,9 @@
     <form id="form1" runat="server">
         <asp:ScriptManager ID="ScriptManager1" runat="server">
         </asp:ScriptManager>
-        <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional" AutoPostBack="True">
-            <ContentTemplate>
                 <div>
 
-                    <div id="ExpInfo">
+
                         <table>
                             <tr>
                                 <td>编号</td>
@@ -23,33 +21,41 @@
                                     <asp:DropDownList ID="ExpId" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ExpId_SelectedIndexChanged">
                                     </asp:DropDownList></td>
                             </tr>
-                            <tr>
-                                <td>状态</td>
-                                <td>
-                                    <asp:Label ID="ExpState" runat="server"></asp:Label></td>
-                            </tr>
-                            <tr>
-                                <td>轮次</td>
-                                <td>
-                                    <asp:Label ID="Turn" runat="server"></asp:Label></td>
-                            </tr>
-
-                            <tr>
-                                <td>倒计时</td>
-                                <td>
-                                    <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
-                                        <ContentTemplate>
+                        </table>
+                                                <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
+                            <ContentTemplate>
+                                                    <div id="ExpInfo" runat="server">
+                        <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
+                            <ContentTemplate>
+                                <table>
+                                    <tr>
+                                        <td>状态</td>
+                                        <td>
+                                            <asp:Label ID="ExpState" runat="server"></asp:Label></td>
+                                    </tr>
+                                    <tr>
+                                        <td>轮次</td>
+                                        <td>
+                                            <asp:Label ID="Turn" runat="server"></asp:Label></td>
+                                    </tr>
+                                    <tr>
+                                        <td>倒计时</td>
+                                        <td>
                                             <asp:Timer ID="Timer1" runat="server" Interval="1000" OnTick="Timer1_Tick"></asp:Timer>
                                             <asp:Label ID="TimeTick" runat="server"></asp:Label>
-                                        </ContentTemplate>
-                                    </asp:UpdatePanel>
-                                </td>
-                            </tr>
+                                        </td>
+                                    </tr
+                                                                        <tr>
+                                        <td>在线人数</td>
+                                        <td>
+                                            <asp:Label ID="NumberOfPeople" runat="server"></asp:Label></td>
+                                    </tr>
+                                </table>
 
-                        </table>
+                            </ContentTemplate>
+                        </asp:UpdatePanel>
                     </div>
-
-                    <div id="Parameters">
+                                                                        <div id="Parameters" runat="server">
                         <table id="Agent">
                             <tr>
                                 <td>代理人初始现金</td>
@@ -163,26 +169,34 @@
                                 <td>
                                     <asp:TextBox ID="MaxTurn" runat="server">1200</asp:TextBox></td>
                             </tr>
+                            <tr>
+                                <td>实验备注</td>
+                                <td>
+                                    <asp:TextBox ID="Comments" runat="server" TextMode="MultiLine"></asp:TextBox></td>
+                            </tr>
                         </table>
+                        <asp:Button ID="ResetParameters" runat="server" Text="重置参数" OnClick="ResetParameters_Click" />
+                    </div>
+                    <div id="Image">
+
                     </div>
 
-                    <div id="PauseList">
-                        <asp:ListBox ID="CurrentPauseList" runat="server" AutoPostBack="True"></asp:ListBox>
-                        <asp:Button ID="RemovePause" runat="server" Text="移除暂停" />
+                    <div id="PauseList" runat="server">
+                        <asp:ListBox ID="CurrentPauseList" runat="server" AutoPostBack="True" SelectionMode="Multiple"></asp:ListBox>
+                        <asp:Button ID="RemovePause" runat="server" Text="移除暂停" OnClick="RemovePause_Click" />
                         <asp:TextBox ID="PauseTurn" runat="server"></asp:TextBox>
-                        <asp:Button ID="AddPause" runat="server" Text="添加暂停" />
+                        <asp:Button ID="AddPause" runat="server" Text="添加暂停" OnClick="AddPause_Click" />
                     </div>
-
-                    <div id="Operate">
+                                                    <div id="Operate">
                         <asp:Button ID="BuildExp" runat="server" Text="建立实验" OnClick="BuildExp_Click" />
                         <asp:Button ID="RecoveryExp" runat="server" Text="恢复实验" />
-                        <asp:Button ID="StartExp" runat="server" Text="开始实验" />
+                        <asp:Button ID="StartExp" runat="server" Text="开始实验" OnClick="StartExp_Click" />
                         <asp:Button ID="ContinueExp" runat="server" Text="继续实验" />
                         <asp:Button ID="ResetExp" runat="server" Text="重置实验" />
                     </div>
+                                                            </ContentTemplate>
+                        </asp:UpdatePanel>
                 </div>
-            </ContentTemplate>
-        </asp:UpdatePanel>
     </form>
 </body>
 </html>

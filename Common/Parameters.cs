@@ -108,6 +108,10 @@
         public struct Experiment
         {
             /// <summary>
+            /// 从第几轮开始
+            /// </summary>
+            public int StartTurn;
+            /// <summary>
             /// 每轮实验秒数
             /// </summary>
             public int PeriodOfTurn;
