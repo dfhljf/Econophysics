@@ -11,20 +11,20 @@
     <form id="form1" runat="server">
         <asp:ScriptManager ID="ScriptManager1" runat="server">
         </asp:ScriptManager>
-                <div>
+        <div>
+            <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
+                <ContentTemplate>
 
+                    <table>
+                        <tr>
+                            <td>编号</td>
+                            <td>
+                                <asp:DropDownList ID="ExpId" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ExpId_SelectedIndexChanged">
+                                </asp:DropDownList></td>
+                        </tr>
+                    </table>
 
-                        <table>
-                            <tr>
-                                <td>编号</td>
-                                <td>
-                                    <asp:DropDownList ID="ExpId" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ExpId_SelectedIndexChanged">
-                                    </asp:DropDownList></td>
-                            </tr>
-                        </table>
-                                                <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
-                            <ContentTemplate>
-                                                    <div id="ExpInfo" runat="server">
+                    <div id="ExpInfo" runat="server">
                         <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
                             <ContentTemplate>
                                 <table>
@@ -44,18 +44,18 @@
                                             <asp:Timer ID="Timer1" runat="server" Interval="1000" OnTick="Timer1_Tick"></asp:Timer>
                                             <asp:Label ID="TimeTick" runat="server"></asp:Label>
                                         </td>
-                                    </tr
-                                                                        <tr>
+                                    </tr>
+                                    <tr>
                                         <td>在线人数</td>
                                         <td>
                                             <asp:Label ID="NumberOfPeople" runat="server"></asp:Label></td>
                                     </tr>
                                 </table>
-
+                                <asp:Button ID="RefreshInterface" runat="server" Text="Button" OnClick="RefreshInterface_Click" />
                             </ContentTemplate>
                         </asp:UpdatePanel>
                     </div>
-                                                                        <div id="Parameters" runat="server">
+                    <div id="Parameters" runat="server">
                         <table id="Agent">
                             <tr>
                                 <td>代理人初始现金</td>
@@ -178,7 +178,6 @@
                         <asp:Button ID="ResetParameters" runat="server" Text="重置参数" OnClick="ResetParameters_Click" />
                     </div>
                     <div id="Image">
-
                     </div>
 
                     <div id="PauseList" runat="server">
@@ -187,16 +186,19 @@
                         <asp:TextBox ID="PauseTurn" runat="server"></asp:TextBox>
                         <asp:Button ID="AddPause" runat="server" Text="添加暂停" OnClick="AddPause_Click" />
                     </div>
-                                                    <div id="Operate">
+                    <div id="Operate">
                         <asp:Button ID="BuildExp" runat="server" Text="建立实验" OnClick="BuildExp_Click" />
                         <asp:Button ID="RecoveryExp" runat="server" Text="恢复实验" />
                         <asp:Button ID="StartExp" runat="server" Text="开始实验" OnClick="StartExp_Click" />
                         <asp:Button ID="ContinueExp" runat="server" Text="继续实验" />
                         <asp:Button ID="ResetExp" runat="server" Text="重置实验" />
                     </div>
-                                                            </ContentTemplate>
-                        </asp:UpdatePanel>
-                </div>
+                </ContentTemplate>
+                    <Triggers>
+                        <asp:AsyncPostBackTrigger ControlID="RefreshInterface" EventName="Click"></asp:AsyncPostBackTrigger>
+                    </Triggers>
+            </asp:UpdatePanel>
+        </div>
     </form>
 </body>
 </html>

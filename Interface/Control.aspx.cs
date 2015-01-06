@@ -31,7 +31,8 @@ namespace Interface
         {
             Experiment.SetTimeTick();
             int timeTick=Experiment.TimeTick;
-            TimeTick.Text = (timeTick==-1)?"未开始计时":(timeTick-1).ToString();
+            TimeTick.Text = (timeTick == -1) ? "未开始计时" : (timeTick - 1).ToString();
+            Response.Write("<script>RefreshInterface.Click();</script>");
         }
         protected void BuildExp_Click(object sender, EventArgs e)
         {
@@ -265,11 +266,17 @@ namespace Interface
                 default:
                     break;
             }
+         
         }
 
         protected void StartExp_Click(object sender, EventArgs e)
         {
             Experiment.Start(Comments.Text);
+        }
+
+        protected void RefreshInterface_Click(object sender, EventArgs e)
+        {
+            Lambda.Text = "abc";
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using CommonType;
 using DataIO.Mysql;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 
@@ -53,6 +54,7 @@ namespace Econophysics
         {
             updatePrice();
             updateState();
+            
             foreach (Agent agent in Experiment._agents.Values)
             {
                 agent.SyncUpdate();

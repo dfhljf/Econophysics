@@ -39,7 +39,7 @@ namespace Econophysics
         /// <summary>
         /// 当前的总资产=股票数目*市场价格+现金
         /// </summary>
-        private double _endowment;
+        internal double _endowment;
         /// <summary>
         /// 分红数目
         /// </summary>

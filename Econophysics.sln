@@ -31,9 +31,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonType", "Common\CommonType.csproj", "{B1514B1D-55CA-4DAF-997C-FA61C3E8CD01}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{5B1F3D3D-9A02-4040-A2F0-7E207345595B}"
-	ProjectSection(ProjectDependencies) = postProject
-		{8840B2E5-F077-4E7B-B956-3A653E1F77DF} = {8840B2E5-F077-4E7B-B956-3A653E1F77DF}
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 using CommonType;
-using Newtonsoft.Json;
 using DataIO.Mysql;
 using System.Collections;
+using Econophysics;
 
 namespace Test
 {
@@ -12,9 +12,50 @@ namespace Test
     {
         static void Main(string[] args)
         {
-            testDataIORead();
+            
         }
+        private static void testExperiment()
+        {
+            Parameters p;
+            p.AgentPart.Init.Cash = 10000;
+            p.AgentPart.Init.Dividend = 0;
+            p.AgentPart.Init.Endowment = 20000;
+            p.AgentPart.Init.Stocks = 100;
+            p.AgentPart.Init.TradeStocks = 0;
+            p.AgentPart.MaxStock = 10;
+            p.AgentPart.PeriodOfUpdateDividend = 5;
+            p.AgentPart.TradeFee = 1;
 
+            p.MarketPart.Init.NumberOfPeople = 20;
+            p.MarketPart.Init.Price = 100;
+            p.MarketPart.Init.Returns = 0;
+            p.MarketPart.Init.State = MarketState.Active;
+            p.MarketPart.Count = 50;
+            p.MarketPart.Lambda = 0.01;
+            p.MarketPart.Leverage = LeverageEffect.AntiLeverage;
+            p.MarketPart.P = 0.7;
+            p.MarketPart.P01 = 0.25;
+            p.MarketPart.P10 = 0.1;
+            p.MarketPart.PDividend = 0.8;
+            p.MarketPart.TimeWindow = 10;
+            p.MarketPart.TransP = 0.5;
+
+            p.GraphicPart.Init.Count = 50;
+            p.GraphicPart.Init.Height = 500;
+            p.GraphicPart.Init.Url = "";
+            p.GraphicPart.Init.Width = 900;
+
+            p.ExperimentPart.StartTurn = 0;
+            p.ExperimentPart.MaxTurn = 1200;
+            p.ExperimentPart.PeriodOfTurn = 10;
+
+            Experiment.Build(p);
+            Experiment.Start();
+            Experiment.AddAgent(1);
+            Experiment.AddAgent(2);
+            Experiment.AddAgent(3);
+
+        }
         private static void testDataIORead()
         {
             ExperimentIO ei = new ExperimentIO();

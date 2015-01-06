@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 using CommonType;
 using System.Collections;
+using System.Collections.Concurrent;
 using DataIO.Mysql;
 
 namespace Econophysics
@@ -76,7 +78,7 @@ namespace Econophysics
         /// <summary>
         /// 所有代理人
         /// </summary>
-        internal static Hashtable _agents;
+        internal static ConcurrentDictionary<int,Agent> _agents;
         /// <summary>
         /// 市场情况
         /// </summary>
@@ -93,7 +95,7 @@ namespace Econophysics
 
         static Experiment()
         {
-            _agents = new Hashtable();
+            _agents = new ConcurrentDictionary<int,Agent>();
             _pauseList = new Hashtable();
             _experimentIO = new ExperimentIO();
             _state = ExperimentState.Unbuilded;
@@ -243,10 +245,7 @@ namespace Econophysics
         }
         public static bool AddAgent(int id)
         {
-            if (_agents.ContainsKey(id))
-                return false;
-            _agents.Add(id, new Agent(id));
-            return true;
+            return _agents.TryAdd(id, new Agent(id));
         }
         public static void Trade(int agentId, int tradeStocks)
         {
@@ -264,7 +263,7 @@ namespace Econophysics
             }
             try
             {
-                ((Agent)_agents[agentId]).Trade(tradeStocks);
+                (_agents[agentId]).Trade(tradeStocks);
             }
             catch (Exception)
             {
@@ -277,7 +276,7 @@ namespace Econophysics
             {
                 throw ErrorList.UserNotExist;
             }
-            return ((Agent)_agents[id]).GetInfo();
+            return _agents[id].GetInfo();
         }
         private static void stateChanged(ExperimentState state)
         {
@@ -344,6 +343,10 @@ namespace Econophysics
             }
             _state = ExperimentState.End;
             stateChanged(_state);
+        }
+        public static void sort()
+        {
+            _agents.OrderByDescending(p => p.Value._endowment);
         }
     }
 }
