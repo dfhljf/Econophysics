@@ -40,6 +40,7 @@ namespace Econophysics
         /// 当前的总资产=股票数目*市场价格+现金
         /// </summary>
         internal double _endowment;
+        internal int _order;
         /// <summary>
         /// 分红数目
         /// </summary>
@@ -54,9 +55,10 @@ namespace Econophysics
             _isTrading = false;
             _cash = init.Cash;
             _stocks = init.Stocks;
-            _dividend = init.Dividend;
+            _dividend = 0;
             _endowment = init.Endowment;
             _tradeStocks = init.TradeStocks;
+            _order = init.Order;
             _agentIO = new AgentIO();
         }
         internal AgentInfo GetInfo()
@@ -67,6 +69,7 @@ namespace Econophysics
             agentInfo.Endowment = _endowment;
             agentInfo.Stocks = _stocks;
             agentInfo.TradeStocks = _tradeStocks;
+            agentInfo.Order = _order;
             return agentInfo;
         }
         internal void Trade(int tradeStocks)
@@ -92,20 +95,29 @@ namespace Econophysics
             _isTrade = true;
             _isTrading = false;
         }
-        internal void SyncUpdate()
+        internal void GetDividend()
         {
-            getDividend();
-            store();
+            _cash += _dividend * _stocks;
+            while (_cash < 0 && _stocks > 0)
+            {
+                _cash += Experiment._market._price;
+                _stocks--;
+            }
+            updateEndowment();
+        }
+        internal void Store()
+        {
+            _agentIO.Write(getKey(),GetInfo());
+            clear();
+        }
+        private void clear()
+        {
             _tradeStocks = 0;
             _isTrade = false;
             if ((Experiment.Turn % Experiment.Parameters.AgentPart.PeriodOfUpdateDividend) == 0)
             {
                 setDividend();
             }
-        }
-        private void store()
-        {
-            _agentIO.Write(getKey(),GetInfo());
         }
         private bool updateCash(int tradeStocks)
         {
@@ -131,16 +143,7 @@ namespace Econophysics
         {
             _endowment = _cash + _stocks * Experiment._market._price;
         }
-        private void getDividend()
-        {
-            _cash += _dividend * _stocks;
-            while (_cash < 0 && _stocks > 0)
-            {
-                _cash += Experiment._market._price;
-                _stocks--;
-            }
-            updateEndowment();
-        }
+        
         private void setDividend()
         {
             Market market = Experiment._market;

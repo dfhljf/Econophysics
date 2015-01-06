@@ -29,7 +29,7 @@ namespace DataIO
             /// <param name="marketInfo">本轮市场信息</param>
             public void Write(MarketKey marketKey, MarketInfo marketInfo)
             {
-                _sql = new MySqlCommand("insert into Market values(@ExperimentId,@Turn,@Price,@State,@Returns,@NumberOfPeople)", _conn);
+                _sql = new MySqlCommand("insert into Market values(@ExperimentId,@Turn,@Price,@State,@Returns,@NumberOfPeople,@AverageEndowment)", _conn);
                 _conn.Open();
                 _sql.Prepare();
                 _sql.Parameters.AddWithValue("@ExperimentId", marketKey.ExperimentId);
@@ -38,6 +38,7 @@ namespace DataIO
                 _sql.Parameters.AddWithValue("@State",(int)marketInfo.State);
                 _sql.Parameters.AddWithValue("@Returns", marketInfo.Returns);
                 _sql.Parameters.AddWithValue("@NumberOfPeople", marketInfo.NumberOfPeople);
+                _sql.Parameters.AddWithValue("@AverageEndowment", marketInfo.AverageEndowment);
                 _sql.ExecuteNonQuery();
                 _conn.Close();
             }

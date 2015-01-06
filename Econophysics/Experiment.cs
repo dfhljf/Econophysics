@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Linq;
 using CommonType;
 using System.Collections;
 using System.Collections.Concurrent;
@@ -303,7 +302,7 @@ namespace Econophysics
         {
             _experimentIO.Write(_index, Parameters, comments);
         }
-        private static void nextTurn()
+        public static void nextTurn()
         {
             if (_state != ExperimentState.Running)
             {
@@ -343,10 +342,6 @@ namespace Econophysics
             }
             _state = ExperimentState.End;
             stateChanged(_state);
-        }
-        public static void sort()
-        {
-            _agents.OrderByDescending(p => p.Value._endowment);
         }
     }
 }

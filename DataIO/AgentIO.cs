@@ -30,7 +30,7 @@ namespace DataIO
             /// <param name="agentInfo">本轮代理人信息</param>
             public void Write(AgentKey agentKey, AgentInfo agentInfo)
             {
-                _sql = new MySqlCommand("insert into Agents values(@ExperimentId,@Turn,@Id,@Cash,@Stocks,@Endowment,@Dividend,@TradeStocks)", _conn);
+                _sql = new MySqlCommand("insert into Agents values(@ExperimentId,@Turn,@Id,@Cash,@Stocks,@Endowment,@Dividend,@TradeStocks,@Order)", _conn);
                 _conn.Open();
                 _sql.Prepare();
                 _sql.Parameters.AddWithValue("@ExperimentId",agentKey.ExperimentId);
@@ -41,6 +41,7 @@ namespace DataIO
                 _sql.Parameters.AddWithValue("@Endowment", agentInfo.Endowment);
                 _sql.Parameters.AddWithValue("@Dividend", agentInfo.Dividend);
                 _sql.Parameters.AddWithValue("@TradeStocks", agentInfo.TradeStocks);
+                _sql.Parameters.AddWithValue("@Order", agentInfo.Order);
                 _sql.ExecuteNonQuery();
                 _conn.Close();
             }

@@ -37,7 +37,7 @@
             /// </summary>
             public int PeriodOfUpdateDividend;
             /// <summary>
-            /// 代理人初始信息
+            /// 代理人初始信息，其中的分红是分红的尺度
             /// </summary>
             public AgentInfo Init;
             /// <summary>

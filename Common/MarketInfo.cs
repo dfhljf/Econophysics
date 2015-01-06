@@ -25,5 +25,9 @@ namespace CommonType
         /// 在线人数
         /// </summary>
         public int NumberOfPeople;
+        /// <summary>
+        /// 代理人的平均资产
+        /// </summary>
+        public double AverageEndowment;
     }
 }

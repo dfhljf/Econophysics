@@ -134,6 +134,7 @@ namespace DataIO
                     mi.Price = record.GetDouble("Price");
                     mi.Returns = record.GetInt32("Returns");
                     mi.State = (MarketState)record.GetInt32("State");
+                    mi.AverageEndowment = record.GetDouble("AverageEndowment");
                     market.Add(mk, mi);
                 }
                 return market;
@@ -153,6 +154,7 @@ namespace DataIO
                     ai.Endowment = record.GetDouble("Endowment");
                     ai.Stocks = record.GetInt32("Stocks");
                     ai.TradeStocks = record.GetInt32("TradeStocks");
+                    ai.Order = record.GetInt32("Order");
                     agent.Add(ak, ai);
                 }
                 return agent;

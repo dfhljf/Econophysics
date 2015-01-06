@@ -22,6 +22,10 @@ namespace CommonType
         /// </summary>
         public double Endowment;
         /// <summary>
+        /// 每个人的排名
+        /// </summary>
+        public int Order;
+        /// <summary>
         /// 分红数目
         /// </summary>
         public double Dividend;

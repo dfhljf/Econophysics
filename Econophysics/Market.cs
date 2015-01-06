@@ -25,6 +25,7 @@ namespace Econophysics
         /// 收益率
         /// </summary>
         internal int _returns;
+        internal double _averageEndowment;
         private List<double> _priceList;
         private MarketIO _marketIO;
 
@@ -48,22 +49,48 @@ namespace Econophysics
             market.Returns = _returns;
             market.State = _state;
             market.NumberOfPeople = Experiment._agents.Count;
+            market.AverageEndowment = _averageEndowment;
             return market;
         }
         internal void SyncUpdate()
         {
             updatePrice();
             updateState();
-            
+
             foreach (Agent agent in Experiment._agents.Values)
             {
-                agent.SyncUpdate();
+                agent.GetDividend();
             }
+
+            getAgentsOrder();
+            getAverageEndowment();
             store();
+        }
+
+        private void getAgentsOrder()
+        {
+            var orderedAgents = Experiment._agents.OrderByDescending(p => p.Value._endowment);
+            int i = 1;
+            foreach (var agent in orderedAgents)
+            {
+                Experiment._agents[agent.Key]._order = i++;
+            }
+        }
+
+        private void getAverageEndowment()
+        {
+            if (!Experiment._agents.IsEmpty)
+            {
+                _averageEndowment = Experiment._agents.Average(p => p.Value._endowment);
+            }  
         }
         private void store()
         {
             _marketIO.Write(getKey(),GetInfo());
+            foreach (Agent agent in Experiment._agents.Values)
+            {
+                agent.Store();
+            }
         }
         private void updatePrice()
         {

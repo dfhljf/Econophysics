@@ -29,6 +29,7 @@ Price double not null,
 State int not null,
 Returns int not null,
 NumberOfPeople int not null,
+AverageEndowment double not null,
 primary key(ExperimentId,Turn),
 foreign key (ExperimentId) references Parameters(Id) on delete cascade on update cascade
 );
@@ -42,6 +43,7 @@ Stocks int not null,
 Endowment double not null,
 Dividend double not null,
 TradeStocks int not null,
+OrderNum int not null,
 primary key (ExperimentId,Turn,Id),
 foreign key (ExperimentId) references Parameters(Id) on delete cascade on update cascade
 );
