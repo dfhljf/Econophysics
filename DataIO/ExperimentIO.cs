@@ -154,7 +154,7 @@ namespace DataIO
                     ai.Endowment = record.GetDouble("Endowment");
                     ai.Stocks = record.GetInt32("Stocks");
                     ai.TradeStocks = record.GetInt32("TradeStocks");
-                    ai.Order = record.GetInt32("Order");
+                    ai.Order = record.GetInt32("OrderNum");
                     agent.Add(ak, ai);
                 }
                 return agent;

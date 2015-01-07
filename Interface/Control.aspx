@@ -41,7 +41,7 @@
                                     <tr>
                                         <td>倒计时</td>
                                         <td>
-                                            <asp:Timer ID="Timer1" runat="server" Interval="1000" OnTick="Timer1_Tick"></asp:Timer>
+                                            <asp:Timer ID="Timer1" runat="server" Interval="1000" OnTick="Timer1_Tick" Enabled="False"></asp:Timer>
                                             <asp:Label ID="TimeTick" runat="server"></asp:Label>
                                         </td>
                                     </tr>
@@ -51,7 +51,6 @@
                                             <asp:Label ID="NumberOfPeople" runat="server"></asp:Label></td>
                                     </tr>
                                 </table>
-                                <asp:Button ID="RefreshInterface" runat="server" Text="Button" OnClick="RefreshInterface_Click" />
                             </ContentTemplate>
                         </asp:UpdatePanel>
                     </div>
@@ -179,24 +178,37 @@
                     </div>
                     <div id="Image">
                     </div>
-
                     <div id="PauseList" runat="server">
                         <asp:ListBox ID="CurrentPauseList" runat="server" AutoPostBack="True" SelectionMode="Multiple"></asp:ListBox>
                         <asp:Button ID="RemovePause" runat="server" Text="移除暂停" OnClick="RemovePause_Click" />
                         <asp:TextBox ID="PauseTurn" runat="server"></asp:TextBox>
                         <asp:Button ID="AddPause" runat="server" Text="添加暂停" OnClick="AddPause_Click" />
                     </div>
+
+
                     <div id="Operate">
-                        <asp:Button ID="BuildExp" runat="server" Text="建立实验" OnClick="BuildExp_Click" />
-                        <asp:Button ID="RecoveryExp" runat="server" Text="恢复实验" />
-                        <asp:Button ID="StartExp" runat="server" Text="开始实验" OnClick="StartExp_Click" />
-                        <asp:Button ID="ContinueExp" runat="server" Text="继续实验" />
-                        <asp:Button ID="ResetExp" runat="server" Text="重置实验" />
+                        <asp:UpdatePanel ID="UpdatePanel3" runat="server" UpdateMode="Conditional">
+                            <ContentTemplate>
+                                <asp:Button ID="BuildExp" runat="server" Text="建立实验" OnClick="BuildExp_Click" />
+                                <asp:Button ID="RecoveryExp" runat="server" Text="恢复实验" />
+                                <asp:Button ID="StartExp" runat="server" Text="开始实验" OnClick="StartExp_Click" />
+                                <asp:Button ID="ContinueExp" runat="server" Text="继续实验" OnClick="ContinueExp_Click" />
+                                <asp:Button ID="ResetExp" runat="server" Text="重置实验" OnClick="ResetExp_Click" />
+                            </ContentTemplate>
+                            <Triggers>
+                                <asp:AsyncPostBackTrigger ControlID="Timer1" EventName="Tick" />
+                            </Triggers>
+                        </asp:UpdatePanel>
+
                     </div>
                 </ContentTemplate>
-                    <Triggers>
-                        <asp:AsyncPostBackTrigger ControlID="RefreshInterface" EventName="Click"></asp:AsyncPostBackTrigger>
-                    </Triggers>
+                <Triggers>
+                    <asp:AsyncPostBackTrigger ControlID="BuildExp" EventName="Click" />
+                    <asp:AsyncPostBackTrigger ControlID="RecoveryExp" EventName="Click" />
+                    <asp:AsyncPostBackTrigger ControlID="StartExp" EventName="Click" />
+                    <asp:AsyncPostBackTrigger ControlID="ContinueExp" EventName="Click" />
+                    <asp:AsyncPostBackTrigger ControlID="ResetExp" EventName="Click" />
+                </Triggers>
             </asp:UpdatePanel>
         </div>
     </form>

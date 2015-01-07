@@ -1,10 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.Drawing.Drawing2D;
 using CommonType;
 using DataIO.Mysql;
 using System.Collections;
 using Econophysics;
+using SvgNet;
+using SvgNet.SvgElements;
+using SvgNet.SvgTypes;
+using SvgNet.SvgGdi;
 
 namespace Test
 {
@@ -12,7 +19,13 @@ namespace Test
     {
         static void Main(string[] args)
         {
-            testExperiment();
+            testGraphic();
+        }
+        private static void testGraphic()
+        {
+            SvgGraphics price = new SvgGraphics();
+            price.DrawLine(new Pen(Color.Black,2),new PointF(0,0),new PointF(10,10));
+            string x = price.ToString();
         }
         private static void testExperiment()
         {

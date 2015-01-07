@@ -216,10 +216,10 @@ namespace Econophysics
         public static void Recovery()
         {
         }
-        public static Hashtable List()
+        public static Dictionary<int,Parameters> List()
         {
             Hashtable eht = _experimentIO.Read("select * from parameters");
-            Hashtable rtn = new Hashtable();
+            Dictionary<int, Parameters> rtn = new Dictionary<int, Parameters>();
             foreach (int expId in eht.Keys)
             {
                 Parameters para = (Parameters)eht[expId];
@@ -233,6 +233,7 @@ namespace Econophysics
                 foreach (MarketKey mk in mht.Keys)
                 {
                     para.MarketPart.Init = (MarketInfo)mht[mk];
+                    para.ExperimentPart.StartTurn = mk.Turn;
                 }
                 rtn.Add(expId, para);
             }
@@ -328,7 +329,6 @@ namespace Econophysics
                 return;
             }
             _turn++;
-            //_startTime = DateTime.Now;
             _timeTick = (_pauseList.ContainsKey(_turn)) ? 0 : Parameters.ExperimentPart.PeriodOfTurn;
             _state = (_pauseList.ContainsKey(_turn)) ? ExperimentState.Pause : ExperimentState.Running;
             stateChanged(_state);

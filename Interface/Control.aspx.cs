@@ -14,10 +14,10 @@ namespace Interface
     /// </summary>
     public partial class Control : System.Web.UI.Page
     {
-        private static Hashtable _eht=new Hashtable();
+        private static Dictionary<int, Parameters> _eht = new Dictionary<int, Parameters>();
         protected void Page_Load(object sender, EventArgs e)
         {
-            Experiment.StateChanged += Experiment_StateChanged;
+            Experiment.StateChanged += refreshInterface;
             Experiment.GraphicReady += Experiment_GraphicReady;
             Experiment.NextTurnReady += Experiment_NextTurnReady;
 
@@ -30,20 +30,38 @@ namespace Interface
         protected void Timer1_Tick(object sender, EventArgs e)
         {
             Experiment.SetTimeTick();
-            int timeTick=Experiment.TimeTick;
+            int timeTick = Experiment.TimeTick;
             TimeTick.Text = (timeTick == -1) ? "未开始计时" : (timeTick - 1).ToString();
-            Response.Write("<script>RefreshInterface.Click();</script>");
+            refreshInterface(Experiment.State);
         }
         protected void BuildExp_Click(object sender, EventArgs e)
         {
-            Experiment.Build(getParameters());
+            Experiment.Build(getParameters(),ExpId.SelectedIndex);
+            refreshInterface(Experiment.State);
+        }
+        protected void StartExp_Click(object sender, EventArgs e)
+        {
+            Experiment.Start(Comments.Text);
+            refreshInterface(Experiment.State);
+        }
+        protected void ContinueExp_Click(object sender, EventArgs e)
+        {
+            Experiment.Continue();
+            updatePauseList();
+            refreshInterface(Experiment.State);
+        }
+        protected void ResetExp_Click(object sender, EventArgs e)
+        {
+            Experiment.Reset();
+            refreshInterface(Experiment.State);
         }
         protected void ExpId_SelectedIndexChanged(object sender, EventArgs e)
         {
             int expId = Convert.ToInt32(ExpId.SelectedValue);
             if (expId != 0)
             {
-                loadParameters((Parameters)_eht[expId]);
+                loadParameters(_eht[expId]);
+                Turn.Text = _eht[expId].ExperimentPart.StartTurn.ToString();
             }
             else if (expId == 0)
             {
@@ -69,6 +87,8 @@ namespace Interface
             resetParameters();
         }
 
+       
+
         private void Initialize()
         {
             BuildExp.Attributes.Add("onclick ", "return confirm('确定建立实验？');");
@@ -80,7 +100,7 @@ namespace Interface
             RemovePause.Attributes.Add("onclick ", "return confirm('将删除你选中的暂停点，请确认！');");
             AddPause.Attributes.Add("onclick ", "return alert('暂停点将设置在你输入的轮次的开始时，即这轮还没开始交易！');");
             ExpState.Text = Experiment.State.ToString();
-            Experiment_StateChanged(Experiment.State);
+            refreshInterface(Experiment.State);
             Turn.Text = "0";
             NumberOfPeople.Text = Experiment.NumberOfAgents.ToString();
             updateExpList();
@@ -116,6 +136,7 @@ namespace Interface
             para.AgentPart.Init.Dividend = Convert.ToDouble(InitDividend.Text);
             para.AgentPart.Init.Stocks = Convert.ToInt32(InitStocks.Text);
             para.AgentPart.Init.TradeStocks = 0;
+            para.AgentPart.Init.Order = 0;
             para.AgentPart.MaxStock = Convert.ToInt32(MaxStock.Text);
             para.AgentPart.PeriodOfUpdateDividend = Convert.ToInt32(PeriodOfUpdateDividend.Text);
             para.AgentPart.TradeFee = Convert.ToDouble(TradeFee.Text);
@@ -123,6 +144,7 @@ namespace Interface
             para.MarketPart.Init.Price = Convert.ToDouble(InitPrice.Text);
             para.MarketPart.Init.Returns = 0;
             para.MarketPart.Init.State = (MarketState)Enum.Parse(typeof(MarketState), InitMarketState.SelectedValue);
+            para.MarketPart.Init.AverageEndowment = 0;
             para.MarketPart.Count = Convert.ToInt32(Count.Text);
             para.MarketPart.Lambda = Convert.ToDouble(Lambda.Text);
             para.MarketPart.Leverage = (LeverageEffect)Enum.Parse(typeof(LeverageEffect), LeverageEffect.SelectedValue);
@@ -144,7 +166,6 @@ namespace Interface
         }
         private void loadParameters(Parameters para)
         {
-            Turn.Text = para.ExperimentPart.StartTurn.ToString();
             InitCash.Text = para.AgentPart.Init.Cash.ToString();
             InitStocks.Text = para.AgentPart.Init.Stocks.ToString();
             InitDividend.Text = para.AgentPart.Init.Dividend.ToString();
@@ -183,17 +204,7 @@ namespace Interface
                 ExpId.Items.Add(new ListItem("实验：" + expId.ToString(), expId.ToString()));
             }
         }
-
-        void Experiment_NextTurnReady(MarketInfo marketInfo)
-        {
-            Turn.Text = Experiment.Turn.ToString();
-            //throw new NotImplementedException();
-        }
-        void Experiment_GraphicReady(GraphicInfo graphicInfo)
-        {
-            //throw new NotImplementedException();
-        }
-        void Experiment_StateChanged(ExperimentState state)
+        private void refreshInterface(ExperimentState state)
         {
             switch (state)
             {
@@ -229,6 +240,7 @@ namespace Interface
                     StartExp.Enabled = false;
                     ContinueExp.Enabled = false;
                     ResetExp.Enabled = false;
+                    Timer1.Enabled = true;
                     break;
                 case ExperimentState.Suspend:
                     ExpState.Text = "实验挂起，准备进入下一轮";
@@ -262,21 +274,26 @@ namespace Interface
                     StartExp.Enabled = false;
                     ContinueExp.Enabled = false;
                     ResetExp.Enabled = true;
+                    Timer1.Enabled = false;
                     break;
                 default:
                     break;
             }
-         
         }
 
-        protected void StartExp_Click(object sender, EventArgs e)
+        void Experiment_NextTurnReady(MarketInfo marketInfo)
         {
-            Experiment.Start(Comments.Text);
+            Turn.Text = Experiment.Turn.ToString();
+        }
+        void Experiment_GraphicReady(GraphicInfo graphicInfo)
+        {
+            //throw new NotImplementedException();
         }
 
-        protected void RefreshInterface_Click(object sender, EventArgs e)
-        {
-            Lambda.Text = "abc";
-        }
+
+
+
+        
+        
     }
 }
