@@ -33,13 +33,14 @@
     <DocumentationFile>bin\Release\Econophysics.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="SVG, Version=1.0.5445.27364, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Svg, Version=1.7.0.31798, Culture=neutral, PublicKeyToken=12a0bac221edeae2, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>.\SVG.dll</HintPath>
+      <HintPath>..\packages\Svg.1.7.0\lib\Svg.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -58,6 +59,9 @@
       <Project>{9ac49434-5c96-45fe-ac1c-33045d298bf9}</Project>
       <Name>DataIO</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
