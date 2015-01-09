@@ -101,7 +101,7 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Properties\PublishProfiles\x.pubxml" />
+    <None Include="Properties\PublishProfiles\Econophysics.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -110,7 +110,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Common\CommonType.csproj">
+    <ProjectReference Include="..\CommonType\CommonType.csproj">
       <Project>{b1514b1d-55ca-4daf-997c-fa61c3e8cd01}</Project>
       <Name>CommonType</Name>
     </ProjectReference>
