@@ -45,5 +45,9 @@ namespace CommonType
         /// 错误：不允许转到下一轮
         /// </summary>
         public static Exception NotAllowToPauseOrNext = new Exception(ErrorMessage.NotAllowToPauseOrNext);
+        /// <summary>
+        /// 错误：实验还未建立
+        /// </summary>
+        public static Exception NotAllowLogin = new Exception(ErrorMessage.NotAllowLogin);
     }
 }

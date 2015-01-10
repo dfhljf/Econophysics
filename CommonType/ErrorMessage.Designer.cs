@@ -88,6 +88,15 @@ namespace CommonType {
         }
         
         /// <summary>
+        ///   查找类似 实验还未建立或已经结束，不允许加入！ 的本地化字符串。
+        /// </summary>
+        internal static string NotAllowLogin {
+            get {
+                return ResourceManager.GetString("NotAllowLogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 当前状态不允许实验暂停或者进入下一轮！ 的本地化字符串。
         /// </summary>
         internal static string NotAllowToPauseOrNext {

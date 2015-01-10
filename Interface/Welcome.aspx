@@ -11,6 +11,8 @@
     <form id="form1" runat="server">
     <div>
     
+        <asp:Button ID="Login" runat="server" Text="登陆" OnClick="Login_Click"/>
+    
     </div>
     </form>
 </body>

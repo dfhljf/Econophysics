@@ -245,6 +245,10 @@ namespace Econophysics
         }
         public static bool AddAgent(int id)
         {
+            if (_state==ExperimentState.Unbuilded||_state==ExperimentState.End)
+            {
+                throw ErrorList.NotAllowLogin;
+            }
             return _agents.TryAdd(id, new Agent(id));
         }
         public static void Trade(int agentId, int tradeStocks)
