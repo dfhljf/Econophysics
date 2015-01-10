@@ -303,7 +303,7 @@ namespace Econophysics
         {
             _experimentIO.Write(_index, Parameters, comments);
         }
-        public static void nextTurn()
+        private static void nextTurn()
         {
             if (_state != ExperimentState.Running)
             {
