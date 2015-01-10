@@ -5,9 +5,10 @@ using System.Text;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using Svg;
-using Svg.Pathing;
 using Svg.DataTypes;
 using CommonType;
+using System.Collections;
+using System.Xml;
 
 namespace Econophysics
 {
@@ -15,7 +16,6 @@ namespace Econophysics
     {
         private int _width;
         private int _height;
-        //private SvgGraphics _price;
         private string _url;
         
         
@@ -30,7 +30,7 @@ namespace Econophysics
         internal void Draw()
         {
             draw();
-            store();
+            //store();
         }
         internal GraphicInfo getInfo()
         {
@@ -44,15 +44,15 @@ namespace Econophysics
         private void draw()
         {
             double[] priceRange = new double[2];
-            Point origin = new Point(_width - 50, _height / 2 - 30 / 2 + 20 / 2);
-            Point unitVector;
+            PointF origin = new PointF(_width - 50, _height / 2 - 30 / 2 + 20 / 2);
+            PointF unitVector;
             int priceGapNumber;
             int basePrice;
-            List<double> priceList = new List<double>();
+            List<double> priceList = Experiment._market.PriceList;/*new List<double>();
             for (int i = 0; i < 50; i++)
             {
                 priceList.Add(100 * Math.Sin(i));
-            }
+            }*/
             SvgColourServer blackPen = new SvgColourServer(Color.Black);
             SvgUnit smallFont = new SvgUnit(SvgUnitType.Point, 16);
             SvgUnit bigFont = new SvgUnit(SvgUnitType.Point, 18);
@@ -73,26 +73,27 @@ namespace Econophysics
             {
                 int tmp = Convert.ToInt32(priceRange[0] - priceRange[1]);
                 priceGapNumber = (tmp + tmp % 2 + 10);
-                priceGapNumber = (priceGapNumber > 20 ? priceGapNumber : 20);
+                priceGapNumber = (priceGapNumber > 20 ? priceGapNumber : 300);
                 tmp = Convert.ToInt32((priceRange[0] + priceRange[1]) / 2);
                 basePrice = tmp + (tmp % 5 > 2 ? 5 - tmp % 5 : -tmp % 5);
             }
-            unitVector = new Point(-(_width - 57) / (priceList.Count - 1), -(_height - 50) / priceGapNumber);
+            unitVector = new PointF((Single)(-1.0*(_width - 57) / (priceList.Count - 1)), (Single)(-1.0*(_height - 50) / priceGapNumber));
 
-            SvgDocument s = new SvgDocument { Height = 500, Width = 900 };
+            //开始画图
+            SvgDocument priceImage = new SvgDocument { Height = _height, Width = _width };
             var group = new SvgGroup();
-            s.Children.Add(group);
+            priceImage.Children.Add(group);
 
             //纵坐标
             group.Children.Add(new SvgLine { StartX = origin.X, StartY = 0, EndX = origin.X, EndY = _height, Stroke = blackPen, StrokeWidth = 2 });
             //横坐标
             group.Children.Add(new SvgLine { StartX = 0, StartY = origin.Y - priceGapNumber * unitVector.Y / 2, EndX = _width, EndY = origin.Y - priceGapNumber * unitVector.Y / 2, Stroke = blackPen, StrokeWidth = 2 });
-            group.Children.Add(new SvgText { Text = "价格", FontFamily = fontFamily, FontSize = smallFont, FontWeight = SvgFontWeight.bold, X = origin.X, Y = origin.Y - priceGapNumber * unitVector.Y / 2 + 25 });
+            group.Children.Add(new SvgText { Text = "价格", FontFamily = fontFamily, FontSize = smallFont, FontWeight = SvgFontWeight.bold, X = origin.X, Y = origin.Y - priceGapNumber * unitVector.Y / 2+25 });
             //纵坐标标记
             {
                 int tmp = priceGapNumber / 8;
                 tmp = tmp + 5 - tmp % 5;
-                for (int i = 0; i <= priceGapNumber / 2; i++)
+                for (int i = 0; i <= priceGapNumber / 2; i+=tmp/5)
                 {
                     group.Children.Add(new SvgLine { StartX = origin.X - (i % 5 == 0 ? 8 : 4), StartY = origin.Y - i * unitVector.Y, EndX = origin.X, EndY = origin.Y - i * unitVector.Y, Stroke = blackPen, StrokeWidth = 2 });
                     group.Children.Add(new SvgLine { StartX = origin.X - (i % 5 == 0 ? 8 : 4), StartY = origin.Y + i * unitVector.Y, EndX = origin.X, EndY = origin.Y + i * unitVector.Y, Stroke = blackPen, StrokeWidth = 2 });
@@ -111,10 +112,10 @@ namespace Econophysics
             //价格线
             SvgPolyline pricePath = new SvgPolyline { Fill = SvgPaintServer.None, Stroke = new SvgColourServer(Color.Blue), StrokeWidth = 2, Points = new SvgUnitCollection() };
             group.Children.Add(pricePath);
-            for (int i = 1; i <= priceList.Count; i++)
+            for (int i = 0; i < priceList.Count; i++)
             {
                 pricePath.Points.Add(origin.X + i * unitVector.X);
-                pricePath.Points.Add((Single)(origin.Y + (priceList[priceList.Count - i] - basePrice) * unitVector.Y));
+                pricePath.Points.Add((Single)(origin.Y + (priceList[priceList.Count - i-1] - basePrice) * unitVector.Y));
             }
 
             //标记点和价格
@@ -123,15 +124,15 @@ namespace Econophysics
                 if (i != pricePath.Points.Count / 2 - 1)
                 {
                     if (i != 0)//以前价格点
-                        group.Children.Add(new SvgEllipse { CenterX = pricePath.Points[2 * i] - 3, CenterY = pricePath.Points[2 * i + 1] - 3, RadiusX = 6, RadiusY = 6, Fill = redBrush, Stroke = SvgPaintServer.None });
+                        group.Children.Add(new SvgEllipse { CenterX = pricePath.Points[2 * i], CenterY = pricePath.Points[2 * i + 1], RadiusX = 3, RadiusY = 3, Fill = redBrush, Stroke = SvgPaintServer.None });
                     else//现在价格点
-                        group.Children.Add(new SvgEllipse { CenterX = pricePath.Points[2 * i] - 8, CenterY = pricePath.Points[2 * i + 1] - 8, RadiusX = 16, RadiusY = 16, Fill = redBrush, Stroke = SvgPaintServer.None });
+                        group.Children.Add(new SvgEllipse { CenterX = pricePath.Points[2 * i], CenterY = pricePath.Points[2 * i + 1], RadiusX = 8, RadiusY = 8, Fill = redBrush, Stroke = SvgPaintServer.None });
                     if (i % 5 == 0 && i != 0)//横坐标标记
                         group.Children.Add(new SvgText { Text = i.ToString(), FontFamily = fontFamily, FontSize = bigFont, X = origin.X + i * unitVector.X - 12, Y = origin.Y - priceGapNumber * unitVector.Y / 2 + 25 });
                 }
                 else
                 {
-                    group.Children.Add(new SvgText { Text = "轮次", FontFamily = fontFamily, FontSize = smallFont, FontWeight = SvgFontWeight.bold, X = origin.X + i * unitVector.X - 12, Y = origin.Y - priceGapNumber * unitVector.Y / 2 + 25 });
+                    group.Children.Add(new SvgText { Text = "轮次", FontFamily = fontFamily, FontSize = smallFont, FontWeight = SvgFontWeight.bold, X = origin.X + i * unitVector.X - 8, Y = origin.Y - priceGapNumber * unitVector.Y / 2 + 25 });
                 }
 
                 //横坐标线
@@ -139,7 +140,13 @@ namespace Econophysics
             }
             //本轮价格
             group.Children.Add(new SvgText { Text = string.Format("本轮价格：{0:F2}", priceList[priceList.Count - 1]), FontFamily = fontFamily, FontSize = new SvgUnit(SvgUnitType.Point, 20), FontWeight = SvgFontWeight.bold, X = origin.X + priceList.Count * unitVector.X / 2 - 100, Y = origin.Y - 200 });
+
+            //存储图像
+            priceImage.Write(_url);
+
         }
+
+        #region 旧版画图库
         //private void oldDraw()
         //{
         //    double[] priceRange = new double[2];
@@ -239,11 +246,12 @@ namespace Econophysics
         //    //本轮价格
         //    _price.DrawString(string.Format("本轮价格：{0:F2}", priceList[priceList.Count - 1]), new Font(new FontFamily("Microsoft YaHei"), 20, FontStyle.Bold), blackBrush, new PointF(origin.X + priceList.Count * unitVector.X / 2 - 100, origin.Y - 200));
         //}
-        private void store()
-        {
-            StreamWriter _sw = new StreamWriter(_url);
-            //_sw.Write(_price.WriteSVGString());
-            _sw.Close();
-        }
+        //private void store()
+        //{
+        //    StreamWriter _sw = new StreamWriter(_url);
+        //    //_sw.Write(_price.WriteSVGString());
+        //    _sw.Close();
+        //}
+        #endregion
     }
 }
