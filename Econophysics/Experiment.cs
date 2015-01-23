@@ -41,10 +41,6 @@ namespace Econophysics
         /// </summary>
         public static int Turn { get { return _turn; } }
         /// <summary>
-        /// 当前在线人数
-        /// </summary>
-        public static int NumberOfAgents { get { return _agents.Count; } }
-        /// <summary>
         /// 暂停列表
         /// </summary>
         public static Hashtable PauseList { get { return _pauseList; } }
@@ -77,16 +73,13 @@ namespace Econophysics
         public static event GraphicReadyDelegate GraphicReady;
         public static event ExperimentNextTurnDelegate NextTurnReady;
         public static event ExperimentStateChangedDelegate StateChanged;
-        /// <summary>
-        /// 所有代理人
-        /// </summary>
-        internal static ConcurrentDictionary<int,Agent> _agents;
+
         /// <summary>
         /// 市场情况
         /// </summary>
         internal static Market _market;
 
-        private static Graphic _priceGraph;
+
         private static int _index;
         private static int _turn;
         private static ExperimentState _state;

@@ -15,37 +15,27 @@ namespace Econophysics
     using DataIO.Mysql;
     internal class Graphic
     {
-        private int _width;
-        private int _height;
-        private string _url;
-        
-        
+        public GraphicInfo Info { get { return _info; } }
+        private GraphicInfo _info;
 
         internal Graphic()
         {
-            _width = 900;
-            _height = 500;
-            //_price = new SvgGraphics();
-            _url = Experiment.Parameters.Graphic.Init.Url;
+            _info = new GraphicInfo 
+            { 
+                Width = Experiment.Parameters.Graphic.Init.Width,
+                Height = Experiment.Parameters.Graphic.Init.Height,
+                Url = Experiment.Parameters.Graphic.Init.Url,
+                Count = Experiment.Parameters.Graphic.Init.Count 
+            };
         }
         internal void Draw()
         {
             draw();
-            //store();
-        }
-        internal GraphicInfo getInfo()
-        {
-            GraphicInfo graphicInfo=new ;
-            graphicInfo.Count = Experiment._market.PriceList.Count;
-            graphicInfo.Height = _height;
-            graphicInfo.Width = _width;
-            graphicInfo.Url = _url;
-            return graphicInfo;
         }
         private void draw()
         {
             double[] priceRange = new double[2];
-            PointF origin = new PointF(_width - 50, _height / 2 - 30 / 2 + 20 / 2);
+            PointF origin = new PointF(_info.Width - 50, _info.Height / 2 - 30 / 2 + 20 / 2);
             PointF unitVector;
             int priceGapNumber;
             int basePrice;
@@ -78,17 +68,17 @@ namespace Econophysics
                 tmp = Convert.ToInt32((priceRange[0] + priceRange[1]) / 2);
                 basePrice = tmp + (tmp % 5 > 2 ? 5 - tmp % 5 : -tmp % 5);
             }
-            unitVector = new PointF((Single)(-1.0*(_width - 57) / (priceList.Count - 1)), (Single)(-1.0*(_height - 50) / priceGapNumber));
+            unitVector = new PointF((Single)(-1.0*(_info.Width - 57) / (priceList.Count - 1)), (Single)(-1.0*(_info.Height - 50) / priceGapNumber));
 
             //开始画图
-            SvgDocument priceImage = new SvgDocument { Height = _height, Width = _width };
+            SvgDocument priceImage = new SvgDocument { Height = _info.Height, Width = _info.Width };
             var group = new SvgGroup();
             priceImage.Children.Add(group);
 
             //纵坐标
-            group.Children.Add(new SvgLine { StartX = origin.X, StartY = 0, EndX = origin.X, EndY = _height, Stroke = blackPen, StrokeWidth = 2 });
+            group.Children.Add(new SvgLine { StartX = origin.X, StartY = 0, EndX = origin.X, EndY = _info.Height, Stroke = blackPen, StrokeWidth = 2 });
             //横坐标
-            group.Children.Add(new SvgLine { StartX = 0, StartY = origin.Y - priceGapNumber * unitVector.Y / 2, EndX = _width, EndY = origin.Y - priceGapNumber * unitVector.Y / 2, Stroke = blackPen, StrokeWidth = 2 });
+            group.Children.Add(new SvgLine { StartX = 0, StartY = origin.Y - priceGapNumber * unitVector.Y / 2, EndX = _info.Width, EndY = origin.Y - priceGapNumber * unitVector.Y / 2, Stroke = blackPen, StrokeWidth = 2 });
             group.Children.Add(new SvgText { Text = "价格", FontFamily = fontFamily, FontSize = smallFont, FontWeight = SvgFontWeight.bold, X = origin.X, Y = origin.Y - priceGapNumber * unitVector.Y / 2+25 });
             //纵坐标标记
             {
@@ -143,7 +133,7 @@ namespace Econophysics
             group.Children.Add(new SvgText { Text = string.Format("本轮价格：{0:F2}", priceList[priceList.Count - 1]), FontFamily = fontFamily, FontSize = new SvgUnit(SvgUnitType.Point, 20), FontWeight = SvgFontWeight.bold, X = origin.X + priceList.Count * unitVector.X / 2 - 100, Y = origin.Y - 200 });
 
             //存储图像
-            priceImage.Write(_url);
+            priceImage.Write(_info.Url);
 
         }
 

@@ -2,62 +2,64 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Text;
+using System.Collections.Concurrent;
 
 namespace Econophysics
 {
     using Type;
     using DataIO.Mysql;
+
     internal class Market
     {
         /// <summary>
         /// 价格列表，数量由<see cref="Parameters.Market.Count"></see>确定
         /// </summary>
         internal List<double> PriceList { get { return _priceList; } }
+        public MarketInfo Now 
+        { 
+            get 
+            { 
+                _now.NumberOfPeople = _agents.Count; 
+                return _now; 
+            } 
+        }
         /// <summary>
-        /// 本轮价格
+        /// 所有代理人
         /// </summary>
-        internal double _price;
-        /// <summary>
-        /// 市场状态
-        /// </summary>
-        internal MarketState _state;
-        /// <summary>
-        /// 收益率
-        /// </summary>
-        internal int _returns;
-        internal double _averageEndowment;
+        internal static ConcurrentDictionary<int, Agent> _agents;
+        private static Graphic _Graph;
+        private MarketInfo _now;
         private List<double> _priceList;
         private MarketIO _marketIO;
 
         internal Market()
         {
+            _agents = new ConcurrentDictionary<int, Agent>();
+            _Graph = new Graphic();
             MarketInfo init = Experiment.Parameters.Market.Init;
-            _price = init.Price;
-            _state = init.State;
-            _returns = init.Returns;
+            _now = new MarketInfo
+            {
+                Price = init.Price,
+                Returns = init.Returns,
+                NumberOfPeople = init.NumberOfPeople,
+                State = init.State,
+                AverageEndowment = init.AverageEndowment,
+                Volume = init.Volume
+            };
             _marketIO = new MarketIO();
             _priceList=new List<double>();
             for(int i=0;i<Experiment.Parameters.Market.Count;i++)
             {
-                _priceList.Add(_price);
+                _priceList.Add(_now.Price);
             }
         }
-        internal MarketInfo GetInfo()
-        {
-            MarketInfo market;
-            market.Price = _price;
-            market.Returns = _returns;
-            market.State = _state;
-            market.NumberOfPeople = Experiment._agents.Count;
-            market.AverageEndowment = _averageEndowment;
-            return market;
-        }
+
         internal void SyncUpdate()
         {
             updatePrice();
             updateState();
 
-            foreach (Agent agent in Experiment._agents.Values)
+            foreach (Agent agent in _agents.Values)
             {
                 agent.GetDividend();
             }
@@ -69,54 +71,55 @@ namespace Econophysics
 
         private void getAgentsOrder()
         {
-            var orderedAgents = Experiment._agents.OrderByDescending(p => p.Value._endowment);
+            var orderedAgents = _agents.OrderByDescending(p => p.Value._now.Endowment);
             int i = 1;
             foreach (var agent in orderedAgents)
             {
-                Experiment._agents[agent.Key]._order = i++;
+                _agents[agent.Key]._now.Order = i++;
             }
         }
 
         private void getAverageEndowment()
         {
-            if (!Experiment._agents.IsEmpty)
+            if (!_agents.IsEmpty)
             {
-                _averageEndowment = Experiment._agents.Average(p => p.Value._endowment);
+                _now.AverageEndowment = _agents.Average(p => p.Value._now.Endowment);
             }  
         }
         private void store()
         {
-            _marketIO.Write(getKey(),GetInfo());
-            foreach (Agent agent in Experiment._agents.Values)
+            _now.NumberOfPeople = _agents.Count;
+            _marketIO.Write(getKey(),_now);
+            foreach (Agent agent in _agents.Values)
             {
                 agent.Store();
             }
         }
         private void updatePrice()
         {
-            _returns=getReturns();
+            _now.Returns=getReturns();
             _priceList.RemoveAt(0);
-            _price = Math.Round(_price * Math.Exp(Experiment.Parameters.Market.Lambda * _returns / (Experiment._agents.Count+1)), 2);
-            _priceList.Add(_price);
+            _now.Price = Math.Round(_now.Price * Math.Exp(Experiment.Parameters.Market.Lambda * _now.Returns / (_agents.Count + 1)), 2);
+            _priceList.Add(_now.Price);
         }
         private int getReturns()
         {
             int returns = 0;
-            foreach (Agent agent in Experiment._agents.Values)
+            foreach (Agent agent in _agents.Values)
             {
-                returns += agent._tradeStocks;
+                returns += agent._now.TradeStocks;
             }
             return returns;
         }
         private void updateState()
         {
-            switch (_state)
+            switch (_now.State)
             {
                 case MarketState.Active:
-                    _state=(Experiment.Random < Experiment.Parameters.Market.P10)?MarketState.Inactive:MarketState.Active;
+                    _now.State = (Experiment.Random < Experiment.Parameters.Market.P10) ? MarketState.Inactive : MarketState.Active;
                     break;
                 case MarketState.Inactive:
-                    _state=(Experiment.Random < Experiment.Parameters.Market.P01)?MarketState.Active:MarketState.Inactive;
+                    _now.State = (Experiment.Random < Experiment.Parameters.Market.P01) ? MarketState.Active : MarketState.Inactive;
                     break;
             }
         }

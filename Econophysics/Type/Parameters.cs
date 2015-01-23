@@ -25,6 +25,10 @@ namespace Econophysics
                 /// </summary>
                 public AgentInfo Init;
                 /// <summary>
+                /// 分红大小
+                /// </summary>
+                public double Dividend;
+                /// <summary>
                 /// 每股交易费用
                 /// </summary>
                 public double TradeFee;

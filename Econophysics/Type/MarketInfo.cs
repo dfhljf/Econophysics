@@ -31,6 +31,10 @@ namespace Econophysics
             /// 代理人的平均资产
             /// </summary>
             public double AverageEndowment { get; set; }
+            /// <summary>
+            /// 交易量
+            /// </summary>
+            public int Volume { get; set; }
         }
     }
 }
