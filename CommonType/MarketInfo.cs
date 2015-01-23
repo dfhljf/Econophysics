@@ -2,32 +2,32 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CommonType
+namespace Type
 {
     /// <summary>
     /// 市场信息，对所有代理人公开
     /// </summary>
-    public struct MarketInfo
+    public class MarketInfo
     {
         /// <summary>
         /// 市场价格
         /// </summary>
-        public double Price;
+        public double Price { get; set; }
         /// <summary>
         /// 市场状态
         /// </summary>
-        public MarketState State;
+        public MarketState State { get; set; }
         /// <summary>
         /// 收益率
         /// </summary>
-        public int Returns;
+        public int Returns { get; set; }
         /// <summary>
         /// 在线人数
         /// </summary>
-        public int NumberOfPeople;
+        public int NumberOfPeople { get; set; }
         /// <summary>
         /// 代理人的平均资产
         /// </summary>
-        public double AverageEndowment;
+        public double AverageEndowment { get; set; }
     }
 }

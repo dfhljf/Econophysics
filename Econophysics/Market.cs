@@ -1,12 +1,12 @@
-﻿using CommonType;
-using DataIO.Mysql;
-using System;
+﻿using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Econophysics
 {
+    using Type;
+    using DataIO.Mysql;
     internal class Market
     {
         /// <summary>
@@ -31,13 +31,13 @@ namespace Econophysics
 
         internal Market()
         {
-            MarketInfo init = Experiment.Parameters.MarketPart.Init;
+            MarketInfo init = Experiment.Parameters.Market.Init;
             _price = init.Price;
             _state = init.State;
             _returns = init.Returns;
             _marketIO = new MarketIO();
             _priceList=new List<double>();
-            for(int i=0;i<Experiment.Parameters.MarketPart.Count;i++)
+            for(int i=0;i<Experiment.Parameters.Market.Count;i++)
             {
                 _priceList.Add(_price);
             }
@@ -96,7 +96,7 @@ namespace Econophysics
         {
             _returns=getReturns();
             _priceList.RemoveAt(0);
-            _price = Math.Round(_price * Math.Exp(Experiment.Parameters.MarketPart.Lambda * _returns / (Experiment._agents.Count+1)), 2);
+            _price = Math.Round(_price * Math.Exp(Experiment.Parameters.Market.Lambda * _returns / (Experiment._agents.Count+1)), 2);
             _priceList.Add(_price);
         }
         private int getReturns()
@@ -113,10 +113,10 @@ namespace Econophysics
             switch (_state)
             {
                 case MarketState.Active:
-                    _state=(Experiment.Random < Experiment.Parameters.MarketPart.P10)?MarketState.Inactive:MarketState.Active;
+                    _state=(Experiment.Random < Experiment.Parameters.Market.P10)?MarketState.Inactive:MarketState.Active;
                     break;
                 case MarketState.Inactive:
-                    _state=(Experiment.Random < Experiment.Parameters.MarketPart.P01)?MarketState.Active:MarketState.Inactive;
+                    _state=(Experiment.Random < Experiment.Parameters.Market.P01)?MarketState.Active:MarketState.Inactive;
                     break;
             }
         }

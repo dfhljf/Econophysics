@@ -4,7 +4,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Econophysics;
-using CommonType;
+using Type;
 
 namespace Interface
 {
@@ -15,7 +15,7 @@ namespace Interface
             Experiment.StateChanged += Experiment_StateChanged;
         }   
 
-        void Experiment_StateChanged(CommonType.ExperimentState state)
+        void Experiment_StateChanged(Type.ExperimentState state)
         {
             ExpState.Text = state.ToString();
         }

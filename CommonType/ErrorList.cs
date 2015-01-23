@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CommonType
+namespace Type
 {
     /// <summary>
     /// 错误列表，包含所有错误信息

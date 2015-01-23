@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using CommonType;
 using System.Collections;
 using System.Collections.Concurrent;
-using DataIO.Mysql;
 
 namespace Econophysics
 {
+    using Type;
+    using DataIO.Mysql;
     /// <summary>
     /// 实验状态改变触发的事件委托
     /// </summary>
@@ -23,6 +23,9 @@ namespace Econophysics
     /// </summary>
     /// <param name="graphicInfo">图像信息</param>
     public delegate void GraphicReadyDelegate(GraphicInfo graphicInfo);
+    /// <summary>
+    /// 实验静态类
+    /// </summary>
     public static class Experiment
     {
         /// <summary>
@@ -111,12 +114,12 @@ namespace Econophysics
             Parameters = parameters;
             _market = new Market();
             _priceGraph = new Graphic();
-            _timeTick = Parameters.ExperimentPart.PeriodOfTurn;
-            _turn = parameters.ExperimentPart.StartTurn;
+            _timeTick = Parameters.Experiment.PeriodOfTurn;
+            _turn = parameters.Experiment.StartTurn;
             if (expId != 0)
             {
                 _index = expId;
-                Hashtable mht=_experimentIO.Read(string.Format("select * from market where expId={0} order by turn desc limit {1}",expId,parameters.MarketPart.Count));
+                Hashtable mht=_experimentIO.Read(string.Format("select * from market where expId={0} order by turn desc limit {1}",expId,parameters.Market.Count));
                 foreach (MarketInfo mi in mht.Values)
                 {
                     _market.PriceList.Insert(0, mi.Price);
@@ -194,7 +197,7 @@ namespace Econophysics
                 return _state;
             }
             RemovePause(_turn);
-            _timeTick = Parameters.ExperimentPart.PeriodOfTurn - 1;
+            _timeTick = Parameters.Experiment.PeriodOfTurn - 1;
             //_startTime = DateTime.Now;
             _state = ExperimentState.Running;
             stateChanged(_state);
@@ -226,14 +229,14 @@ namespace Econophysics
                 Hashtable aht=_experimentIO.Read(string.Format("select * from Agents where Turn=0 and ExperimentId={0} limit 1", expId));
                 foreach (AgentKey ak in aht.Keys)
                 {
-                    para.AgentPart.Init = (AgentInfo)aht[ak];
+                    para.Agent.Init = (AgentInfo)aht[ak];
                 }
 
                 Hashtable mht=_experimentIO.Read(string.Format("select * from market where ExperimentId={0} order by turn desc limit 1", expId));
                 foreach (MarketKey mk in mht.Keys)
                 {
-                    para.MarketPart.Init = (MarketInfo)mht[mk];
-                    para.ExperimentPart.StartTurn = mk.Turn;
+                    para.Market.Init = (MarketInfo)mht[mk];
+                    para.Experiment.StartTurn = mk.Turn;
                 }
                 rtn.Add(expId, para);
             }
@@ -261,7 +264,7 @@ namespace Econophysics
             {
                 throw ErrorList.UserNotExist;
             }
-            if (Math.Abs(tradeStocks) > Parameters.AgentPart.MaxStock)
+            if (Math.Abs(tradeStocks) > Parameters.Agent.MaxStock)
             {
                 throw ErrorList.TradeStocksOut;
             }
@@ -327,13 +330,13 @@ namespace Econophysics
             _market.SyncUpdate();
             _priceGraph.Draw();
             graphicReady(_priceGraph.getInfo());
-            if (_turn == Parameters.ExperimentPart.MaxTurn)
+            if (_turn == Parameters.Experiment.MaxTurn)
             {
                 exit();
                 return;
             }
             _turn++;
-            _timeTick = (_pauseList.ContainsKey(_turn)) ? 0 : Parameters.ExperimentPart.PeriodOfTurn;
+            _timeTick = (_pauseList.ContainsKey(_turn)) ? 0 : Parameters.Experiment.PeriodOfTurn;
             _state = (_pauseList.ContainsKey(_turn)) ? ExperimentState.Pause : ExperimentState.Running;
             stateChanged(_state);
             nextTurnReady(_market.GetInfo());

@@ -110,10 +110,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CommonType\CommonType.csproj">
-      <Project>{b1514b1d-55ca-4daf-997c-fa61c3e8cd01}</Project>
-      <Name>CommonType</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Econophysics\Econophysics.csproj">
       <Project>{8840b2e5-f077-4e7b-b956-3a653e1f77df}</Project>
       <Name>Econophysics</Name>

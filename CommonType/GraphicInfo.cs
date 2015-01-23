@@ -2,28 +2,28 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CommonType
+namespace Type
 {
     /// <summary>
     /// 图像信息
     /// </summary>
-    public struct GraphicInfo
+    public class GraphicInfo
     {
         /// <summary>
         /// 宽度
         /// </summary>
-        public int Width;
+        public int Width { get; set; }
         /// <summary>
         /// 高度
         /// </summary>
-        public int Height;
+        public int Height { get; set; }
         /// <summary>
         /// 数据点数目
         /// </summary>
-        public int Count;
+        public int Count { get; set; }
         /// <summary>
         /// 图像所在路径
         /// </summary>
-        public string Url;
+        public string Url { get; set; }
     }
 }

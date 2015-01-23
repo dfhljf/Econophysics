@@ -4,7 +4,7 @@ using System.Text;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
-using CommonType;
+using Type;
 using DataIO.Mysql;
 using System.Collections;
 using Econophysics;
@@ -126,39 +126,39 @@ namespace Test
         private static void testExperiment()
         {
             Parameters p;
-            p.AgentPart.Init.Cash = 10000;
-            p.AgentPart.Init.Dividend = 1;
-            p.AgentPart.Init.Endowment = 20000;
-            p.AgentPart.Init.Stocks = 100;
-            p.AgentPart.Init.TradeStocks = 0;
-            p.AgentPart.Init.Order = 0;
-            p.AgentPart.MaxStock = 10;
-            p.AgentPart.PeriodOfUpdateDividend = 5;
-            p.AgentPart.TradeFee = 1;
+            p.Agent.Init.Cash = 10000;
+            p.Agent.Init.Dividend = 1;
+            p.Agent.Init.Endowment = 20000;
+            p.Agent.Init.Stocks = 100;
+            p.Agent.Init.TradeStocks = 0;
+            p.Agent.Init.Order = 0;
+            p.Agent.MaxStock = 10;
+            p.Agent.PeriodOfUpdateDividend = 5;
+            p.Agent.TradeFee = 1;
 
-            p.MarketPart.Init.NumberOfPeople = 20;
-            p.MarketPart.Init.Price = 100;
-            p.MarketPart.Init.Returns = 0;
-            p.MarketPart.Init.State = MarketState.Active;
-            p.MarketPart.Init.AverageEndowment = 0;
-            p.MarketPart.Count = 50;
-            p.MarketPart.Lambda = 0.01;
-            p.MarketPart.Leverage = LeverageEffect.AntiLeverage;
-            p.MarketPart.P = 0.7;
-            p.MarketPart.P01 = 0.25;
-            p.MarketPart.P10 = 0.1;
-            p.MarketPart.PDividend = 0.8;
-            p.MarketPart.TimeWindow = 10;
-            p.MarketPart.TransP = 0.5;
+            p.Market.Init.NumberOfPeople = 20;
+            p.Market.Init.Price = 100;
+            p.Market.Init.Returns = 0;
+            p.Market.Init.State = MarketState.Active;
+            p.Market.Init.AverageEndowment = 0;
+            p.Market.Count = 50;
+            p.Market.Lambda = 0.01;
+            p.Market.Leverage = LeverageEffect.AntiLeverage;
+            p.Market.P = 0.7;
+            p.Market.P01 = 0.25;
+            p.Market.P10 = 0.1;
+            p.Market.PDividend = 0.8;
+            p.Market.TimeWindow = 10;
+            p.Market.TransP = 0.5;
 
-            p.GraphicPart.Init.Count = 50;
-            p.GraphicPart.Init.Height = 500;
-            p.GraphicPart.Init.Url = "priceimage.svg";
-            p.GraphicPart.Init.Width = 900;
+            p.Graphic.Init.Count = 50;
+            p.Graphic.Init.Height = 500;
+            p.Graphic.Init.Url = "priceimage.svg";
+            p.Graphic.Init.Width = 900;
 
-            p.ExperimentPart.StartTurn = 0;
-            p.ExperimentPart.MaxTurn = 1200;
-            p.ExperimentPart.PeriodOfTurn = 10;
+            p.Experiment.StartTurn = 0;
+            p.Experiment.MaxTurn = 1200;
+            p.Experiment.PeriodOfTurn = 10;
 
             Experiment.Build(p);
             
@@ -192,7 +192,7 @@ namespace Test
             init.TradeStocks = 10;
             init.Order = 0;
             Parameters para = (Parameters)eht[1];
-            para.AgentPart.Init = init;
+            para.Agent.Init = init;
         }
         private static void testDataIOWrite()
         {
@@ -201,39 +201,39 @@ namespace Test
             AgentIO ai = new AgentIO();
 
             Parameters p;
-            p.AgentPart.Init.Cash = 0;
-            p.AgentPart.Init.Dividend = 0;
-            p.AgentPart.Init.Endowment = 0;
-            p.AgentPart.Init.Stocks = 0;
-            p.AgentPart.Init.TradeStocks = 0;
-            p.AgentPart.Init.Order = 0;
-            p.AgentPart.MaxStock = 10;
-            p.AgentPart.PeriodOfUpdateDividend = 5;
-            p.AgentPart.TradeFee = 1;
+            p.Agent.Init.Cash = 0;
+            p.Agent.Init.Dividend = 0;
+            p.Agent.Init.Endowment = 0;
+            p.Agent.Init.Stocks = 0;
+            p.Agent.Init.TradeStocks = 0;
+            p.Agent.Init.Order = 0;
+            p.Agent.MaxStock = 10;
+            p.Agent.PeriodOfUpdateDividend = 5;
+            p.Agent.TradeFee = 1;
 
-            p.MarketPart.Init.NumberOfPeople = 20;
-            p.MarketPart.Init.Price = 100;
-            p.MarketPart.Init.Returns = 0;
-            p.MarketPart.Init.State = MarketState.Active;
-            p.MarketPart.Init.AverageEndowment = 0;
-            p.MarketPart.Count = 50;
-            p.MarketPart.Lambda = 0.01;
-            p.MarketPart.Leverage = LeverageEffect.AntiLeverage;
-            p.MarketPart.P = 0.7;
-            p.MarketPart.P01 = 0.25;
-            p.MarketPart.P10 = 0.1;
-            p.MarketPart.PDividend = 0.8;
-            p.MarketPart.TimeWindow = 10;
-            p.MarketPart.TransP = 0.5;
+            p.Market.Init.NumberOfPeople = 20;
+            p.Market.Init.Price = 100;
+            p.Market.Init.Returns = 0;
+            p.Market.Init.State = MarketState.Active;
+            p.Market.Init.AverageEndowment = 0;
+            p.Market.Count = 50;
+            p.Market.Lambda = 0.01;
+            p.Market.Leverage = LeverageEffect.AntiLeverage;
+            p.Market.P = 0.7;
+            p.Market.P01 = 0.25;
+            p.Market.P10 = 0.1;
+            p.Market.PDividend = 0.8;
+            p.Market.TimeWindow = 10;
+            p.Market.TransP = 0.5;
 
-            p.GraphicPart.Init.Count = 0;
-            p.GraphicPart.Init.Height = 500;
-            p.GraphicPart.Init.Url = "";
-            p.GraphicPart.Init.Width = 900;
+            p.Graphic.Init.Count = 0;
+            p.Graphic.Init.Height = 500;
+            p.Graphic.Init.Url = "";
+            p.Graphic.Init.Width = 900;
 
-            p.ExperimentPart.StartTurn = 0;
-            p.ExperimentPart.MaxTurn = 1200;
-            p.ExperimentPart.PeriodOfTurn = 10;
+            p.Experiment.StartTurn = 0;
+            p.Experiment.MaxTurn = 1200;
+            p.Experiment.PeriodOfTurn = 10;
             MarketKey mk;
             mk.ExperimentId = 1;
             mk.Turn = 0;
@@ -242,8 +242,8 @@ namespace Test
             ak.Id = 1;
             ak.Turn = 0;
             ei.Write(1, p, "xyz");
-            mi.Write(mk, p.MarketPart.Init);
-            ai.Write(ak, p.AgentPart.Init);
+            mi.Write(mk, p.Market.Init);
+            ai.Write(ak, p.Agent.Init);
         }
     }
 }

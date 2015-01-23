@@ -4,7 +4,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Econophysics;
-using CommonType;
+using Type;
 using System.Collections;
 
 namespace Interface
@@ -61,7 +61,7 @@ namespace Interface
             if (expId != 0)
             {
                 loadParameters(_eht[expId]);
-                Turn.Text = _eht[expId].ExperimentPart.StartTurn.ToString();
+                Turn.Text = _eht[expId].Experiment.StartTurn.ToString();
             }
             else if (expId == 0)
             {
@@ -132,59 +132,59 @@ namespace Interface
         private Parameters getParameters()
         {
             Parameters para;
-            para.AgentPart.Init.Cash = Convert.ToInt32(InitCash.Text);
-            para.AgentPart.Init.Dividend = Convert.ToDouble(InitDividend.Text);
-            para.AgentPart.Init.Stocks = Convert.ToInt32(InitStocks.Text);
-            para.AgentPart.Init.TradeStocks = 0;
-            para.AgentPart.Init.Order = 0;
-            para.AgentPart.MaxStock = Convert.ToInt32(MaxStock.Text);
-            para.AgentPart.PeriodOfUpdateDividend = Convert.ToInt32(PeriodOfUpdateDividend.Text);
-            para.AgentPart.TradeFee = Convert.ToDouble(TradeFee.Text);
-            para.MarketPart.Init.NumberOfPeople = 0;
-            para.MarketPart.Init.Price = Convert.ToDouble(InitPrice.Text);
-            para.MarketPart.Init.Returns = 0;
-            para.MarketPart.Init.State = (MarketState)Enum.Parse(typeof(MarketState), InitMarketState.SelectedValue);
-            para.MarketPart.Init.AverageEndowment = 0;
-            para.MarketPart.Count = Convert.ToInt32(Count.Text);
-            para.MarketPart.Lambda = Convert.ToDouble(Lambda.Text);
-            para.MarketPart.Leverage = (LeverageEffect)Enum.Parse(typeof(LeverageEffect), LeverageEffect.SelectedValue);
-            para.MarketPart.P = Convert.ToDouble(P.Text);
-            para.MarketPart.P01 = Convert.ToDouble(P01.Text);
-            para.MarketPart.P10 = Convert.ToDouble(P10.Text);
-            para.MarketPart.PDividend = Convert.ToDouble(PDividend.Text);
-            para.MarketPart.TimeWindow = Convert.ToInt32(TimeWindow.Text);
-            para.MarketPart.TransP = Convert.ToDouble(TransP.Text);
-            para.GraphicPart.Init.Count = Convert.ToInt32(Count.Text);
-            para.GraphicPart.Init.Height = 500;
-            para.GraphicPart.Init.Width = 900;
-            para.GraphicPart.Init.Url = Server.MapPath("PriceImage.svg");
-            para.ExperimentPart.MaxTurn = Convert.ToInt32(MaxTurn.Text);
-            para.ExperimentPart.PeriodOfTurn = Convert.ToInt32(PeriodOfTurn.Text);
-            para.ExperimentPart.StartTurn = Convert.ToInt32(Turn.Text);
-            para.AgentPart.Init.Endowment = para.AgentPart.Init.Cash + para.AgentPart.Init.Stocks * para.MarketPart.Init.Price;
+            para.Agent.Init.Cash = Convert.ToInt32(InitCash.Text);
+            para.Agent.Init.Dividend = Convert.ToDouble(InitDividend.Text);
+            para.Agent.Init.Stocks = Convert.ToInt32(InitStocks.Text);
+            para.Agent.Init.TradeStocks = 0;
+            para.Agent.Init.Order = 0;
+            para.Agent.MaxStock = Convert.ToInt32(MaxStock.Text);
+            para.Agent.PeriodOfUpdateDividend = Convert.ToInt32(PeriodOfUpdateDividend.Text);
+            para.Agent.TradeFee = Convert.ToDouble(TradeFee.Text);
+            para.Market.Init.NumberOfPeople = 0;
+            para.Market.Init.Price = Convert.ToDouble(InitPrice.Text);
+            para.Market.Init.Returns = 0;
+            para.Market.Init.State = (MarketState)Enum.Parse(typeof(MarketState), InitMarketState.SelectedValue);
+            para.Market.Init.AverageEndowment = 0;
+            para.Market.Count = Convert.ToInt32(Count.Text);
+            para.Market.Lambda = Convert.ToDouble(Lambda.Text);
+            para.Market.Leverage = (LeverageEffect)Enum.Parse(typeof(LeverageEffect), LeverageEffect.SelectedValue);
+            para.Market.P = Convert.ToDouble(P.Text);
+            para.Market.P01 = Convert.ToDouble(P01.Text);
+            para.Market.P10 = Convert.ToDouble(P10.Text);
+            para.Market.PDividend = Convert.ToDouble(PDividend.Text);
+            para.Market.TimeWindow = Convert.ToInt32(TimeWindow.Text);
+            para.Market.TransP = Convert.ToDouble(TransP.Text);
+            para.Graphic.Init.Count = Convert.ToInt32(Count.Text);
+            para.Graphic.Init.Height = 500;
+            para.Graphic.Init.Width = 900;
+            para.Graphic.Init.Url = Server.MapPath("PriceImage.svg");
+            para.Experiment.MaxTurn = Convert.ToInt32(MaxTurn.Text);
+            para.Experiment.PeriodOfTurn = Convert.ToInt32(PeriodOfTurn.Text);
+            para.Experiment.StartTurn = Convert.ToInt32(Turn.Text);
+            para.Agent.Init.Endowment = para.Agent.Init.Cash + para.Agent.Init.Stocks * para.Market.Init.Price;
             return para;
         }
         private void loadParameters(Parameters para)
         {
-            InitCash.Text = para.AgentPart.Init.Cash.ToString();
-            InitStocks.Text = para.AgentPart.Init.Stocks.ToString();
-            InitDividend.Text = para.AgentPart.Init.Dividend.ToString();
-            MaxStock.Text = para.AgentPart.MaxStock.ToString();
-            PeriodOfUpdateDividend.Text = para.AgentPart.PeriodOfUpdateDividend.ToString();
-            TradeFee.Text = para.AgentPart.TradeFee.ToString();
-            InitPrice.Text = para.MarketPart.Init.Price.ToString();
-            InitMarketState.SelectedValue = para.MarketPart.Init.State.ToString();
-            Count.Text = para.MarketPart.Count.ToString();
-            LeverageEffect.Text = para.MarketPart.Leverage.ToString();
-            Lambda.Text = para.MarketPart.Lambda.ToString();
-            P01.Text = para.MarketPart.P01.ToString();
-            P10.Text = para.MarketPart.P10.ToString();
-            PDividend.Text = para.MarketPart.PDividend.ToString();
-            P.Text = para.MarketPart.P.ToString();
-            TransP.Text = para.MarketPart.TransP.ToString();
-            TimeWindow.Text = para.MarketPart.TimeWindow.ToString();
-            PeriodOfTurn.Text = para.ExperimentPart.PeriodOfTurn.ToString();
-            MaxTurn.Text = para.ExperimentPart.MaxTurn.ToString();
+            InitCash.Text = para.Agent.Init.Cash.ToString();
+            InitStocks.Text = para.Agent.Init.Stocks.ToString();
+            InitDividend.Text = para.Agent.Init.Dividend.ToString();
+            MaxStock.Text = para.Agent.MaxStock.ToString();
+            PeriodOfUpdateDividend.Text = para.Agent.PeriodOfUpdateDividend.ToString();
+            TradeFee.Text = para.Agent.TradeFee.ToString();
+            InitPrice.Text = para.Market.Init.Price.ToString();
+            InitMarketState.SelectedValue = para.Market.Init.State.ToString();
+            Count.Text = para.Market.Count.ToString();
+            LeverageEffect.Text = para.Market.Leverage.ToString();
+            Lambda.Text = para.Market.Lambda.ToString();
+            P01.Text = para.Market.P01.ToString();
+            P10.Text = para.Market.P10.ToString();
+            PDividend.Text = para.Market.PDividend.ToString();
+            P.Text = para.Market.P.ToString();
+            TransP.Text = para.Market.TransP.ToString();
+            TimeWindow.Text = para.Market.TimeWindow.ToString();
+            PeriodOfTurn.Text = para.Experiment.PeriodOfTurn.ToString();
+            MaxTurn.Text = para.Experiment.MaxTurn.ToString();
         }
         private void updatePauseList()
         {

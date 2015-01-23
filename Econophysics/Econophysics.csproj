@@ -33,6 +33,7 @@
     <DocumentationFile>bin\Release\Econophysics.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MySql.Data, Version=6.9.5.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
     <Reference Include="Svg, Version=1.7.0.31798, Culture=neutral, PublicKeyToken=12a0bac221edeae2, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Svg.1.7.0\lib\Svg.dll</HintPath>
@@ -45,24 +46,41 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Agent.cs" />
+    <Compile Include="DataIO\AgentIO.cs" />
+    <Compile Include="DataIO\ExperimentIO.cs" />
+    <Compile Include="DataIO\MarketIO.cs" />
+    <Compile Include="DataIO\Mysql.cs" />
+    <Compile Include="DataIO\Users.cs" />
     <Compile Include="Experiment.cs" />
     <Compile Include="Graphic.cs" />
     <Compile Include="Market.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CommonType\CommonType.csproj">
-      <Project>{b1514b1d-55ca-4daf-997c-fa61c3e8cd01}</Project>
-      <Name>CommonType</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DataIO\DataIO.csproj">
-      <Project>{9ac49434-5c96-45fe-ac1c-33045d298bf9}</Project>
-      <Name>DataIO</Name>
-    </ProjectReference>
+    <Compile Include="Type\AgentInfo.cs" />
+    <Compile Include="Type\AgentKey.cs" />
+    <Compile Include="Type\ErrorList.cs" />
+    <Compile Include="Type\ErrorMessage.Designer.cs">
+      <DependentUpon>ErrorMessage.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Type\ExperimentState.cs" />
+    <Compile Include="Type\GraphicInfo.cs" />
+    <Compile Include="Type\LeverageEffect.cs" />
+    <Compile Include="Type\MarketInfo.cs" />
+    <Compile Include="Type\MarketKey.cs" />
+    <Compile Include="Type\MarketState.cs" />
+    <Compile Include="Type\Parameters.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Type\ErrorMessage.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ErrorMessage.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

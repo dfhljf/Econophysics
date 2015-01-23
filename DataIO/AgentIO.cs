@@ -4,7 +4,7 @@ using System.Text;
 using MySql.Data;
 using MySql.Data.MySqlClient;
 using System.Collections;
-using CommonType;
+using Type;
 
 namespace DataIO
 {

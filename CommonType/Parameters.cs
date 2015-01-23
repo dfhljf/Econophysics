@@ -1,28 +1,10 @@
-﻿namespace CommonType
-{
-    /// <summary>
-    /// 实验使用的参数，定义为结构防止更改，在每次试验中保持
-    /// 参数不变
-    /// </summary>
-    public struct Parameters
-    {
-        /// <summary>
-        /// 代理人参数
-        /// </summary>
-        public Agent AgentPart;
-        /// <summary>
-        /// 市场参数
-        /// </summary>
-        public Market MarketPart;
-        /// <summary>
-        /// 画图参数
-        /// </summary>
-        public Graphic GraphicPart;
-        /// <summary>
-        /// 实验参数
-        /// </summary>
-        public Experiment ExperimentPart;
+﻿using System;
 
+namespace Type
+{
+    using Para;
+    namespace Para
+    {
         /// <summary>
         /// 代理人相关参数
         /// </summary>
@@ -119,6 +101,37 @@
             /// 最大的轮数
             /// </summary>
             public int MaxTurn;
+            /// <summary>
+            /// 实验开始时间
+            /// </summary>
+            public DateTime StartTime;
+            /// <summary>
+            /// 实验注释
+            /// </summary>
+            public string Comments;
         }
+    }
+    /// <summary>
+    /// 实验使用的参数，定义为结构防止更改，在每次试验中保持
+    /// 参数不变
+    /// </summary>
+    public struct Parameters
+    {
+        /// <summary>
+        /// 代理人参数
+        /// </summary>
+        public Agent Agent;
+        /// <summary>
+        /// 市场参数
+        /// </summary>
+        public Market Market;
+        /// <summary>
+        /// 画图参数
+        /// </summary>
+        public Graphic Graphic;
+        /// <summary>
+        /// 实验参数
+        /// </summary>
+        public Experiment Experiment;
     }
 }

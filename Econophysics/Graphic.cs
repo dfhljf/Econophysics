@@ -6,12 +6,13 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using Svg;
 using Svg.DataTypes;
-using CommonType;
 using System.Collections;
 using System.Xml;
 
 namespace Econophysics
 {
+    using Type;
+    using DataIO.Mysql;
     internal class Graphic
     {
         private int _width;
@@ -25,7 +26,7 @@ namespace Econophysics
             _width = 900;
             _height = 500;
             //_price = new SvgGraphics();
-            _url = Experiment.Parameters.GraphicPart.Init.Url;
+            _url = Experiment.Parameters.Graphic.Init.Url;
         }
         internal void Draw()
         {
@@ -34,7 +35,7 @@ namespace Econophysics
         }
         internal GraphicInfo getInfo()
         {
-            GraphicInfo graphicInfo;
+            GraphicInfo graphicInfo=new ;
             graphicInfo.Count = Experiment._market.PriceList.Count;
             graphicInfo.Height = _height;
             graphicInfo.Width = _width;

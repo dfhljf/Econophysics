@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CommonType
+namespace Type
 {
     /// <summary>
     /// 实验状态
