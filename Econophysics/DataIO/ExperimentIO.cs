@@ -34,7 +34,7 @@ namespace Econophysics
                     _sql = new MySqlCommand("insert into Parameters values(@Id,@MaxStock," +
                         "@PeriodOfUpdateDividend,@TradeFee,@Count,@Leverage,@Lambda," +
                         "@P01,@P10,@PDividend,@P,@TransP,@TimeWindow,@PeriodOfTurn," +
-                        "@MaxTurn,@DateTime,@Comments)", _conn);
+                        "@MaxTurn,@StartTime,@Comments)", _conn);
                     _conn.Open();
                     _sql.Prepare();
                     _sql.Parameters.AddWithValue("@Id", experimentId);
@@ -52,7 +52,7 @@ namespace Econophysics
                     _sql.Parameters.AddWithValue("@TimeWindow", parameters.Market.TimeWindow);
                     _sql.Parameters.AddWithValue("@PeriodOfTurn", parameters.Experiment.PeriodOfTurn);
                     _sql.Parameters.AddWithValue("@MaxTurn", parameters.Experiment.MaxTurn);
-                    _sql.Parameters.AddWithValue("@DateTime", DateTime.Now);
+                    _sql.Parameters.AddWithValue("@StartTime", DateTime.Now);
                     _sql.Parameters.AddWithValue("@Comments", parameters.Experiment.Comments);
                     _sql.ExecuteNonQuery();
                     _conn.Close();

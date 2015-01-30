@@ -17,7 +17,7 @@ TransP double not null,
 TimeWindow int not null,
 PeriodOfTurn int not null,
 MaxTurn int not null,
-DateTime datetime not null,
+StartTime datetime not null,
 Comments text(200),
 primary key (Id)
 );

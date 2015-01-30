@@ -4,7 +4,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Econophysics;
-using Type;
+using Econophysics.Type;
 
 namespace Interface
 {
@@ -12,10 +12,10 @@ namespace Interface
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            Experiment.StateChanged += Experiment_StateChanged;
+            
         }   
 
-        void Experiment_StateChanged(Type.ExperimentState state)
+        void Experiment_StateChanged(ExperimentState state)
         {
             ExpState.Text = state.ToString();
         }
@@ -27,7 +27,7 @@ namespace Interface
 
         protected void Timer1_Tick(object sender, EventArgs e)
         {
-            Experiment.setTimeTick();
+            //Experiment.setTimeTick();
             TimeTick.Text = Experiment.TimeTick.ToString();
         }
     }

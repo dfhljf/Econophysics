@@ -4,7 +4,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Econophysics;
-using Type;
+using Econophysics.Type;
 using System.Collections;
 
 namespace Interface
@@ -17,10 +17,6 @@ namespace Interface
         private static Dictionary<int, Parameters> _eht = new Dictionary<int, Parameters>();
         protected void Page_Load(object sender, EventArgs e)
         {
-            Experiment.StateChanged += refreshInterface;
-            Experiment.GraphicReady += Experiment_GraphicReady;
-            Experiment.NextTurnReady += Experiment_NextTurnReady;
-
             if (!IsPostBack)
             {
                 Initialize();
@@ -31,7 +27,7 @@ namespace Interface
         {
             int timeTick = Experiment.TimeTick;
             TimeTick.Text = (timeTick == -1) ? "未开始计时" : (timeTick - 1).ToString();
-            Experiment.setTimeTick();
+            Turn.Text = Experiment.Turn.ToString();
             refreshInterface(Experiment.State);
         }
         protected void BuildExp_Click(object sender, EventArgs e)
@@ -41,7 +37,7 @@ namespace Interface
         }
         protected void StartExp_Click(object sender, EventArgs e)
         {
-            Experiment.Start(Comments.Text);
+            Experiment.Start();
             refreshInterface(Experiment.State);
         }
         protected void ContinueExp_Click(object sender, EventArgs e)
@@ -102,7 +98,9 @@ namespace Interface
             ExpState.Text = Experiment.State.ToString();
             refreshInterface(Experiment.State);
             Turn.Text = "0";
-            NumberOfPeople.Text = Experiment.NumberOfAgents.ToString();
+            NumberOfPeople.Text = "0";
+            int timeTick = Experiment.TimeTick;
+            TimeTick.Text = (timeTick == -1) ? "未开始计时" : (timeTick - 1).ToString();
             updateExpList();
             updatePauseList();
             resetParameters();
@@ -132,19 +130,24 @@ namespace Interface
         private Parameters getParameters()
         {
             Parameters para;
+            para.Agent.Init = new AgentInfo();
             para.Agent.Init.Cash = Convert.ToInt32(InitCash.Text);
-            para.Agent.Init.Dividend = Convert.ToDouble(InitDividend.Text);
+            para.Agent.Init.Dividend = 0;
             para.Agent.Init.Stocks = Convert.ToInt32(InitStocks.Text);
             para.Agent.Init.TradeStocks = 0;
             para.Agent.Init.Order = 0;
+            para.Agent.Dividend = Convert.ToDouble(InitDividend.Text);
             para.Agent.MaxStock = Convert.ToInt32(MaxStock.Text);
             para.Agent.PeriodOfUpdateDividend = Convert.ToInt32(PeriodOfUpdateDividend.Text);
             para.Agent.TradeFee = Convert.ToDouble(TradeFee.Text);
+
+            para.Market.Init = new MarketInfo();
             para.Market.Init.NumberOfPeople = 0;
             para.Market.Init.Price = Convert.ToDouble(InitPrice.Text);
             para.Market.Init.Returns = 0;
             para.Market.Init.State = (MarketState)Enum.Parse(typeof(MarketState), InitMarketState.SelectedValue);
             para.Market.Init.AverageEndowment = 0;
+            para.Market.Init.Volume = 0;
             para.Market.Count = Convert.ToInt32(Count.Text);
             para.Market.Lambda = Convert.ToDouble(Lambda.Text);
             para.Market.Leverage = (LeverageEffect)Enum.Parse(typeof(LeverageEffect), LeverageEffect.SelectedValue);
@@ -154,6 +157,8 @@ namespace Interface
             para.Market.PDividend = Convert.ToDouble(PDividend.Text);
             para.Market.TimeWindow = Convert.ToInt32(TimeWindow.Text);
             para.Market.TransP = Convert.ToDouble(TransP.Text);
+
+            para.Graphic.Init = new GraphicInfo();
             para.Graphic.Init.Count = Convert.ToInt32(Count.Text);
             para.Graphic.Init.Height = 500;
             para.Graphic.Init.Width = 900;
@@ -161,6 +166,8 @@ namespace Interface
             para.Experiment.MaxTurn = Convert.ToInt32(MaxTurn.Text);
             para.Experiment.PeriodOfTurn = Convert.ToInt32(PeriodOfTurn.Text);
             para.Experiment.StartTurn = Convert.ToInt32(Turn.Text);
+            para.Experiment.Comments = Comments.Text;
+            para.Experiment.StartTime = DateTime.Now;
             para.Agent.Init.Endowment = para.Agent.Init.Cash + para.Agent.Init.Stocks * para.Market.Init.Price;
             return para;
         }
@@ -185,6 +192,7 @@ namespace Interface
             TimeWindow.Text = para.Market.TimeWindow.ToString();
             PeriodOfTurn.Text = para.Experiment.PeriodOfTurn.ToString();
             MaxTurn.Text = para.Experiment.MaxTurn.ToString();
+            Comments.Text = para.Experiment.Comments;
         }
         private void updatePauseList()
         {
@@ -209,6 +217,7 @@ namespace Interface
             switch (state)
             {
                 case ExperimentState.Unbuilded:
+                    ExpId.Enabled = true;
                     ExpState.Text = "实验未建立";
                     ExpInfo.Disabled = false;
                     Parameters.Disabled = false;
@@ -220,6 +229,7 @@ namespace Interface
                     ResetExp.Enabled = false;
                     break;
                 case ExperimentState.Builded:
+                    ExpId.Enabled = false;
                     ExpState.Text = "实验已建立，还未开始";
                     ExpInfo.Disabled = true;
                     Parameters.Disabled = true;
@@ -231,6 +241,7 @@ namespace Interface
                     ResetExp.Enabled = false;
                     break;
                 case ExperimentState.Running:
+                    ExpId.Enabled = false;
                     ExpState.Text = "实验正在运行...";
                     ExpInfo.Disabled = true;
                     Parameters.Disabled = true;
@@ -243,6 +254,7 @@ namespace Interface
                     Timer1.Enabled = true;
                     break;
                 case ExperimentState.Suspend:
+                    ExpId.Enabled = false;
                     ExpState.Text = "实验挂起，准备进入下一轮";
                     ExpInfo.Disabled = true;
                     Parameters.Disabled = true;
@@ -254,6 +266,7 @@ namespace Interface
                     ResetExp.Enabled = false;
                     break;
                 case ExperimentState.Pause:
+                    ExpId.Enabled = false;
                     ExpState.Text = "实验暂停中...";
                     ExpInfo.Disabled = true;
                     Parameters.Disabled = true;
@@ -265,6 +278,7 @@ namespace Interface
                     ResetExp.Enabled = true;
                     break;
                 case ExperimentState.End:
+                    ExpId.Enabled = false;
                     ExpState.Text = "实验已结束";
                     ExpInfo.Disabled = true;
                     Parameters.Disabled = true;
@@ -281,19 +295,5 @@ namespace Interface
             }
         }
 
-        void Experiment_NextTurnReady(MarketInfo marketInfo)
-        {
-            Turn.Text = Experiment.Turn.ToString();
-        }
-        void Experiment_GraphicReady(GraphicInfo graphicInfo)
-        {
-            //throw new NotImplementedException();
-        }
-
-
-
-
-        
-        
     }
 }

@@ -101,7 +101,7 @@ namespace Econophysics
             _now.Returns = _agents.Sum(p => p.Value.Now.TradeStocks);
             _now.Volume = _agents.Sum(p => Math.Abs(p.Value.Now.TradeStocks));
             _priceList.RemoveAt(0);
-            _now.Price = Math.Round(_now.Price * Math.Exp(Experiment.Parameters.Market.Lambda * _now.Returns / _agents.Count), 2);
+            _now.Price = Math.Round(_now.Price * Math.Exp(Experiment.Parameters.Market.Lambda * _now.Returns / (_agents.Count + 1)), 2);
             _priceList.Add(_now.Price);
             updateState();
             foreach (Agent agent in _agents.Values)
