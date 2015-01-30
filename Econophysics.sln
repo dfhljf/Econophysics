@@ -15,6 +15,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{A3
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtractData", "ExtractData\ExtractData.csproj", "{63A772FD-7F66-4AD7-AB17-0446D65AC8C0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8840B2E5-F077-4E7B-B956-3A653E1F77DF} = {8840B2E5-F077-4E7B-B956-3A653E1F77DF}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{5B1F3D3D-9A02-4040-A2F0-7E207345595B}"
 EndProject
