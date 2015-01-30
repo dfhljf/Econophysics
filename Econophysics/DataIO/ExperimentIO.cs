@@ -30,7 +30,7 @@ namespace Econophysics
                 /// <param name="experimentId">实验编号</param>
                 /// <param name="parameters">实验参数</param>
                 /// <param name="comments">实验注释</param>
-                public void Write(int experimentId, Parameters parameters, string comments)
+                public void Write(int experimentId, Parameters parameters)
                 {
                     _sql = new MySqlCommand("insert into Parameters values(@Id,@MaxStock," +
                         "@PeriodOfUpdateDividend,@TradeFee,@Count,@Leverage,@Lambda," +
@@ -54,7 +54,7 @@ namespace Econophysics
                     _sql.Parameters.AddWithValue("@PeriodOfTurn", parameters.Experiment.PeriodOfTurn);
                     _sql.Parameters.AddWithValue("@MaxTurn", parameters.Experiment.MaxTurn);
                     _sql.Parameters.AddWithValue("@DateTime", DateTime.Now);
-                    _sql.Parameters.AddWithValue("@Comments", comments);
+                    _sql.Parameters.AddWithValue("@Comments", parameters.Experiment.Comments);
                     _sql.ExecuteNonQuery();
                     _conn.Close();
                 }
@@ -119,6 +119,9 @@ namespace Econophysics
                         para.Market.TransP = record.GetDouble("TransP");
                         para.Experiment.MaxTurn = record.GetInt32("MaxTurn");
                         para.Experiment.PeriodOfTurn = record.GetInt32("PeriodOfTurn");
+                        para.Experiment.StartTime = record.GetDateTime("StartTime");
+                        para.Experiment.Comments = record.GetString("Comments");
+                        
                         parameters.Add(record.GetInt32("Id"), para);
                     }
                     return parameters;
@@ -137,6 +140,7 @@ namespace Econophysics
                         mi.Returns = record.GetInt32("Returns");
                         mi.State = (MarketState)record.GetInt32("State");
                         mi.AverageEndowment = record.GetDouble("AverageEndowment");
+                        mi.Volume = record.GetInt32("Volume");
                         market.Add(mk, mi);
                     }
                     return market;

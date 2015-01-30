@@ -7,18 +7,22 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Econophysics", "Econophysic
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interface", "Interface\Interface.csproj", "{4875E127-449A-4795-90FE-82E04C57963C}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A3E459A2-7E7D-4C50-BC01-AF6030467CA1}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{A3E459A2-7E7D-4C50-BC01-AF6030467CA1}"
 	ProjectSection(SolutionItems) = preProject
-		DeleteAllEntry.sql = DeleteAllEntry.sql
-		DropDatebase.sql = DropDatebase.sql
-		InitialDatabase.sql = InitialDatabase.sql
-		ReadMe.md = ReadMe.md
-		TODO.MD = TODO.MD
+		Deploy\DeleteAllEntry.sql = Deploy\DeleteAllEntry.sql
+		Deploy\DropDatebase.sql = Deploy\DropDatebase.sql
+		Deploy\InitialDatabase.sql = Deploy\InitialDatabase.sql
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtractData", "ExtractData\ExtractData.csproj", "{63A772FD-7F66-4AD7-AB17-0446D65AC8C0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{5B1F3D3D-9A02-4040-A2F0-7E207345595B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ReadMe", "ReadMe", "{443BCC4A-34CA-4ADA-8EEE-3F31909DECE8}"
+	ProjectSection(SolutionItems) = preProject
+		ReadMe.md = ReadMe.md
+		TODO.MD = TODO.MD
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

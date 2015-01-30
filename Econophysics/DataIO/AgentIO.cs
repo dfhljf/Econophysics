@@ -4,11 +4,10 @@ using System.Text;
 using MySql.Data;
 using MySql.Data.MySqlClient;
 using System.Collections;
-using Econophysics.Type;
 
 namespace Econophysics
 {
-    //using Type;
+    using Type;
     namespace DataIO
     {
         namespace Mysql
