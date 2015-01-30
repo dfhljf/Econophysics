@@ -27,7 +27,7 @@ namespace Interface
 
         protected void Timer1_Tick(object sender, EventArgs e)
         {
-            Experiment.SetTimeTick();
+            Experiment.setTimeTick();
             TimeTick.Text = Experiment.TimeTick.ToString();
         }
     }

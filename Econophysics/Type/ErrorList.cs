@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Type;
 
 namespace Econophysics
 {
@@ -10,7 +9,7 @@ namespace Econophysics
         /// <summary>
         /// 错误列表，包含所有错误信息
         /// </summary>
-        public class ErrorList
+        public static class ErrorList
         {
             /// <summary>
             /// 错误：现金不足

@@ -8,21 +8,8 @@ namespace Econophysics
 {
     using Type;
     using DataIO.Mysql;
-    /// <summary>
-    /// 实验状态改变触发的事件委托
-    /// </summary>
-    /// <param name="state">当前的事件状态</param>
-    public delegate void ExperimentStateChangedDelegate(ExperimentState state);
-    /// <summary>
-    /// 开始新一轮实验触发的事件委托
-    /// </summary>
-    /// <param name="marketInfo">当前的市场信息</param>
-    public delegate void ExperimentNextTurnDelegate(MarketInfo marketInfo);
-    /// <summary>
-    /// 图像准备好触发的事件委托
-    /// </summary>
-    /// <param name="graphicInfo">图像信息</param>
-    public delegate void GraphicReadyDelegate(GraphicInfo graphicInfo);
+    using System.Timers;
+
     /// <summary>
     /// 实验静态类
     /// </summary>
@@ -70,16 +57,12 @@ namespace Econophysics
         /// 获取随机数
         /// </summary>
         public static double Random { get { return _random.NextDouble(); } }
-        public static event GraphicReadyDelegate GraphicReady;
-        public static event ExperimentNextTurnDelegate NextTurnReady;
-        public static event ExperimentStateChangedDelegate StateChanged;
-
         /// <summary>
-        /// 市场情况
+        /// 实验市场
         /// </summary>
-        internal static Market _market;
+        public static Market Market { get { return _market; } }
 
-
+        private static Market _market;
         private static int _index;
         private static int _turn;
         private static ExperimentState _state;
@@ -87,15 +70,21 @@ namespace Econophysics
         private static Random _random;
         private static ExperimentIO _experimentIO;
         private static int _timeTick;
+        private static Timer _timer; 
 
         static Experiment()
         {
-            _agents = new ConcurrentDictionary<int,Agent>();
             _pauseList = new Hashtable();
             _experimentIO = new ExperimentIO();
             _state = ExperimentState.Unbuilded;
-            stateChanged(_state);
+            _timer = new Timer();
         }
+        /// <summary>
+        /// 建立实验
+        /// </summary>
+        /// <param name="parameters">实验参数</param>
+        /// <param name="expId">实验编号，0表示新建实验</param>
+        /// <returns>实验状态<see cref="Econophysics.Type.ExperimentState"/></returns>
         public static ExperimentState Build(Parameters parameters,int expId=0)
         {
             if (_state!=ExperimentState.Unbuilded)
@@ -106,7 +95,6 @@ namespace Econophysics
             _index = _experimentIO.Read() + 1;
             Parameters = parameters;
             _market = new Market();
-            _priceGraph = new Graphic();
             _timeTick = Parameters.Experiment.PeriodOfTurn;
             _turn = parameters.Experiment.StartTurn;
             if (expId != 0)
@@ -119,10 +107,13 @@ namespace Econophysics
                 }
             }
             _state = ExperimentState.Builded;
-            stateChanged(_state);
             return _state;
         }
-        public static ExperimentState Start(string comments = "")
+        /// <summary>
+        /// 开始实验
+        /// </summary>
+        /// <returns>实验状态<see cref="Econophysics.Type.ExperimentState"/></returns>
+        public static ExperimentState Start()
         {
             if (_state != ExperimentState.Builded)
             {
@@ -130,10 +121,12 @@ namespace Econophysics
             }
             try
             {
-                store(comments);
+                store();
                 _state = ExperimentState.Running;
-                stateChanged(_state);
                 nextTurn();
+                _timer.Interval = 1000;
+                _timer.Elapsed += setTimeTick;
+                _timer.Start();
                 return _state;
             }
             catch (Exception)
@@ -141,24 +134,11 @@ namespace Econophysics
                 throw;
             }
         }
-        public static ExperimentState SetTimeTick()
-        {
-            switch (_state)
-            {
-                case ExperimentState.Running:
-                    _timeTick--;
-                    if (_timeTick == 0)
-                    {
-                        nextTurn();
-                    }
-                    return _state;
-                case ExperimentState.Pause:
-                    _timeTick++;
-                    return _state;
-                default:
-                    return _state;
-            }
-        }
+        /// <summary>
+        /// 添加暂停
+        /// </summary>
+        /// <param name="turn">在本轮开始时暂停</param>
+        /// <returns>是否成功</returns>
         public static bool AddPause(int turn)
         {
             if (_state==ExperimentState.Unbuilded)
@@ -191,9 +171,7 @@ namespace Econophysics
             }
             RemovePause(_turn);
             _timeTick = Parameters.Experiment.PeriodOfTurn - 1;
-            //_startTime = DateTime.Now;
             _state = ExperimentState.Running;
-            stateChanged(_state);
             return _state;
         }
         public static ExperimentState Reset()
@@ -203,8 +181,7 @@ namespace Econophysics
                 return _state;
             }
             _state = ExperimentState.Unbuilded;
-            stateChanged(_state);
-            _agents.Clear();
+            _market.Agents.Clear();
             _pauseList.Clear();
 
             return _state;
@@ -235,17 +212,14 @@ namespace Econophysics
             }
             return rtn;
         }
-        public static MarketInfo GetMarketInfo()
-        {
-            return _market.GetInfo();
-        }
+
         public static bool AddAgent(int id)
         {
             if (_state==ExperimentState.Unbuilded||_state==ExperimentState.End)
             {
                 throw ErrorList.NotAllowLogin;
             }
-            return _agents.TryAdd(id, new Agent(id));
+            return _market.Agents.TryAdd(id, new Agent(id));
         }
         public static void Trade(int agentId, int tradeStocks)
         {
@@ -253,7 +227,7 @@ namespace Econophysics
             {
                 throw ErrorList.ExperimentNotRun;
             }
-            if (!_agents.ContainsKey(agentId))
+            if (!_market.Agents.ContainsKey(agentId))
             {
                 throw ErrorList.UserNotExist;
             }
@@ -263,66 +237,39 @@ namespace Econophysics
             }
             try
             {
-                (_agents[agentId]).Trade(tradeStocks);
+                _market.Agents[agentId].Trade(tradeStocks);
             }
             catch (Exception)
             {
                 throw;
             }
         }
-        public static AgentInfo GetAgentInfo(int id)
+        private static void setTimeTick(object sender, ElapsedEventArgs e)
         {
-            if (!_agents.ContainsKey(id))
+            switch (_state)
             {
-                throw ErrorList.UserNotExist;
-            }
-            return _agents[id].GetInfo();
-        }
-        private static void stateChanged(ExperimentState state)
-        {
-            if (StateChanged != null)
-            {
-                StateChanged(state);
-            }
-        }
-        private static void nextTurnReady(MarketInfo marketInfo)
-        {
-            if (NextTurnReady != null)
-            {
-                NextTurnReady(marketInfo);
+                case ExperimentState.Running:
+                    _timeTick--;
+                    if (_timeTick == 0)
+                    {
+                        nextTurn();
+                    }
+                    break;
+                case ExperimentState.Pause:
+                    _timeTick++;
+                    break;
+                default:
+                    break;
             }
         }
-        private static void graphicReady(GraphicInfo graphicInfo)
+        private static void store()
         {
-            if (GraphicReady != null)
-            {
-                GraphicReady(graphicInfo);
-            }
-        }
-        private static void store(string comments)
-        {
-            _experimentIO.Write(_index, Parameters, comments);
+            _experimentIO.Write(_index, Parameters);
         }
         private static void nextTurn()
         {
-            if (_state != ExperimentState.Running)
-            {
-                return;
-            }
             _state = ExperimentState.Suspend;
-            stateChanged(_state);
-            bool notAllowToNext;
-            do
-            {
-                notAllowToNext = false;
-                foreach (Agent agent in _agents.Values)
-                {
-                    notAllowToNext = (agent._isTrading || notAllowToNext);
-                }
-            } while (notAllowToNext);
             _market.SyncUpdate();
-            _priceGraph.Draw();
-            graphicReady(_priceGraph.getInfo());
             if (_turn == Parameters.Experiment.MaxTurn)
             {
                 exit();
@@ -331,17 +278,10 @@ namespace Econophysics
             _turn++;
             _timeTick = (_pauseList.ContainsKey(_turn)) ? 0 : Parameters.Experiment.PeriodOfTurn;
             _state = (_pauseList.ContainsKey(_turn)) ? ExperimentState.Pause : ExperimentState.Running;
-            stateChanged(_state);
-            nextTurnReady(_market.GetInfo());
         }
         private static void exit()
         {
-            if (_state != ExperimentState.Suspend)
-            {
-                return;
-            }
             _state = ExperimentState.End;
-            stateChanged(_state);
         }
     }
 }

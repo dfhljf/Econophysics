@@ -30,6 +30,7 @@ State int not null,
 Returns int not null,
 NumberOfPeople int not null,
 AverageEndowment double not null,
+Volume int not null,
 primary key(ExperimentId,Turn),
 foreign key (ExperimentId) references Parameters(Id) on delete cascade on update cascade
 );

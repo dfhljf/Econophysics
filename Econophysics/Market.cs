@@ -8,26 +8,32 @@ namespace Econophysics
 {
     using Type;
     using DataIO.Mysql;
-
-    internal class Market
+    /// <summary>
+    /// 市场
+    /// </summary>
+    public class Market
     {
         /// <summary>
-        /// 价格列表，数量由<see cref="Parameters.Market.Count"></see>确定
+        /// 当前市场状态
         /// </summary>
-        internal List<double> PriceList { get { return _priceList; } }
-        public MarketInfo Now 
-        { 
-            get 
-            { 
-                _now.NumberOfPeople = _agents.Count; 
-                return _now; 
-            } 
+        public MarketInfo Now
+        {
+            get
+            {
+                _now.NumberOfPeople = _agents.Count;
+                return _now;
+            }
         }
         /// <summary>
-        /// 所有代理人
+        /// 市场中的代理人
         /// </summary>
-        internal static ConcurrentDictionary<int, Agent> _agents;
-        private static Graphic _Graph;
+        public ConcurrentDictionary<int, Agent> Agents { get { return _agents; } }
+        /// <summary>
+        /// 价格列表，数量由<see cref="Type.Para.Market.Count"/>确定
+        /// </summary>
+        internal List<double> PriceList { get { return _priceList; } }
+        internal ConcurrentDictionary<int, Agent> _agents;
+        private Graphic _graph;
         private MarketInfo _now;
         private List<double> _priceList;
         private MarketIO _marketIO;
@@ -35,7 +41,7 @@ namespace Econophysics
         internal Market()
         {
             _agents = new ConcurrentDictionary<int, Agent>();
-            _Graph = new Graphic();
+            _graph = new Graphic();
             MarketInfo init = Experiment.Parameters.Market.Init;
             _now = new MarketInfo
             {
@@ -56,26 +62,21 @@ namespace Econophysics
 
         internal void SyncUpdate()
         {
-            updatePrice();
-            updateState();
-
-            foreach (Agent agent in _agents.Values)
-            {
-                agent.GetDividend();
-            }
+            updateMarket();
 
             getAgentsOrder();
             getAverageEndowment();
             store();
+            _graph.Draw();
         }
 
         private void getAgentsOrder()
         {
-            var orderedAgents = _agents.OrderByDescending(p => p.Value._now.Endowment);
+            var orderedAgents = _agents.OrderByDescending(p => p.Value.Now.Endowment);
             int i = 1;
             foreach (var agent in orderedAgents)
             {
-                _agents[agent.Key]._now.Order = i++;
+                _agents[agent.Key].Now.Order = i++;
             }
         }
 
@@ -83,33 +84,30 @@ namespace Econophysics
         {
             if (!_agents.IsEmpty)
             {
-                _now.AverageEndowment = _agents.Average(p => p.Value._now.Endowment);
+                _now.AverageEndowment = _agents.Average(p => p.Value.Now.Endowment);
             }  
         }
         private void store()
         {
             _now.NumberOfPeople = _agents.Count;
-            _marketIO.Write(getKey(),_now);
+            _marketIO.Write(getKey(),Now);
             foreach (Agent agent in _agents.Values)
             {
-                agent.Store();
+                agent.store();
             }
         }
-        private void updatePrice()
+        private void updateMarket()
         {
-            _now.Returns=getReturns();
+            _now.Returns = _agents.Sum(p => p.Value.Now.TradeStocks);
+            _now.Volume = _agents.Sum(p => Math.Abs(p.Value.Now.TradeStocks));
             _priceList.RemoveAt(0);
-            _now.Price = Math.Round(_now.Price * Math.Exp(Experiment.Parameters.Market.Lambda * _now.Returns / (_agents.Count + 1)), 2);
+            _now.Price = Math.Round(_now.Price * Math.Exp(Experiment.Parameters.Market.Lambda * _now.Returns / _agents.Count), 2);
             _priceList.Add(_now.Price);
-        }
-        private int getReturns()
-        {
-            int returns = 0;
+            updateState();
             foreach (Agent agent in _agents.Values)
             {
-                returns += agent._now.TradeStocks;
+                agent.syncUpdate();
             }
-            return returns;
         }
         private void updateState()
         {

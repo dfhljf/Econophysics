@@ -39,7 +39,7 @@ namespace Econophysics
             PointF unitVector;
             int priceGapNumber;
             int basePrice;
-            List<double> priceList = Experiment._market.PriceList;/*new List<double>();
+            List<double> priceList = Experiment.Market.PriceList;/*new List<double>();
             for (int i = 0; i < 50; i++)
             {
                 priceList.Add(100 * Math.Sin(i));

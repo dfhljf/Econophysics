@@ -31,7 +31,7 @@ namespace Interface
         {
             int timeTick = Experiment.TimeTick;
             TimeTick.Text = (timeTick == -1) ? "未开始计时" : (timeTick - 1).ToString();
-            Experiment.SetTimeTick();
+            Experiment.setTimeTick();
             refreshInterface(Experiment.State);
         }
         protected void BuildExp_Click(object sender, EventArgs e)

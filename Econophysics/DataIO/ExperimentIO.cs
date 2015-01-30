@@ -29,7 +29,6 @@ namespace Econophysics
                 /// </summary>
                 /// <param name="experimentId">实验编号</param>
                 /// <param name="parameters">实验参数</param>
-                /// <param name="comments">实验注释</param>
                 public void Write(int experimentId, Parameters parameters)
                 {
                     _sql = new MySqlCommand("insert into Parameters values(@Id,@MaxStock," +
