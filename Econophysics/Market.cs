@@ -20,7 +20,7 @@ namespace Econophysics
         {
             get
             {
-                _now.NumberOfPeople = _agents.Count;
+                _now.NumberOfPeople = _agents.Count(p=>p.Value.IsOnline);
                 return _now;
             }
         }

@@ -78,6 +78,8 @@ namespace Econophysics
             _experimentIO = new ExperimentIO();
             _state = ExperimentState.Unbuilded;
             _timer = new Timer();
+            _timer.Interval = 1000;
+            _timer.Elapsed += setTimeTick;
         }
         /// <summary>
         /// 建立实验
@@ -124,8 +126,6 @@ namespace Econophysics
                 store();
                 _state = ExperimentState.Running;
                 nextTurn();
-                _timer.Interval = 1000;
-                _timer.Elapsed += setTimeTick;
                 _timer.Start();
                 return _state;
             }
@@ -212,14 +212,32 @@ namespace Econophysics
             }
             return rtn;
         }
-
+        /// <summary>
+        /// 添加代理人
+        /// </summary>
+        /// <param name="id">代理人编号</param>
+        /// <returns>true 表示正常登陆，false 表示已经存在自动登陆</returns>
         public static bool AddAgent(int id)
         {
             if (_state==ExperimentState.Unbuilded||_state==ExperimentState.End)
             {
                 throw ErrorList.NotAllowLogin;
             }
-            return _market.Agents.TryAdd(id, new Agent(id));
+            if (Market.Agents.ContainsKey(id))
+            {
+                Market.Agents[id].Login();
+                return false;
+            }
+            try
+            {
+                   _market.Agents.TryAdd(id, new Agent(id));
+                   return false;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            
         }
         public static void Trade(int agentId, int tradeStocks)
         {
@@ -282,6 +300,7 @@ namespace Econophysics
         private static void exit()
         {
             _state = ExperimentState.End;
+            _timer.Stop();
         }
     }
 }

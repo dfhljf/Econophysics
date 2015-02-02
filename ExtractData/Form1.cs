@@ -6,8 +6,8 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-using Econophysics;
 using Econophysics.Type;
+using Econophysics.DataIO.Mysql;
 
 namespace ExtractData
 {
@@ -21,7 +21,9 @@ namespace ExtractData
         private void Form1_Load(object sender, EventArgs e)
         {
             Hashtable eht = new Hashtable();
-            eht=
+            ExperimentIO ei = new ExperimentIO();
+            eht = ei.Read("select * from parameters");
+            
         }
     }
 }

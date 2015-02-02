@@ -20,6 +20,10 @@ namespace Econophysics
         /// </summary>
         public bool IsTrade { get { lock (_lockThis) { return _isTrade; } } }
         /// <summary>
+        /// 是否在线
+        /// </summary>
+        public bool IsOnline { get { lock (_lockThis) { return _isOnline; } } }
+        /// <summary>
         /// 当前代理人的信息
         /// </summary>
         public AgentInfo Now { get { lock (_lockThis) { return _now; } } }
@@ -27,6 +31,7 @@ namespace Econophysics
         private AgentIO _agentIO;
         private int _index;
         private bool _isTrade;
+        private bool _isOnline;
         private object _lockThis;
 
         /// <summary>
@@ -48,6 +53,7 @@ namespace Econophysics
 
             _index = id;
             _isTrade = false;
+            _isOnline = false;
             _lockThis = new object();
             _agentIO = new AgentIO();
         }
@@ -75,6 +81,20 @@ namespace Econophysics
                 updateEndowment();
                 _now.TradeStocks = tradeStocks;
                 _isTrade = true;
+            }
+        }
+        public void Login()
+        {
+            lock (_lockThis)
+            {
+                _isOnline = true;
+            }
+        }
+        public void Logout()
+        {
+            lock (_lockThis)
+            {
+                _isOnline = false;
             }
         }
         internal void syncUpdate()
