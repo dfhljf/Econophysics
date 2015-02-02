@@ -62,7 +62,7 @@ namespace Econophysics
 
         internal void SyncUpdate()
         {
-            updateMarket();
+            //updateMarket();
 
             getAgentsOrder();
             getAverageEndowment();

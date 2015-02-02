@@ -6,9 +6,6 @@ using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
 using System.Collections;
 using Econophysics;
-using Svg;
-using Svg.Pathing;
-using Svg.DataTypes;
 using Econophysics.Type;
 using Econophysics.DataIO.Mysql;
 using System.Threading;
@@ -19,13 +16,17 @@ namespace Test
     {
         static void Main(string[] args)
         {
-            testExperiment();
+            testGraphic();
         }
         private static void testConcurrent()
         {
 
         }
         private static void testGraphic()
+        {
+
+        }
+        /*private static void testGraphic()
         {
             int _width = 900;
             int _height = 500;
@@ -127,7 +128,7 @@ namespace Test
                 group.Children.Add(new SvgText { Text = string.Format("本轮价格：{0:F2}", priceList[priceList.Count - 1]), FontFamily = fontFamily, FontSize = new SvgUnit(SvgUnitType.Point, 20), FontWeight = SvgFontWeight.bold, X = origin.X + priceList.Count * unitVector.X / 2 - 100, Y = origin.Y - 200 });
            
             string x=s.GetXML();
-        }
+        }*/
         private static void testExperiment()
         {
             Parameters p;
