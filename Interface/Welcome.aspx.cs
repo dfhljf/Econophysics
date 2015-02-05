@@ -12,17 +12,35 @@ namespace Interface
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            try
+            {
+            login();
+            }
+            catch(Exception)
+            {
+
+            }
 
         }
 
         protected void Login_Click(object sender, EventArgs e)
         {
+            //Convert.ToInt32(HttpContext.Current.Request.UserHostAddress.Split('.').Last()
             try
             {
-            if (Experiment.AddAgent(Convert.ToInt32(HttpContext.Current.Request.UserHostAddress.Split('.').Last())))
-            {
-                Response.Redirect("Client.aspx");
+                login();
             }
+            catch (Exception err)
+            {
+                LoginInfo.Text = err.Message;
+            }
+        }
+        private void login()
+        {
+            try
+            {
+                Experiment.AddAgent(1);
+                Response.Redirect("Client.aspx");
             }
             catch (Exception)
             {

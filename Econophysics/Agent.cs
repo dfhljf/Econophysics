@@ -38,7 +38,7 @@ namespace Econophysics
         /// 创建一个代理人对象实例
         /// </summary>
         /// <param name="id">代理人编号</param>
-        public Agent(int id)
+        internal Agent(int id)
         {
             AgentInfo init = Experiment.Parameters.Agent.Init;
             _now = new AgentInfo
@@ -61,7 +61,7 @@ namespace Econophysics
         /// 代理人交易
         /// </summary>
         /// <param name="tradeStocks">交易股票数量，大于0买，小于0卖</param>
-        public void Trade(int tradeStocks)
+        internal void Trade(int tradeStocks)
         {
             lock (_lockThis)
             {
@@ -83,14 +83,14 @@ namespace Econophysics
                 _isTrade = true;
             }
         }
-        public void Login()
+        internal void Login()
         {
             lock (_lockThis)
             {
                 _isOnline = true;
             }
         }
-        public void Logout()
+        internal void Logout()
         {
             lock (_lockThis)
             {

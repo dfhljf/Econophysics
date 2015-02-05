@@ -14,7 +14,7 @@
         <div>
             <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                 <ContentTemplate>
-
+                    
                     <table>
                         <tr>
                             <td>编号</td>
@@ -24,14 +24,14 @@
                         </tr>
                     </table>
 
-                    <div id="ExpInfo" runat="server">
-                        <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
+                    <span id="ExpInfo" runat="server">
+                        <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional" RenderMode="Inline">
                             <ContentTemplate>
                                 <table>
                                     <tr>
                                         <td>状态</td>
-                                        <td>
-                                            <asp:Label ID="ExpState" runat="server"></asp:Label></td>
+                                        <td><asp:Label ID="ExpState" runat="server"></asp:Label>
+                                            </td>
                                     </tr>
                                     <tr>
                                         <td>轮次</td>
@@ -50,10 +50,14 @@
                                         <td>
                                             <asp:Label ID="NumberOfPeople" runat="server"></asp:Label></td>
                                     </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td id="PriceImage" runat="server"></td>
+                                        </tr>
                                 </table>
                             </ContentTemplate>
                         </asp:UpdatePanel>
-                    </div>
+                    </span>
                     <div id="Parameters" runat="server">
                         <table id="Agent">
                             <tr>

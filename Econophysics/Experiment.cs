@@ -216,8 +216,7 @@ namespace Econophysics
         /// 添加代理人
         /// </summary>
         /// <param name="id">代理人编号</param>
-        /// <returns>true 表示正常登陆，false 表示已经存在自动登陆</returns>
-        public static bool AddAgent(int id)
+        public static void AddAgent(int id)
         {
             if (_state==ExperimentState.Unbuilded||_state==ExperimentState.End)
             {
@@ -226,12 +225,10 @@ namespace Econophysics
             if (Market.Agents.ContainsKey(id))
             {
                 Market.Agents[id].Login();
-                return false;
             }
             try
             {
                    _market.Agents.TryAdd(id, new Agent(id));
-                   return false;
             }
             catch (Exception)
             {

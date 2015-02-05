@@ -31,13 +31,13 @@ namespace Interface {
         protected global::System.Web.UI.ScriptManager ScriptManager1;
         
         /// <summary>
-        /// expinfo 控件。
+        /// ExpInfo 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl expinfo;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl ExpInfo;
         
         /// <summary>
         /// UpdatePanel1 控件。
@@ -58,138 +58,138 @@ namespace Interface {
         protected global::System.Web.UI.Timer Timer1;
         
         /// <summary>
-        /// id 控件。
+        /// Id 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label id;
+        protected global::System.Web.UI.WebControls.Label Id;
         
         /// <summary>
-        /// turn 控件。
+        /// Turn 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label turn;
+        protected global::System.Web.UI.WebControls.Label Turn;
         
         /// <summary>
-        /// time 控件。
+        /// TimeTick 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label time;
+        protected global::System.Web.UI.WebControls.Label TimeTick;
         
         /// <summary>
-        /// cash 控件。
+        /// Cash 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label cash;
+        protected global::System.Web.UI.WebControls.Label Cash;
         
         /// <summary>
-        /// stocks 控件。
+        /// Stocks 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label stocks;
+        protected global::System.Web.UI.WebControls.Label Stocks;
         
         /// <summary>
-        /// endowment 控件。
+        /// Endowment 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label endowment;
+        protected global::System.Web.UI.WebControls.Label Endowment;
         
         /// <summary>
-        /// priceimage 控件。
+        /// PriceImage 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl priceimage;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl PriceImage;
         
         /// <summary>
-        /// dividend 控件。
+        /// Dividend 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label dividend;
+        protected global::System.Web.UI.WebControls.Label Dividend;
         
         /// <summary>
-        /// dividendtime 控件。
+        /// DividendTime 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label dividendtime;
+        protected global::System.Web.UI.WebControls.Label DividendTime;
         
         /// <summary>
-        /// dividendincome 控件。
+        /// DividendIncome 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label dividendincome;
+        protected global::System.Web.UI.WebControls.Label DividendIncome;
         
         /// <summary>
-        /// maxstocks 控件。
+        /// MaxStocks 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label maxstocks;
+        protected global::System.Web.UI.WebControls.Label MaxStocks;
         
         /// <summary>
-        /// tradeStocks 控件。
+        /// TradeStocks 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tradeStocks;
+        protected global::System.Web.UI.WebControls.TextBox TradeStocks;
         
         /// <summary>
-        /// tradefee 控件。
+        /// TradeFee 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label tradefee;
+        protected global::System.Web.UI.WebControls.Label TradeFee;
         
         /// <summary>
-        /// sell 控件。
+        /// Sell 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button sell;
+        protected global::System.Web.UI.WebControls.Button Sell;
         
         /// <summary>
-        /// buy 控件。
+        /// Buy 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button buy;
+        protected global::System.Web.UI.WebControls.Button Buy;
     }
 }

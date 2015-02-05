@@ -10,7 +10,7 @@
 <body>
     <form id="form1" runat="server">
     <div>
-    
+    <asp:Label ID="LoginInfo" runat="server"></asp:Label>
         <asp:Button ID="Login" runat="server" Text="登陆" OnClick="Login_Click"/>
     
     </div>
