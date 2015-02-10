@@ -7,158 +7,88 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title></title>
     <style type="text/css">
-        .title {
-            height: 10%;
-            text-align: center;
-            background-color: #333333;
-            font-size: x-large;
+        html, body, form#form1 {
+            height: 100%;
         }
 
-        .id {
-            width: 8%;
-            text-align: center;
-            font-size: x-large;
-            background-color: #FFCCFF;
-        }
-
-        .period {
-            width: 26%;
-            text-align: center;
-            font-size: x-large;
-            background-color: #FFCCFF;
-        }
-
-        .cash {
-            width: 13%;
-            text-align: center;
-            font-size: x-large;
-            background-color: #FFFF99;
-        }
-
-        .dividend {
-            height: 20%;
-            text-align: center;
-            font-size: xx-large;
-            background-color: #99CCFF;
-        }
-
-        .dividend_income {
-            height: 15%;
-            text-align: center;
-            font-size: x-large;
-            background-color: #99CCFF;
-        }
-
-        .dividend_time {
-            text-align: center;
-            font-size: x-large;
-            background-color: #99CCFF;
-        }
-
-        .trade {
-            height: 21%;
-            width: 123px;
-            text-align: center;
-            font-size: x-large;
-            background-color: #99FF99;
-        }
-
-        .buy {
-            height: 15%;
-            text-align: center;
-            font-size: x-large;
-            background-color: #99FF99;
-        }
-
-        .tradestocks {
-            text-align: center;
-            font-family: 'Microsoft YaHei';
-            height: 15%;
-            width: 60%;
+        li, ul {
+            float: left;
         }
     </style>
 </head>
 <body>
-    <form id="form1" runat="server">
-        <div>
+    <form id="form1" runat="server" style="font-family: 'Microsoft YaHei'">
+        <div style="height: 100%; width: 100%;">
             <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+            <asp:UpdatePanel ID="UpdatePanel1" UpdateMode="Conditional" runat="server">
+                <ContentTemplate>
+                    <asp:Timer ID="Timer1" runat="server" Interval="1000" OnTick="Timer1_Tick"></asp:Timer>
 
-            <table style="width: 100%; height: 10%;">
-                <tr>
-                    <td class="title" colspan="7"><strong>
-                        <label id="ExpInfo" runat="server"></label>
-                    </strong></td>
-                </tr>
-            </table>
-            <table style="width: 100%; height: 20%;">
-                                    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-                        <ContentTemplate>
-                <tr>
+                    <div style="width: 100%; height: 10%; text-align: center; background-color: #333333; font-size: x-large;">
+                        <asp:Label ID="ExpInfo" runat="server">Label</asp:Label>
+                    </div>
+                    <ul style="list-style: none; height: 20%; width: 100%; margin: 0 0 0 0; padding: 0 0 0 0; text-align: center; font-size: x-large; border-top: solid; border-color: white; border-width: 2px;">
+                        <li style="width: 10%; background-color: #FFCCFF;">编号<br />
+                            <asp:Label ID="Id" runat="server" Text="Label"></asp:Label>
+                        </li>
+                        <li style="width: 20%; background-color: #FFCCFF;">轮次<br />
+                            <asp:Label ID="Turn" runat="server" Text="Label"></asp:Label>
+                        </li>
+                        <li style="width: 20%; background-color: #FFCCFF;">倒计时<br />
+                            <asp:Label ID="TimeTick" runat="server" Text="Label" Style="color: red; font-weight: bold;"></asp:Label></li>
+                        <li style="width: 20%; background-color: #FFFF99;">现金<br />
+                            <asp:Label ID="Cash" runat="server" Text="Label"></asp:Label></li>
+                        <li style="width: 20%; background-color: #FFFF99;">股票<br />
+                            <asp:Label ID="Stocks" runat="server" Text="Label"></asp:Label></li>
+                        <li style="width: 10%; background-color: #FFFF99;">总资产<br />
+                            <asp:Label ID="Endowment" runat="server" Text="Label"></asp:Label></li>
+                    </ul>
 
-                            <asp:Timer ID="Timer1" runat="server" Interval="1000" OnTick="Timer1_Tick"></asp:Timer>
-                            <td class="id">编号<br />
-                                <asp:Label ID="Id" runat="server"></asp:Label>
+                    <table id="PriceImage" runat="server" style="float: left;">
+                        <tr>
+                            <td>
+                                <object data="PriceImage.svg" width="900" height="500" type="image/svg+xml" />
                             </td>
-                            <td class="period">轮次<br />
-                                <asp:Label ID="Turn" runat="server"></asp:Label>
-                            </td>
-                            <td class="period">倒计时<br />
-                                <asp:Label ID="TimeTick" runat="server" Style="color: red; font-weight: bold;"></asp:Label></td>
+                        </tr>
+                    </table>
 
-
-                    <td class="cash">现金<br />
-                        <asp:Label ID="Cash" runat="server" Text="Label"></asp:Label></td>
-                    <td class="cash" colspan="2">股票<br />
-                        <asp:Label ID="Stocks" runat="server" Text="Label"></asp:Label></td>
-                    <td class="cash">总资产<br />
-                        <asp:Label ID="Endowment" runat="server" Text="Label"></asp:Label></td>
-                </tr>
-                <tr>
-                    <td colspan="3" rowspan="4">
-                        <div id="PriceImage" runat="server">
-                            
-                        </div>
-                    </td>
-                    <td class="dividend" colspan="3"><strong>分红比例<br />
-                        <asp:Label ID="Dividend" runat="server" Text="Label" Style="color: red; font-weight: bold;"></asp:Label></strong></td>
-                    <td class="dividend_time" rowspan="2">分红持续<br />
+                    <div style="float: left; height: 30%; width: 15%; text-align: center; font-size: xx-large; background-color: #99CCFF; padding: 6% 1% 6% 1%;">
+                        <strong>分红比例<br />
+                            <asp:Label ID="Dividend" runat="server" Text="Label" Style="color: red; font-weight: bold;"></asp:Label></strong>
+                    </div>
+                    <div style="float: left; height: 30%; width: 13%; text-align: center; font-size: x-large; background-color: #99CCFF; padding: 1.5% 1% 1.5% 1%;">
+                        分红持续<br />
                         轮数<br />
-                        <asp:Label runat="server" ID="DividendTime"></asp:Label>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="dividend_income" colspan="3" id="auto-style2">下一轮分红收入<br />
-                        <asp:Label runat="server" ID="DividendIncome" />
-                    </td>
-                </tr>
-                                
-                                                                                </ContentTemplate>
-                                        <%--<Triggers>
-                                            <asp:AsyncPostBackTrigger ControlID="Buy" EventName="Buy_Click" />
-                                            <asp:AsyncPostBackTrigger ControlID="Sell" EventName="Sell_Click" />
-                                        </Triggers>--%>
-                    </asp:UpdatePanel>
-                
-                <tr class="trade">
-                    <td>最大交易数<br />
-                        <asp:Label runat="server" ID="MaxStocks" />
-                    </td>
+                        <asp:Label runat="server" ID="DividendTime" Text="Label"></asp:Label>
+                    </div>
 
-                    <td colspan="2">交易数量<br />
-                        <asp:TextBox ID="TradeStocks" runat="server" Height="36px" Font-Size="X-Large" CssClass="tradestocks"></asp:TextBox></td>
-                    <td>交易费<br />
-                        <asp:Label runat="server" ID="TradeFee" />
-                    </td>
-                </tr>
-                <tr class="buy">
-                    <td colspan="2">
-                        <asp:Button ID="Sell" runat="server" Text="卖" OnClick="Sell_Click" AccessKey="-" Height="80%" Style="font-size: x-large; font-weight: 700; font-family: 'Microsoft YaHei'; background-color: #6699FF" Width="164px" /></td>
-                    <td colspan="2">
-                        <asp:Button ID="Buy" runat="server" Text="买" OnClick="Buy_Click" AccessKey="+" Height="80%" Style="font-size: x-large; font-weight: 700; font-family: 'Microsoft YaHei'; background-color: #FF5050" Width="164px" /></td>
-                </tr>
-                
-            </table>
+                    <div style="float: left; width: 13%; text-align: center; font-size: x-large; background-color: #99CCFF; padding: 1.5% 1% 1.9% 1%;">
+                        下一轮分红收入<br />
+                        <asp:Label runat="server" ID="DividendIncome" Text="Label" />
+                    </div>
+                </ContentTemplate>
+                <Triggers>
+                                            <asp:AsyncPostBackTrigger ControlID="Buy" EventName="Click" />
+                                            <asp:AsyncPostBackTrigger ControlID="Sell" EventName="Click" />
+                                        </Triggers>
+            </asp:UpdatePanel>
 
+            <ul style="list-style: none; height: 15%; width: 32%; margin: 0 0 0 0; padding: 3% 0 0 0; text-align: center; font-size: x-large; background-color: #99FF99;">
+                <li style="width: 30%;">最大交易数<br />
+                    <asp:Label runat="server" ID="MaxStocks" Text="Label" />
+                </li>
+
+                <li style="width: 40%;">交易数量<br />
+                    <asp:TextBox ID="TradeStocks" runat="server" Text="Label" Font-Size="X-Large" Width="80%"></asp:TextBox></li>
+                <li style="width: 30%;">交易费<br />
+                    <asp:Label runat="server" ID="TradeFee" Text="Label" />
+                </li>
+            </ul>
+            <div style="height: 15%; width: 32%; float: left; background-color: #99FF99;">
+                <asp:Button ID="Sell" runat="server" Text="卖" OnClick="Sell_Click" AccessKey="-" Height="80%" BackColor="#6699FF" Width="45%" Font-Size="X-Large" Style="margin: 2% 0 0 3%;" />
+                <asp:Button ID="Buy" runat="server" Text="买" OnClick="Buy_Click" AccessKey="+" Height="80%" BackColor="#FF5050" Width="45%" Font-Size="X-Large" Style="margin: 2% 0 0 3%;" />
+
+            </div>
         </div>
     </form>
 </body>
