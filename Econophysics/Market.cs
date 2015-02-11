@@ -29,6 +29,10 @@ namespace Econophysics
         /// </summary>
         public ConcurrentDictionary<int, Agent> Agents { get { return _agents; } }
         /// <summary>
+        /// 市场图像信息
+        /// </summary>
+        public GraphicInfo Graphic { get { return _graph.Info; } }
+        /// <summary>
         /// 价格列表，数量由<see cref="Type.Para.Market.Count"/>确定
         /// </summary>
         internal List<double> PriceList { get { return _priceList; } }

@@ -22,6 +22,7 @@ namespace Interface
                 }
                 
                 _self=Experiment.Market.Agents[Convert.ToInt32(Id.Text)];
+                _self.Login();
                 TradeFee.Text = Experiment.Parameters.Agent.TradeFee.ToString();
                 MaxStocks.Text = Experiment.Parameters.Agent.MaxStock.ToString();
                 TradeStocks.Text = "";

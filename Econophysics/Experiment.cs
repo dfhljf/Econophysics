@@ -20,7 +20,7 @@ namespace Econophysics
         /// <summary>
         /// 所有可设定参数
         /// </summary>
-        public static Parameters Parameters;
+        public static Parameters Parameters { get {return _parameters;} }
         /// <summary>
         /// 实验编号
         /// </summary>
@@ -72,7 +72,8 @@ namespace Econophysics
         private static Random _random;
         private static ExperimentIO _experimentIO;
         private static int _timeTick;
-        private static Timer _timer; 
+        private static Timer _timer;
+        private static Parameters _parameters; 
 
         static Experiment()
         {
@@ -98,7 +99,7 @@ namespace Econophysics
 
             _random = new Random();
             _index = _experimentIO.Read() + 1;
-            Parameters = parameters;
+            _parameters = parameters;
             if (File.Exists(Parameters.Graphic.Init.Url))
             {
                 File.Delete(Parameters.Graphic.Init.Url);
@@ -108,12 +109,13 @@ namespace Econophysics
             _turn = parameters.Experiment.StartTurn;
             if (expId != 0)
             {
-                _index = expId;
-                Hashtable mht=_experimentIO.Read(string.Format("select * from market where expId={0} order by turn desc limit {1}",expId,parameters.Market.Count));
-                foreach (MarketInfo mi in mht.Values)
-                {
-                    _market.PriceList.Insert(0, mi.Price);
-                }
+                recovery();
+                //_index = expId;
+                //Hashtable mht=_experimentIO.Read(string.Format("select * from market where expId={0} order by turn desc limit {1}",expId,parameters.Market.Count));
+                //foreach (MarketInfo mi in mht.Values)
+                //{
+                //    _market.PriceList.Insert(0, mi.Price);
+                //}
             }
             _state = ExperimentState.Builded;
             return _state;
@@ -168,6 +170,10 @@ namespace Econophysics
             }
             return false;
         }
+        /// <summary>
+        /// 移除暂停
+        /// </summary>
+        /// <param name="turn">移除在该轮次的暂停</param>
         public static void RemovePause(int turn)
         {
             if (_pauseList.ContainsKey(turn))
@@ -175,6 +181,10 @@ namespace Econophysics
                 _pauseList.Remove(turn);
             }
         }
+        /// <summary>
+        /// 继续实验
+        /// </summary>
+        /// <returns></returns>
         public static ExperimentState Continue()
         {
             if (_state != ExperimentState.Pause)
@@ -186,6 +196,10 @@ namespace Econophysics
             _state = ExperimentState.Running;
             return _state;
         }
+        /// <summary>
+        /// 重置实验
+        /// </summary>
+        /// <returns></returns>
         public static ExperimentState Reset()
         {
             if (_state != ExperimentState.End)
@@ -193,14 +207,14 @@ namespace Econophysics
                 return _state;
             }
             _state = ExperimentState.Unbuilded;
-            _market.Agents.Clear();
             _pauseList.Clear();
 
             return _state;
         }
-        public static void Recovery()
-        {
-        }
+        /// <summary>
+        /// 获取可恢复的实验列表
+        /// </summary>
+        /// <returns>实验列表</returns>
         public static Dictionary<int,Parameters> List()
         {
             Hashtable eht = _experimentIO.Read("select * from parameters");
@@ -249,6 +263,11 @@ namespace Econophysics
             }
             
         }
+        /// <summary>
+        /// 交易
+        /// </summary>
+        /// <param name="agentId">代理人编号</param>
+        /// <param name="tradeStocks">交易数量</param>
         public static void Trade(int agentId, int tradeStocks)
         {
             if (_state != ExperimentState.Running)
@@ -307,10 +326,14 @@ namespace Econophysics
             _timeTick = (_pauseList.ContainsKey(_turn)) ? 0 : Parameters.Experiment.PeriodOfTurn;
             _state = (_pauseList.ContainsKey(_turn)) ? ExperimentState.Pause : ExperimentState.Running;
         }
+        private static void recovery()
+        {
+        }
         private static void exit()
         {
             _state = ExperimentState.End;
             _timer.Stop();
         }
+    
     }
 }

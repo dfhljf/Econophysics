@@ -33,7 +33,26 @@ namespace Econophysics
         private bool _isTrade;
         private bool _isOnline;
         private object _lockThis;
-
+        /// <summary>
+        /// 登陆
+        /// </summary>
+        public void Login()
+        {
+            lock (_lockThis)
+            {
+                _isOnline = true;
+            }
+        }
+        /// <summary>
+        /// 注销
+        /// </summary>
+        public void Logout()
+        {
+            lock (_lockThis)
+            {
+                _isOnline = false;
+            }
+        }
         /// <summary>
         /// 创建一个代理人对象实例
         /// </summary>
@@ -83,20 +102,7 @@ namespace Econophysics
                 _isTrade = true;
             }
         }
-        internal void Login()
-        {
-            lock (_lockThis)
-            {
-                _isOnline = true;
-            }
-        }
-        internal void Logout()
-        {
-            lock (_lockThis)
-            {
-                _isOnline = false;
-            }
-        }
+
         internal void syncUpdate()
         {
             _now.Cash += _now.Dividend * _now.Stocks;

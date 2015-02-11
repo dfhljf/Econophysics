@@ -1,18 +1,21 @@
 ﻿using System;
-using System.IO;
+using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Collections;
+using System.IO;
+using System.Text;
 using System.Xml;
 
 namespace Econophysics
 {
-    using Type;
     using DataIO.Mysql;
+    using Type;
     internal class Graphic
     {
+        /// <summary>
+        /// 图像信息
+        /// </summary>
         public GraphicInfo Info { get { return _info; } }
         private GraphicInfo _info;
 
