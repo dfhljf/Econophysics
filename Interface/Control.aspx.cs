@@ -25,28 +25,28 @@ namespace Interface
 
         protected void Timer1_Tick(object sender, EventArgs e)
         {
-            refreshInterface(Experiment.State);
+            refresh(Experiment.State);
         }
         protected void BuildExp_Click(object sender, EventArgs e)
         {
             Experiment.Build(getParameters(), ExpId.SelectedIndex);
-            refreshInterface(Experiment.State);
+            refresh(Experiment.State);
         }
         protected void StartExp_Click(object sender, EventArgs e)
         {
             Experiment.Start();
-            refreshInterface(Experiment.State);
+            refresh(Experiment.State);
         }
         protected void ContinueExp_Click(object sender, EventArgs e)
         {
             Experiment.Continue();
             updatePauseList();
-            refreshInterface(Experiment.State);
+            refresh(Experiment.State);
         }
         protected void ResetExp_Click(object sender, EventArgs e)
         {
             Experiment.Reset();
-            refreshInterface(Experiment.State);
+            refresh(Experiment.State);
         }
         protected void ExpId_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -93,7 +93,7 @@ namespace Interface
             RemovePause.Attributes.Add("onclick ", "return confirm('将删除你选中的暂停点，请确认！');");
             AddPause.Attributes.Add("onclick ", "return alert('暂停点将设置在你输入的轮次的开始时，即这轮还没开始交易！');");
             ExpState.Text = Experiment.State.ToString();
-            refreshInterface(Experiment.State);
+            refresh(Experiment.State);
             updateExpList();
             updatePauseList();
             resetParameters();
@@ -205,7 +205,7 @@ namespace Interface
                 ExpId.Items.Add(new ListItem("实验：" + expId.ToString(), expId.ToString()));
             }
         }
-        private void refreshInterface(ExperimentState state)
+        private void refresh(ExperimentState state)
         {
             switch (state)
             {
@@ -238,6 +238,7 @@ namespace Interface
                     StartExp.Enabled = true;
                     ContinueExp.Enabled = false;
                     ResetExp.Enabled = false;
+                    Timer1.Enabled = true;
                     break;
                 case ExperimentState.Running:
                     Turn.Text = Experiment.Turn.ToString();
@@ -254,7 +255,7 @@ namespace Interface
                     StartExp.Enabled = false;
                     ContinueExp.Enabled = false;
                     ResetExp.Enabled = false;
-                    Timer1.Enabled = true;
+                    
                     break;
                 case ExperimentState.Suspend:
                     Turn.Text = Experiment.Turn.ToString();

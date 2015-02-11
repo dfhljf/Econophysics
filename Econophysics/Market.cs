@@ -89,7 +89,6 @@ namespace Econophysics
         }
         private void store()
         {
-            _now.NumberOfPeople = _agents.Count;
             _marketIO.Write(getKey(),Now);
             foreach (Agent agent in _agents.Values)
             {

@@ -8,8 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Econophysics.Type 
-{
+namespace Econophysics.Type {
     using System;
     
     
@@ -112,6 +111,15 @@ namespace Econophysics.Type
         internal static string NotAllowToStart {
             get {
                 return ResourceManager.GetString("NotAllowToStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 不存在实验人员，实验不允许开始！ 的本地化字符串。
+        /// </summary>
+        internal static string NotExistUsers {
+            get {
+                return ResourceManager.GetString("NotExistUsers", resourceCulture);
             }
         }
         

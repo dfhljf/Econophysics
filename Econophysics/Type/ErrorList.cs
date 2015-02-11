@@ -51,6 +51,10 @@ namespace Econophysics
             /// 错误：实验还未建立
             /// </summary>
             public static Exception NotAllowLogin = new Exception(ErrorMessage.NotAllowLogin);
+            /// <summary>
+            /// 错误：没有实验人员
+            /// </summary>
+            public static Exception NotExistUsers = new Exception(ErrorMessage.NotExistUsers);
         }
     }
 }

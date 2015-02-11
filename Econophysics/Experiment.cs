@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Timers;
 using System.Collections.Generic;
 using System.Text;
 using System.Collections;
@@ -8,7 +10,7 @@ namespace Econophysics
 {
     using Type;
     using DataIO.Mysql;
-    using System.Timers;
+
 
     /// <summary>
     /// 实验静态类
@@ -93,9 +95,14 @@ namespace Econophysics
             {
                 return _state;
             }
+
             _random = new Random();
             _index = _experimentIO.Read() + 1;
             Parameters = parameters;
+            if (File.Exists(Parameters.Graphic.Init.Url))
+            {
+                File.Delete(Parameters.Graphic.Init.Url);
+            }
             _market = new Market();
             _timeTick = Parameters.Experiment.PeriodOfTurn;
             _turn = parameters.Experiment.StartTurn;
@@ -123,6 +130,11 @@ namespace Econophysics
             }
             try
             {
+                //if(Market.Now.NumberOfPeople==0)
+                //{
+                //    throw ErrorList.NotExistUsers;
+                //}
+
                 store();
                 _state = ExperimentState.Running;
                 nextTurn();
@@ -229,6 +241,7 @@ namespace Econophysics
             try
             {
                    _market.Agents.TryAdd(id, new Agent(id));
+                   Market.Agents[id].Login();
             }
             catch (Exception)
             {
