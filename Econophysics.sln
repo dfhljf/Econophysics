@@ -9,14 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interface", "Interface\Inte
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{A3E459A2-7E7D-4C50-BC01-AF6030467CA1}"
 	ProjectSection(SolutionItems) = preProject
-		Deploy\DeleteAllEntry.sql = Deploy\DeleteAllEntry.sql
-		Deploy\DropDatebase.sql = Deploy\DropDatebase.sql
-		Deploy\InitialDatabase.sql = Deploy\InitialDatabase.sql
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtractData", "ExtractData\ExtractData.csproj", "{63A772FD-7F66-4AD7-AB17-0446D65AC8C0}"
-	ProjectSection(ProjectDependencies) = postProject
-		{8840B2E5-F077-4E7B-B956-3A653E1F77DF} = {8840B2E5-F077-4E7B-B956-3A653E1F77DF}
+		Database\libmysql.dll = Database\libmysql.dll
+		Database\mysql.cpp = Database\mysql.cpp
+		Database\mysql.m = Database\mysql.m
+		Database\mysql.mexw64 = Database\mysql.mexw64
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{5B1F3D3D-9A02-4040-A2F0-7E207345595B}"
@@ -28,6 +24,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ReadMe", "ReadMe", "{443BCC
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AI", "AI\AI.csproj", "{6CFFF780-85DC-4F1A-AD1E-56CBBDBBE867}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Initial", "Initial", "{65CE1AE3-285A-4BC0-AB08-AA06398A8E3E}"
+	ProjectSection(SolutionItems) = preProject
+		Database\Initial\DeleteAllEntry.sql = Database\Initial\DeleteAllEntry.sql
+		Database\Initial\DropDatebase.sql = Database\Initial\DropDatebase.sql
+		Database\Initial\InitialDatabase.sql = Database\Initial\InitialDatabase.sql
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{9158B1C5-B0F7-4CAA-BB6B-A7036610F409}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,10 +48,6 @@ Global
 		{4875E127-449A-4795-90FE-82E04C57963C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4875E127-449A-4795-90FE-82E04C57963C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4875E127-449A-4795-90FE-82E04C57963C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{63A772FD-7F66-4AD7-AB17-0446D65AC8C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{63A772FD-7F66-4AD7-AB17-0446D65AC8C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{63A772FD-7F66-4AD7-AB17-0446D65AC8C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{63A772FD-7F66-4AD7-AB17-0446D65AC8C0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5B1F3D3D-9A02-4040-A2F0-7E207345595B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5B1F3D3D-9A02-4040-A2F0-7E207345595B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B1F3D3D-9A02-4040-A2F0-7E207345595B}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -58,5 +59,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{65CE1AE3-285A-4BC0-AB08-AA06398A8E3E} = {A3E459A2-7E7D-4C50-BC01-AF6030467CA1}
+		{9158B1C5-B0F7-4CAA-BB6B-A7036610F409} = {A3E459A2-7E7D-4C50-BC01-AF6030467CA1}
 	EndGlobalSection
 EndGlobal
