@@ -15,83 +15,41 @@
             <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                 <ContentTemplate>
                     
-                    <table>
+                    <table style="float:left;">
                         <tr>
-                            <td>编号</td>
+                            <th>编号</th>
+                            </tr>
+                        <tr>
                             <td>
                                 <asp:DropDownList ID="ExpId" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ExpId_SelectedIndexChanged">
                                 </asp:DropDownList></td>
                         </tr>
                     </table>
 
-                    <span id="ExpInfo" runat="server">
-                        <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional" RenderMode="Inline">
+                    <div id="ExpInfo" runat="server">
+                        <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
                             <ContentTemplate>
+                                <asp:Timer ID="Timer1" runat="server" Interval="1000" OnTick="Timer1_Tick" Enabled="False"></asp:Timer>
                                 <table>
                                     <tr>
-                                        <td>状态</td>
-                                        <td><asp:Label ID="ExpState" runat="server"></asp:Label>
-                                            </td>
+                                        <th>状态</th>
+                                        <th>轮次</th>
+                                        <th>倒计时</th>
+                                        <th>在线人数</th>
                                     </tr>
                                     <tr>
-                                        <td>轮次</td>
-                                        <td>
-                                            <asp:Label ID="Turn" runat="server"></asp:Label></td>
-                                    </tr>
-                                    <tr>
-                                        <td>倒计时</td>
-                                        <td>
-                                            <asp:Timer ID="Timer1" runat="server" Interval="1000" OnTick="Timer1_Tick" Enabled="False"></asp:Timer>
-                                            <asp:Label ID="TimeTick" runat="server"></asp:Label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>在线人数</td>
-                                        <td>
-                                            <asp:Label ID="NumberOfPeople" runat="server"></asp:Label></td>
-                                    </tr>
-                                    <tr>
-                                        <td></td>
-                                        <td id="PriceImage" runat="server"></td>
+                                        <td><asp:Label ID="ExpState" runat="server"></asp:Label></td>
+                                        <td><asp:Label ID="Turn" runat="server"></asp:Label></td>
+                                        <td><asp:Label ID="TimeTick" runat="server"></asp:Label></td>
+                                        <td><asp:Label ID="NumberOfPeople" runat="server"></asp:Label></td>
                                         </tr>
-                                </table>
+                                    </table>
+
                             </ContentTemplate>
                         </asp:UpdatePanel>
-                    </span>
-                    <div id="Parameters" runat="server">
-                        <table id="Agent">
-                            <tr>
-                                <td>代理人初始现金</td>
-                                <td>
-                                    <asp:TextBox ID="InitCash" runat="server">10000</asp:TextBox></td>
-                            </tr>
-                            <tr>
-                                <td>代理人初始股票数目</td>
-                                <td>
-                                    <asp:TextBox ID="InitStocks" runat="server">100</asp:TextBox></td>
-                            </tr>
-                            <tr>
-                                <td>代理人初始分红大小</td>
-                                <td>
-                                    <asp:TextBox ID="InitDividend" runat="server">1</asp:TextBox></td>
-                            </tr>
-                            <tr>
-                                <td>最大交易股票数目</td>
-                                <td>
-                                    <asp:TextBox ID="MaxStock" runat="server">10</asp:TextBox></td>
-                            </tr>
-                            <tr>
-                                <td>分红更新周期</td>
-                                <td>
-                                    <asp:TextBox ID="PeriodOfUpdateDividend" runat="server">5</asp:TextBox></td>
-                            </tr>
-                            <tr>
-                                <td>交易费用</td>
-                                <td>
-                                    <asp:TextBox ID="TradeFee" runat="server">1</asp:TextBox></td>
-                            </tr>
+                    </div>
+                    <div id="Parameters" runat="server" style="position:absolute;left:0;">
 
-                        </table>
                         <table id="Market">
                             <tr>
                                 <td>市场初始价格</td>
@@ -161,6 +119,39 @@
                                     <asp:TextBox ID="TimeWindow" runat="server">15</asp:TextBox></td>
                             </tr>
                         </table>
+                        <table id="Agent">
+                            <tr>
+                                <td>代理人初始现金</td>
+                                <td>
+                                    <asp:TextBox ID="InitCash" runat="server">10000</asp:TextBox></td>
+                            </tr>
+                            <tr>
+                                <td>代理人初始股票数目</td>
+                                <td>
+                                    <asp:TextBox ID="InitStocks" runat="server">100</asp:TextBox></td>
+                            </tr>
+                            <tr>
+                                <td>代理人初始分红大小</td>
+                                <td>
+                                    <asp:TextBox ID="InitDividend" runat="server">1</asp:TextBox></td>
+                            </tr>
+                            <tr>
+                                <td>最大交易股票数目</td>
+                                <td>
+                                    <asp:TextBox ID="MaxStock" runat="server">10</asp:TextBox></td>
+                            </tr>
+                            <tr>
+                                <td>分红更新周期</td>
+                                <td>
+                                    <asp:TextBox ID="PeriodOfUpdateDividend" runat="server">5</asp:TextBox></td>
+                            </tr>
+                            <tr>
+                                <td>交易费用</td>
+                                <td>
+                                    <asp:TextBox ID="TradeFee" runat="server">1</asp:TextBox></td>
+                            </tr>
+
+                        </table>
                         <table id="Exp">
                             <tr>
                                 <td>每轮时间</td>
@@ -180,30 +171,37 @@
                         </table>
                         <asp:Button ID="ResetParameters" runat="server" Text="重置参数" OnClick="ResetParameters_Click" />
                     </div>
-                    <div id="Image">
-                    </div>
-                    <div id="PauseList" runat="server">
-                        <asp:ListBox ID="CurrentPauseList" runat="server" AutoPostBack="True" SelectionMode="Multiple"></asp:ListBox>
-                        <asp:Button ID="RemovePause" runat="server" Text="移除暂停" OnClick="RemovePause_Click" />
-                        <asp:TextBox ID="PauseTurn" runat="server"></asp:TextBox>
-                        <asp:Button ID="AddPause" runat="server" Text="添加暂停" OnClick="AddPause_Click" />
-                    </div>
+                    
+
 
 
                     <div id="Operate">
                         <asp:UpdatePanel ID="UpdatePanel3" runat="server" UpdateMode="Conditional">
                             <ContentTemplate>
+                                                                <table style="position:absolute;right:0;">
+                                    <tr>
+                                        <td id="PriceImage" runat="server"><object data="PriceImage.svg" width="900" height="500" type="image/svg+xml"/></td>
+                                        </tr>
+                                </table>
+                                <div style="position:absolute;right:20px;top:600px;">
                                 <asp:Button ID="BuildExp" runat="server" Text="建立实验" OnClick="BuildExp_Click" />
                                 <asp:Button ID="RecoveryExp" runat="server" Text="恢复实验" />
                                 <asp:Button ID="StartExp" runat="server" Text="开始实验" OnClick="StartExp_Click" />
                                 <asp:Button ID="ContinueExp" runat="server" Text="继续实验" OnClick="ContinueExp_Click" />
                                 <asp:Button ID="ResetExp" runat="server" Text="重置实验" OnClick="ResetExp_Click" />
+                                    </div>
                             </ContentTemplate>
                             <Triggers>
                                 <asp:AsyncPostBackTrigger ControlID="Timer1" EventName="Tick" />
                             </Triggers>
                         </asp:UpdatePanel>
 
+                                            <div id="PauseList" runat="server" style="position:absolute;right:600px;top:600px;">
+                        <asp:ListBox ID="CurrentPauseList" runat="server" AutoPostBack="True" SelectionMode="Multiple"></asp:ListBox>
+                        <asp:Button ID="RemovePause" runat="server" Text="移除暂停" OnClick="RemovePause_Click" />
+                        <asp:TextBox ID="PauseTurn" runat="server"></asp:TextBox>
+                        <asp:Button ID="AddPause" runat="server" Text="添加暂停" OnClick="AddPause_Click" />
+                    </div>
                     </div>
                 </ContentTemplate>
                 <Triggers>
