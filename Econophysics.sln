@@ -10,6 +10,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{A3E459A2-7E7D-4C50-BC01-AF6030467CA1}"
 	ProjectSection(SolutionItems) = preProject
 		Database\libmysql.dll = Database\libmysql.dll
+		Database\myscript.m = Database\myscript.m
 		Database\mysql.cpp = Database\mysql.cpp
 		Database\mysql.m = Database\mysql.m
 		Database\mysql.mexw64 = Database\mysql.mexw64
@@ -33,6 +34,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Initial", "Initial", "{65CE
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{9158B1C5-B0F7-4CAA-BB6B-A7036610F409}"
+	ProjectSection(SolutionItems) = preProject
+		Database\Data\extractdata.m = Database\Data\extractdata.m
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
