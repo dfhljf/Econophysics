@@ -177,7 +177,7 @@ namespace Test
             p.Experiment.Comments = "";
             p.Experiment.StartTime = DateTime.Now;
 
-            Experiment.Build(p);
+            Experiment.Build(parameters: p);
             
             Experiment.AddAgent(1);
             Experiment.AddAgent(2);

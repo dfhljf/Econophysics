@@ -22,6 +22,10 @@ namespace Econophysics
         /// </summary>
         public static Parameters Parameters { get {return _parameters;} }
         /// <summary>
+        /// 所有可恢复的历史记录
+        /// </summary>
+        public static Dictionary<int, Parameters> Histories { get { return _histories; } }
+        /// <summary>
         /// 实验编号
         /// </summary>
         public static int Index { get { return _index; } }
@@ -73,13 +77,17 @@ namespace Econophysics
         private static ExperimentIO _experimentIO;
         private static int _timeTick;
         private static Timer _timer;
-        private static Parameters _parameters; 
+        private static Parameters _parameters;
+        private static Dictionary<int, Parameters> _histories;
 
         static Experiment()
         {
             _pauseList = new Hashtable();
             _experimentIO = new ExperimentIO();
             _state = ExperimentState.Unbuilded;
+            _random = new Random();
+            getHistories();
+
             _timer = new Timer();
             _timer.Interval = 1000;
             _timer.Elapsed += setTimeTick;
@@ -87,37 +95,29 @@ namespace Econophysics
         /// <summary>
         /// 建立实验
         /// </summary>
-        /// <param name="parameters">实验参数</param>
         /// <param name="expId">实验编号，0表示新建实验</param>
+        /// <param name="parameters">实验参数</param>
         /// <returns>实验状态<see cref="Econophysics.Type.ExperimentState"/></returns>
-        public static ExperimentState Build(Parameters parameters,int expId=0)
+        public static ExperimentState Build(int expId = 0, Parameters parameters = new Parameters())
         {
             if (_state!=ExperimentState.Unbuilded)
             {
                 return _state;
             }
-
-            _random = new Random();
-            _index = _experimentIO.Read() + 1;
-            _parameters = parameters;
+            if (expId==0)// 新建实验
+            {
+                newExperiment(parameters);
+            }
+            else// 还原实验
+            {
+                recovery(expId,parameters);
+            }
+            // 清除上次的图像
             if (File.Exists(Parameters.Graphic.Init.Url))
             {
                 File.Delete(Parameters.Graphic.Init.Url);
             }
-            _market = new Market();
-            _timeTick = Parameters.Experiment.PeriodOfTurn;
-            _turn = parameters.Experiment.StartTurn;
-            if (expId != 0)
-            {
-                recovery();
-                //_index = expId;
-                //Hashtable mht=_experimentIO.Read(string.Format("select * from market where expId={0} order by turn desc limit {1}",expId,parameters.Market.Count));
-                //foreach (MarketInfo mi in mht.Values)
-                //{
-                //    _market.PriceList.Insert(0, mi.Price);
-                //}
-            }
-            _state = ExperimentState.Builded;
+
             return _state;
         }
         /// <summary>
@@ -210,34 +210,7 @@ namespace Econophysics
             _pauseList.Clear();
 
             return _state;
-        }
-        /// <summary>
-        /// 获取可恢复的实验列表
-        /// </summary>
-        /// <returns>实验列表</returns>
-        public static Dictionary<int,Parameters> List()
-        {
-            Hashtable eht = _experimentIO.Read("select * from parameters");
-            Dictionary<int, Parameters> rtn = new Dictionary<int, Parameters>();
-            foreach (int expId in eht.Keys)
-            {
-                Parameters para = (Parameters)eht[expId];
-                Hashtable aht=_experimentIO.Read(string.Format("select * from Agents where Turn=0 and ExperimentId={0} limit 1", expId));
-                foreach (AgentKey ak in aht.Keys)
-                {
-                    para.Agent.Init = (AgentInfo)aht[ak];
-                }
-
-                Hashtable mht=_experimentIO.Read(string.Format("select * from market where ExperimentId={0} order by turn desc limit 1", expId));
-                foreach (MarketKey mk in mht.Keys)
-                {
-                    para.Market.Init = (MarketInfo)mht[mk];
-                    para.Experiment.StartTurn = mk.Turn;
-                }
-                rtn.Add(expId, para);
-            }
-            return rtn;
-        }
+        }        
         /// <summary>
         /// 添加代理人
         /// </summary>
@@ -326,8 +299,60 @@ namespace Econophysics
             _timeTick = (_pauseList.ContainsKey(_turn)) ? 0 : Parameters.Experiment.PeriodOfTurn;
             _state = (_pauseList.ContainsKey(_turn)) ? ExperimentState.Pause : ExperimentState.Running;
         }
-        private static void recovery()
+        private static void getHistories()
         {
+            _histories = new Dictionary<int, Type.Parameters>();
+            Hashtable eht = _experimentIO.Read("select * from parameters");
+            foreach (int expId in eht.Keys)
+            {
+                Parameters para = (Parameters)eht[expId];
+                Hashtable aht = _experimentIO.Read(string.Format("select * from Agents where Turn=0 and ExperimentId={0} limit 1", expId));
+                foreach (AgentKey ak in aht.Keys)
+                {
+                    para.Agent.Init = (AgentInfo)aht[ak];
+                }
+                
+                Hashtable mht = _experimentIO.Read(string.Format("select * from market where ExperimentId={0} order by turn desc limit 1", expId));
+                foreach (MarketKey mk in mht.Keys)
+                {
+                    para.Market.Init = (MarketInfo)mht[mk];
+                    para.Experiment.StartTurn = mk.Turn;
+                }
+                _histories.Add(expId, para);
+            }
+        }
+        private static void newExperiment(Parameters parameters)
+        {
+            _index = _experimentIO.Read() + 1;
+            _parameters = parameters;
+            _state = ExperimentState.Builded;
+            _market = new Market();
+            _timeTick = _parameters.Experiment.PeriodOfTurn;
+            _turn = _parameters.Experiment.StartTurn;
+        }
+        private static void recovery(int expId,Parameters parameters)
+        {
+            _index = expId;
+            _parameters = _histories[expId];
+            _parameters.Graphic.Init = parameters.Graphic.Init;
+            _state = ExperimentState.Pause;
+            _market = new Market();
+            _market.PriceList.Clear();
+            Hashtable mht = _experimentIO.Read(string.Format("select * from market where ExperimentId={0} order by turn desc limit {1}", expId, _parameters.Market.Count));
+            foreach (MarketInfo mi in mht.Values)
+            {
+                _market.PriceList.Insert(0, mi.Price);
+            }
+            int tmpc = _market.PriceList.Count;
+            double tmp = _market.PriceList[0];
+            for (int i = 0; i < _parameters.Market.Count-tmpc; i++)
+            {
+                _market.PriceList.Insert(0, tmp);
+            }
+            _timeTick = 0;
+            _turn = _parameters.Experiment.StartTurn;
+            _turn++;
+            _timer.Start();
         }
         private static void exit()
         {

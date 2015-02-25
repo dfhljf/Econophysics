@@ -14,7 +14,7 @@ namespace Interface
     /// </summary>
     public partial class Control : System.Web.UI.Page
     {
-        private static Dictionary<int, Parameters> _eht = new Dictionary<int, Parameters>();
+        private static Dictionary<int, Parameters> _eht;
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -29,7 +29,7 @@ namespace Interface
         }
         protected void BuildExp_Click(object sender, EventArgs e)
         {
-            Experiment.Build(getParameters(), ExpId.SelectedIndex);
+            Experiment.Build(Convert.ToInt32(ExpId.SelectedValue), getParameters());
             refresh(Experiment.State);
         }
         protected void StartExp_Click(object sender, EventArgs e)
@@ -197,7 +197,7 @@ namespace Interface
         }
         private void updateExpList()
         {
-            _eht = Experiment.List();
+            _eht = Experiment.Histories;
             ExpId.Items.Clear();
             ExpId.Items.Add(new ListItem("新建实验", "0"));
             foreach (int expId in _eht.Keys)
@@ -223,6 +223,7 @@ namespace Interface
                     StartExp.Enabled = false;
                     ContinueExp.Enabled = false;
                     ResetExp.Enabled = false;
+                    Timer1.Enabled = false;
                     break;
                 case ExperimentState.Builded:
                     Turn.Text = Experiment.Turn.ToString();
@@ -255,7 +256,7 @@ namespace Interface
                     StartExp.Enabled = false;
                     ContinueExp.Enabled = false;
                     ResetExp.Enabled = false;
-                    
+                    Timer1.Enabled = true;
                     break;
                 case ExperimentState.Suspend:
                     Turn.Text = Experiment.Turn.ToString();
@@ -271,6 +272,7 @@ namespace Interface
                     StartExp.Enabled = false;
                     ContinueExp.Enabled = false;
                     ResetExp.Enabled = false;
+                    Timer1.Enabled = true;
                     break;
                 case ExperimentState.Pause:
                     Turn.Text = Experiment.Turn.ToString();
@@ -286,6 +288,7 @@ namespace Interface
                     StartExp.Enabled = false;
                     ContinueExp.Enabled = true;
                     ResetExp.Enabled = true;
+                    Timer1.Enabled = true;
                     break;
                 case ExperimentState.End:
                     Turn.Text = Experiment.Turn.ToString();
