@@ -88,7 +88,7 @@ namespace Econophysics
                 {
                     throw ErrorList.TradeTwice;
                 }
-                if (!updateCash(tradeStocks,price,tradeFee))
+                if (Now.Stocks+tradeStocks>=0&&!updateCash(tradeStocks,price,tradeFee))
                 {
                     throw ErrorList.CashOut;
                 }

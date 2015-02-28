@@ -139,7 +139,6 @@ namespace Econophysics
 
             //存储图像
             priceImage.Close();
-            priceImage.Dispose();
         }
         private string drawShape(string shape, params object[] args)
         {

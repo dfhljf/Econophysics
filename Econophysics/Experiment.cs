@@ -30,7 +30,6 @@ namespace Econophysics
         /// 暂停列表
         /// </summary>
         public static Hashtable PauseList { get { return _pauseList; } }
-
         /// <summary>
         /// 实验时间，提供倒计时和暂停计时功能
         /// </summary>
