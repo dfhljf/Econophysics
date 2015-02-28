@@ -336,12 +336,21 @@ namespace Econophysics
                 priceList.Insert(0, mi.Price);
             }
             _market=new Market(Parameters.Market.Init,Parameters.Market.Count,priceList);
-            //TODO: 还原每个人的数据
             _graph = new Graphic(Parameters.Graphic.Init);
             _graph.Draw();
             _timeTick = 0;
             _now.Turn = Parameters.Experiment.StartTurn;
+            recoveryAgents(expId,Now.Turn);
             _timer.Start();
+        }
+
+        private static void recoveryAgents(int expId, int turn)
+        {
+            Hashtable aht = _experimentIO.Read(string.Format("select * from agents where ExperimentId={0} and Turn={1}", expId, turn));
+            foreach (AgentKey agent in aht.Keys)
+            {
+                _market.Agents.TryAdd(agent.Id,new Agent(agent.Id,(AgentInfo)aht[agent]));
+            }
         }
         private static void exit()
         {
