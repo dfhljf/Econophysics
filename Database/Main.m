@@ -20,13 +20,19 @@ hSelectButton=uicontrol(selectExpDialog,'Style','pushbutton',...
            'Callback',@Select_Callback);
 set(selectExpDialog,'Visible','on');
 
-%% 画图
-%% 关闭数据库连接
-mysql('close');
+
 
 %% 函数回调
 function Select_Callback(source,eventdata)
 %% 载入实验数据
 [parameters market agents]=extractdata(str2num(hexpList.String(hexpList.Value)));
+%% 关闭数据库连接
+mysql('close');
+close(selectExpDialog);
+HandleData(parameters,market,agents);
+end
+%% 数据处理
+function HandleData(parameters,market,agents)
+    plot(market(:,1),market(:,2),'*-');
 end
 end
