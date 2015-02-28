@@ -279,9 +279,10 @@ namespace Econophysics
                 exit();
                 return;
             }
-            _now.Turn = (PauseList.ContainsKey(Now.Turn)) ? Now.Turn : Now.Turn+1;
-            _timeTick = (PauseList.ContainsKey(Now.Turn)) ? 0 : Parameters.Experiment.PeriodOfTurn;
-            _now.State = (PauseList.ContainsKey(Now.Turn)) ? ExperimentState.Pause : ExperimentState.Running;
+            bool isPause=PauseList.ContainsKey(Now.Turn);
+            _timeTick = isPause ? 0 : Parameters.Experiment.PeriodOfTurn;
+            _now.State = isPause ? ExperimentState.Pause : ExperimentState.Running;
+            _now.Turn = isPause ? Now.Turn : Now.Turn + 1;
         }
         private static void getHistories()
         {

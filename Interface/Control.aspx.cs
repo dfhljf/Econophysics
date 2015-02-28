@@ -91,7 +91,7 @@ namespace Interface
             ResetExp.Attributes.Add("onclick ", "return confirm('确定重置实验？');");
             ResetParameters.Attributes.Add("onclick ", "return confirm('将重置参数为默认参数，请确认！');");
             RemovePause.Attributes.Add("onclick ", "return confirm('将删除你选中的暂停点，请确认！');");
-            AddPause.Attributes.Add("onclick ", "return alert('暂停点将设置在你输入的轮次的开始时，即这轮还没开始交易！');");
+            AddPause.Attributes.Add("onclick ", "return alert('暂停点将设置在你输入的轮次结束时，即这轮交易结束！');");
             ExpState.Text = Experiment.Now.State.ToString();
             refresh(Experiment.Now.State);
             updateExpList();
