@@ -10,20 +10,23 @@ mysql('use econophysics');
 
 %% 选择实验编号
 expId=mysql('select id from parameters');
-selectExpDialog = figure('Visible','off','Position',[360,300,450,285]);
-hexpList=uicontrol('Style','popupmenu',...
+selectExpDialog = figure('Visible','off','MenuBar','none','Position',[360,300,150,100]);
+hexpList=uicontrol(selectExpDialog,'Style','popupmenu',...
            'String',int2str(expId),...
-           'Position',[130,250,100,25],'Callback',@expList_Callback);
-hParameters=uicontrol()
+           'Position',[50 70 40 20]);
+hSelectButton=uicontrol(selectExpDialog,'Style','pushbutton',...
+           'String','确定',...
+           'Position',[50 30 40 30],...
+           'Callback',@Select_Callback);
 set(selectExpDialog,'Visible','on');
-%% 载入实验数据
+
+%% 画图
 %% 关闭数据库连接
 mysql('close');
 
 %% 函数回调
-function expList_Callback(source,eventdata)
-str=get(source,'String');
-val=get(source,'Value');
-selectExp=str2num(str(val));
+function Select_Callback(source,eventdata)
+%% 载入实验数据
+[parameters market agents]=extractdata(str2num(hexpList.String(hexpList.Value)));
 end
 end
