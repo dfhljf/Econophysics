@@ -57,9 +57,8 @@ namespace Econophysics
         /// 创建一个代理人对象实例
         /// </summary>
         /// <param name="id">代理人编号</param>
-        internal Agent(int id)
+        internal Agent(int id,AgentInfo init)
         {
-            AgentInfo init = Experiment.Parameters.Agent.Init;
             _now = new AgentInfo
             {
                 Cash = init.Cash,
@@ -80,7 +79,7 @@ namespace Econophysics
         /// 代理人交易
         /// </summary>
         /// <param name="tradeStocks">交易股票数量，大于0买，小于0卖</param>
-        internal void Trade(int tradeStocks)
+        internal void Trade(int tradeStocks,double price,double tradeFee)
         {
             lock (_lockThis)
             {
@@ -89,7 +88,7 @@ namespace Econophysics
                 {
                     throw ErrorList.TradeTwice;
                 }
-                if (!updateCash(tradeStocks))
+                if (!updateCash(tradeStocks,price,tradeFee))
                 {
                     throw ErrorList.CashOut;
                 }
@@ -97,39 +96,38 @@ namespace Econophysics
                 {
                     throw ErrorList.InsufficientStocks;
                 }
-                updateEndowment();
+                updateEndowment(price);
                 _now.TradeStocks = tradeStocks;
                 _isTrade = true;
             }
         }
 
-        internal void syncUpdate()
+        internal void syncUpdate(double price)
         {
-            _now.Cash += _now.Dividend * _now.Stocks;
-            while (_now.Cash < 0 && _now.Stocks > 0)
+            _now.Cash += Now.Dividend * Now.Stocks;
+            while (Now.Cash < 0 && Now.Stocks > 0)
             {
-                _now.Cash += Experiment.Market.Now.Price;
+                _now.Cash += price;
                 _now.Stocks--;
             }
-            updateEndowment();
+            updateEndowment(price);
         }
-        internal void store()
+        internal void store(ExperimentInfo info)
         {
-            _agentIO.Write(getKey(), Now);
-            clear();
+            _agentIO.Write(getKey(info), Now);
         }
-        private void clear()
+        internal void clear(int turn,Market market,Parameters parameters)
         {
             _now.TradeStocks = 0;
             _isTrade = false;
-            if ((Experiment.Turn % Experiment.Parameters.Agent.PeriodOfUpdateDividend) == 0)
+            if ((turn % parameters.Agent.PeriodOfUpdateDividend) == 0)
             {
-                setDividend();
+                setDividend(market,parameters);
             }
         }
-        private bool updateCash(int tradeStocks)
+        private bool updateCash(int tradeStocks,double price,double tradeFee)
         {
-            double tmp = _now.Cash - tradeStocks * Experiment.Market.Now.Price - Math.Abs(tradeStocks) * Experiment.Parameters.Agent.TradeFee;
+            double tmp = Now.Cash - tradeStocks * price - Math.Abs(tradeStocks) * tradeFee;
             if (tmp >= 0)
             {
                 _now.Cash = tmp;
@@ -139,7 +137,7 @@ namespace Econophysics
         }
         private bool updateStocks(int tradeStocks)
         {
-            int tmp = _now.Stocks + tradeStocks;
+            int tmp = Now.Stocks + tradeStocks;
             if (tmp >= 0)
             {
                 _now.Stocks = tmp;
@@ -147,41 +145,40 @@ namespace Econophysics
             }
             return false;
         }
-        private void updateEndowment()
+        private void updateEndowment(double price)
         {
-            _now.Endowment = _now.Cash + _now.Stocks * Experiment.Market.Now.Price;
+            _now.Endowment = Now.Cash + Now.Stocks * price;
         }
-        private void setDividend()
+        private void setDividend(Market market,Parameters parameters)
         {
-            Market market = Experiment.Market;
-            List<double> priceList = Experiment.Market.PriceList;
-            Type.Para.Market marketPara = Experiment.Parameters.Market;
-            double dividend = Experiment.Parameters.Agent.Dividend;
+            List<double> priceList = market.PriceList;
+            Type.Para.Market marketPara = parameters.Market;
+            double dividend = parameters.Agent.Dividend;
             switch (marketPara.Leverage)
             {
                 case LeverageEffect.Null:
-                    _now.Dividend = dividend * ((Experiment.Random < marketPara.TransP) ? (-1) : (1)) *
-                        ((market.Now.State == MarketState.Active ^ Experiment.Random > marketPara.PDividend) ?
-                        ((Experiment.Random < marketPara.P) ? (-1) : (1)) : (0));
+                    _now.Dividend = dividend * (( Random.GetDouble()< marketPara.TransP) ? (-1) : (1)) *
+                        ((market.Now.State == MarketState.Active ^ Random.GetDouble() > marketPara.PDividend) ?
+                        ((Random.GetDouble() < marketPara.P) ? (-1) : (1)) : (0));
                     break;
                 case LeverageEffect.Leverage:
-                    _now.Dividend = dividend * ((Experiment.Random < marketPara.TransP) ? (-1) : (1)) *
+                    _now.Dividend = dividend * ((Random.GetDouble() < marketPara.TransP) ? (-1) : (1)) *
                         (((market.Now.State == MarketState.Active && priceList[priceList.Count - 1] - priceList[priceList.Count - 1 - marketPara.TimeWindow] <= 0)
-                        ^ Experiment.Random > marketPara.PDividend) ? ((Experiment.Random < marketPara.P) ? (-1) : (1)) : (0));
+                        ^ Random.GetDouble() > marketPara.PDividend) ? ((Random.GetDouble() < marketPara.P) ? (-1) : (1)) : (0));
                     break;
                 case LeverageEffect.AntiLeverage:
-                    _now.Dividend = dividend * ((Experiment.Random < marketPara.TransP) ? (-1) : (1)) *
+                    _now.Dividend = dividend * ((Random.GetDouble() < marketPara.TransP) ? (-1) : (1)) *
                         (((market.Now.State == MarketState.Active && priceList[priceList.Count - 1] - priceList[priceList.Count - 1 - marketPara.TimeWindow] >= 0)
-                        ^ Experiment.Random > marketPara.PDividend) ? ((Experiment.Random < marketPara.P) ? (-1) : (1)) : (0));
+                        ^ Random.GetDouble() > marketPara.PDividend) ? ((Random.GetDouble() < marketPara.P) ? (-1) : (1)) : (0));
                     break;
             }
         }
-        private AgentKey getKey()
+        private AgentKey getKey(ExperimentInfo info)
         {
             AgentKey agentKey;
-            agentKey.ExperimentId = Experiment.Index;
-            agentKey.Turn = Experiment.Turn;
-            agentKey.Id = _index;
+            agentKey.ExperimentId = info.Index;
+            agentKey.Turn = info.Turn;
+            agentKey.Id = Index;
             return agentKey;
         }
     }

@@ -51,6 +51,7 @@
     <Compile Include="Graphic.cs" />
     <Compile Include="Market.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Random.cs" />
     <Compile Include="Type\AgentInfo.cs" />
     <Compile Include="Type\AgentKey.cs" />
     <Compile Include="Type\ErrorList.cs" />
@@ -59,6 +60,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Type\ExperimentInfo.cs" />
     <Compile Include="Type\ExperimentState.cs" />
     <Compile Include="Type\GraphicInfo.cs" />
     <Compile Include="Type\LeverageEffect.cs" />

@@ -16,7 +16,7 @@ namespace Interface
             if (!IsPostBack)
             {
                 Id.Text = "1";
-                if (Experiment.State == ExperimentState.Unbuilded || !Experiment.Market.Agents.ContainsKey(Convert.ToInt32(Id.Text)))
+                if (Experiment.Now.State == ExperimentState.Unbuilded || !Experiment.Market.Agents.ContainsKey(Convert.ToInt32(Id.Text)))
                 {
                     Response.Redirect("Welcome.aspx");
                 }
@@ -71,11 +71,11 @@ namespace Interface
 
         protected void Timer1_Tick(object sender, EventArgs e)
         {
-            if (Experiment.Turn!=Convert.ToInt32(Turn.Text))//轮次改变更新
+            if (Experiment.Now.Turn!=Convert.ToInt32(Turn.Text))//轮次改变更新
             {
                 PriceImage.InnerHtml = getImage();
                 ExpInfo.Text = getExpInfo();
-                if (Experiment.State==ExperimentState.End)
+                if (Experiment.Now.State==ExperimentState.End)
                 {
                     Response.Redirect("Reward.aspx");
                 }
@@ -84,25 +84,25 @@ namespace Interface
         }
         private void refresh()
         {
-            Turn.Text = Experiment.Turn.ToString();
+            Turn.Text = Experiment.Now.Turn.ToString();
             TimeTick.Text = (Experiment.TimeTick == -1) ? "计时停止" : Experiment.TimeTick.ToString();
             Cash.Text = _self.Now.Cash.ToString();
             Stocks.Text = _self.Now.Stocks.ToString();
             Endowment.Text = _self.Now.Endowment.ToString();
             //PriceImage.InnerHtml = getImage();
             Dividend.Text = _self.Now.Dividend.ToString();
-            DividendTime.Text = (Experiment.Parameters.Agent.PeriodOfUpdateDividend - (Experiment.Turn - 1) % Experiment.Parameters.Agent.PeriodOfUpdateDividend).ToString();
+            DividendTime.Text = (Experiment.Parameters.Agent.PeriodOfUpdateDividend - (Experiment.Now.Turn - 1) % Experiment.Parameters.Agent.PeriodOfUpdateDividend).ToString();
             DividendIncome.Text = (Convert.ToInt32(Stocks.Text) * Convert.ToDouble(Dividend.Text)).ToString();
             Buy.Enabled = !_self.IsTrade;
             Sell.Enabled = Buy.Enabled;
         }
         private string getImage()
         {
-            return string.Format("<object data=\"PriceImage.svg?turn={0}\" width=\"900\" height=\"500\" type=\"image/svg+xml\"/>", Experiment.Turn);
+            return string.Format("<object data=\"PriceImage.svg?turn={0}\" width=\"900\" height=\"500\" type=\"image/svg+xml\"/>", Experiment.Now.Turn);
         }
         private string getExpInfo()
         {
-            switch (Experiment.State)
+            switch (Experiment.Now.State)
             {
                 case ExperimentState.Unbuilded:
                     return "";

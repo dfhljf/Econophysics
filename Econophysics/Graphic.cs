@@ -19,14 +19,14 @@ namespace Econophysics
         public GraphicInfo Info { get { return _info; } }
         private GraphicInfo _info;
 
-        internal Graphic()
+        internal Graphic(GraphicInfo init)
         {
             _info = new GraphicInfo
             {
-                Width = Experiment.Parameters.Graphic.Init.Width,
-                Height = Experiment.Parameters.Graphic.Init.Height,
-                Url = Experiment.Parameters.Graphic.Init.Url,
-                Count = Experiment.Parameters.Graphic.Init.Count
+                Width = init.Width,
+                Height = init.Height,
+                Url = init.Url,
+                Count = init.Count
             };
         }
         internal void Draw()

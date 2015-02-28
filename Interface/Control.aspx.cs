@@ -25,28 +25,28 @@ namespace Interface
 
         protected void Timer1_Tick(object sender, EventArgs e)
         {
-            refresh(Experiment.State);
+            refresh(Experiment.Now.State);
         }
         protected void BuildExp_Click(object sender, EventArgs e)
         {
             Experiment.Build(Convert.ToInt32(ExpId.SelectedValue), getParameters());
-            refresh(Experiment.State);
+            refresh(Experiment.Now.State);
         }
         protected void StartExp_Click(object sender, EventArgs e)
         {
             Experiment.Start();
-            refresh(Experiment.State);
+            refresh(Experiment.Now.State);
         }
         protected void ContinueExp_Click(object sender, EventArgs e)
         {
             Experiment.Continue();
             updatePauseList();
-            refresh(Experiment.State);
+            refresh(Experiment.Now.State);
         }
         protected void ResetExp_Click(object sender, EventArgs e)
         {
             Experiment.Reset();
-            refresh(Experiment.State);
+            refresh(Experiment.Now.State);
         }
         protected void ExpId_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -92,8 +92,8 @@ namespace Interface
             ResetParameters.Attributes.Add("onclick ", "return confirm('将重置参数为默认参数，请确认！');");
             RemovePause.Attributes.Add("onclick ", "return confirm('将删除你选中的暂停点，请确认！');");
             AddPause.Attributes.Add("onclick ", "return alert('暂停点将设置在你输入的轮次的开始时，即这轮还没开始交易！');");
-            ExpState.Text = Experiment.State.ToString();
-            refresh(Experiment.State);
+            ExpState.Text = Experiment.Now.State.ToString();
+            refresh(Experiment.Now.State);
             updateExpList();
             updatePauseList();
             resetParameters();
@@ -226,7 +226,7 @@ namespace Interface
                     Timer1.Enabled = false;
                     break;
                 case ExperimentState.Builded:
-                    Turn.Text = Experiment.Turn.ToString();
+                    Turn.Text = Experiment.Now.Turn.ToString();
                     NumberOfPeople.Text = Experiment.Market.Now.NumberOfPeople.ToString();
                     TimeTick.Text = "还未开始计时";
                     ExpId.Enabled = false;
@@ -242,7 +242,7 @@ namespace Interface
                     Timer1.Enabled = true;
                     break;
                 case ExperimentState.Running:
-                    Turn.Text = Experiment.Turn.ToString();
+                    Turn.Text = Experiment.Now.Turn.ToString();
                     NumberOfPeople.Text = Experiment.Market.Now.NumberOfPeople.ToString();
                     TimeTick.Text = (Experiment.TimeTick-1).ToString();
                     PriceImage.InnerHtml = getImage();
@@ -259,7 +259,7 @@ namespace Interface
                     Timer1.Enabled = true;
                     break;
                 case ExperimentState.Suspend:
-                    Turn.Text = Experiment.Turn.ToString();
+                    Turn.Text = Experiment.Now.Turn.ToString();
                     NumberOfPeople.Text = Experiment.Market.Now.NumberOfPeople.ToString();
                     TimeTick.Text = (Experiment.TimeTick - 1).ToString();
                     ExpId.Enabled = false;
@@ -275,7 +275,7 @@ namespace Interface
                     Timer1.Enabled = true;
                     break;
                 case ExperimentState.Pause:
-                    Turn.Text = Experiment.Turn.ToString();
+                    Turn.Text = Experiment.Now.Turn.ToString();
                     NumberOfPeople.Text = Experiment.Market.Now.NumberOfPeople.ToString();
                     TimeTick.Text = (Experiment.TimeTick - 1).ToString();
                     ExpId.Enabled = false;
@@ -291,7 +291,7 @@ namespace Interface
                     Timer1.Enabled = true;
                     break;
                 case ExperimentState.End:
-                    Turn.Text = Experiment.Turn.ToString();
+                    Turn.Text = Experiment.Now.Turn.ToString();
                     NumberOfPeople.Text = Experiment.Market.Now.NumberOfPeople.ToString();
                     TimeTick.Text = "计时结束";
                     ExpId.Enabled = false;
@@ -313,7 +313,7 @@ namespace Interface
 
         private string getImage()
         {
-            return string.Format("<object data=\"PriceImage.svg?turn={0}\" width=\"900\" height=\"500\" type=\"image/svg+xml\"/>",Experiment.Turn);
+            return string.Format("<object data=\"PriceImage.svg?turn={0}\" width=\"900\" height=\"500\" type=\"image/svg+xml\"/>",Experiment.Now.Turn);
         }
 
     }
