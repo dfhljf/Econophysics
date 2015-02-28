@@ -62,6 +62,7 @@ namespace Econophysics
         private static Timer _timer;
         private static Parameters _parameters;
         private static Dictionary<int, Parameters> _histories;
+        private static bool _isForceExit;
 
         static Experiment()
         {
@@ -70,7 +71,7 @@ namespace Econophysics
             _now = new ExperimentInfo();
             _now.State = ExperimentState.Unbuilded;
             getHistories();
-
+            _isForceExit = false;
             _timer = new Timer();
             _timer.Interval = 1000;
             _timer.Elapsed += setTimeTick;
@@ -187,12 +188,15 @@ namespace Econophysics
             }
             _now.State = ExperimentState.Unbuilded;
             PauseList.Clear();
-
+            _isForceExit = false;
             return Now.State;
         }        
+        /// <summary>
+        /// 强制退出
+        /// </summary>
         public static void ForceExit()
         {
-
+            _isForceExit = true;
         }
         /// <summary>
         /// 添加代理人
@@ -259,6 +263,11 @@ namespace Econophysics
                     }
                     break;
                 case ExperimentState.Pause:
+                    if (_isForceExit)
+                    {
+                        exit();
+                        return;
+                    }
                     _timeTick++;
                     break;
                 default:
@@ -274,7 +283,7 @@ namespace Econophysics
             _now.State = ExperimentState.Suspend;
             Market.SyncUpdate(Now,Parameters);
             _graph.Draw();
-            if (Now.Turn == Parameters.Experiment.MaxTurn)
+            if (_isForceExit||Now.Turn == Parameters.Experiment.MaxTurn)
             {
                 exit();
                 return;

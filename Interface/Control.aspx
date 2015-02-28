@@ -188,6 +188,7 @@
                                 <asp:Button ID="RecoveryExp" runat="server" Text="恢复实验" />
                                 <asp:Button ID="StartExp" runat="server" Text="开始实验" OnClick="StartExp_Click" />
                                 <asp:Button ID="ContinueExp" runat="server" Text="继续实验" OnClick="ContinueExp_Click" />
+                                    <asp:Button ID="ForceExit" runat="server" Text="强制结束" OnClick="ForceExit_Click"/>
                                 <asp:Button ID="ResetExp" runat="server" Text="重置实验" OnClick="ResetExp_Click" />
                                     </div>
                             </ContentTemplate>

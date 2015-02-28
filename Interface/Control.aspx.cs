@@ -88,6 +88,7 @@ namespace Interface
             RecoveryExp.Attributes.Add("onclick ", "return confirm('确定恢复实验？');");
             StartExp.Attributes.Add("onclick ", "return confirm('确定开始实验？');");
             ContinueExp.Attributes.Add("onclick ", "return confirm('确定继续实验？');");
+            ForceExit.Attributes.Add("onclick", "return confirm('实验将在本轮计时结束时结束，确定？')");
             ResetExp.Attributes.Add("onclick ", "return confirm('确定重置实验？');");
             ResetParameters.Attributes.Add("onclick ", "return confirm('将重置参数为默认参数，请确认！');");
             RemovePause.Attributes.Add("onclick ", "return confirm('将删除你选中的暂停点，请确认！');");
@@ -222,6 +223,7 @@ namespace Interface
                     RecoveryExp.Enabled = true;
                     StartExp.Enabled = false;
                     ContinueExp.Enabled = false;
+                    ForceExit.Enabled = false;
                     ResetExp.Enabled = false;
                     Timer1.Enabled = false;
                     break;
@@ -238,6 +240,7 @@ namespace Interface
                     RecoveryExp.Enabled = false;
                     StartExp.Enabled = true;
                     ContinueExp.Enabled = false;
+                    ForceExit.Enabled = false;
                     ResetExp.Enabled = false;
                     Timer1.Enabled = true;
                     break;
@@ -255,6 +258,7 @@ namespace Interface
                     RecoveryExp.Enabled = false;
                     StartExp.Enabled = false;
                     ContinueExp.Enabled = false;
+                    ForceExit.Enabled = true;
                     ResetExp.Enabled = false;
                     Timer1.Enabled = true;
                     break;
@@ -287,6 +291,7 @@ namespace Interface
                     RecoveryExp.Enabled = false;
                     StartExp.Enabled = false;
                     ContinueExp.Enabled = true;
+                    ForceExit.Enabled = true;
                     ResetExp.Enabled = true;
                     Timer1.Enabled = true;
                     break;
@@ -303,6 +308,7 @@ namespace Interface
                     RecoveryExp.Enabled = false;
                     StartExp.Enabled = false;
                     ContinueExp.Enabled = false;
+                    ForceExit.Enabled = false;
                     ResetExp.Enabled = true;
                     Timer1.Enabled = false;
                     break;
@@ -314,6 +320,11 @@ namespace Interface
         private string getImage()
         {
             return string.Format("<object data=\"PriceImage.svg?turn={0}\" width=\"900\" height=\"500\" type=\"image/svg+xml\"/>",Experiment.Now.Turn);
+        }
+
+        protected void ForceExit_Click(object sender, EventArgs e)
+        {
+            Experiment.ForceExit();
         }
 
     }
