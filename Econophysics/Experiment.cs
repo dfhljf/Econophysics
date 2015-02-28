@@ -137,7 +137,7 @@ namespace Econophysics
             {
                 return false;
             }
-            if (turn <= Now.Turn)
+            if (turn < Now.Turn)
             {
                 return false;
             }
