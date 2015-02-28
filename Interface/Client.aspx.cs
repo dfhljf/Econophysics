@@ -85,7 +85,7 @@ namespace Interface
         private void refresh()
         {
             Turn.Text = Experiment.Now.Turn.ToString();
-            TimeTick.Text = (Experiment.TimeTick == -1) ? "计时停止" : Experiment.TimeTick.ToString();
+            TimeTick.Text = (Experiment.TimeTick == -1) ? "计时停止" : (Experiment.TimeTick-1).ToString();
             Cash.Text = _self.Now.Cash.ToString();
             Stocks.Text = _self.Now.Stocks.ToString();
             Endowment.Text = _self.Now.Endowment.ToString();

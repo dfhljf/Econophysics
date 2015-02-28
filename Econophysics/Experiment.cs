@@ -171,6 +171,7 @@ namespace Econophysics
             }
             RemovePause(Now.Turn);
             _timeTick = Parameters.Experiment.PeriodOfTurn - 1;
+            _now.Turn++;
             _now.State = ExperimentState.Running;
             return Now.State;
         }
@@ -189,6 +190,10 @@ namespace Econophysics
 
             return Now.State;
         }        
+        public static void ForceExit()
+        {
+
+        }
         /// <summary>
         /// 添加代理人
         /// </summary>
@@ -274,7 +279,7 @@ namespace Econophysics
                 exit();
                 return;
             }
-            _now.Turn++;
+            _now.Turn = (PauseList.ContainsKey(Now.Turn)) ? Now.Turn : Now.Turn+1;
             _timeTick = (PauseList.ContainsKey(Now.Turn)) ? 0 : Parameters.Experiment.PeriodOfTurn;
             _now.State = (PauseList.ContainsKey(Now.Turn)) ? ExperimentState.Pause : ExperimentState.Running;
         }
@@ -335,7 +340,6 @@ namespace Econophysics
             _graph.Draw();
             _timeTick = 0;
             _now.Turn = Parameters.Experiment.StartTurn;
-            _now.Turn++;
             _timer.Start();
         }
         private static void exit()

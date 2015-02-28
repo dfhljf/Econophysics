@@ -105,11 +105,13 @@ namespace Econophysics
         internal void syncUpdate(double price)
         {
             _now.Cash += Now.Dividend * Now.Stocks;
+            
             while (Now.Cash < 0 && Now.Stocks > 0)
             {
                 _now.Cash += price;
                 _now.Stocks--;
             }
+            _now.Cash = Math.Round(Now.Cash, 1);
             updateEndowment(price);
         }
         internal void store(ExperimentInfo info)
@@ -131,6 +133,7 @@ namespace Econophysics
             if (tmp >= 0)
             {
                 _now.Cash = tmp;
+                _now.Cash = Math.Round(Now.Cash, 1);
                 return true;
             }
             return false;
@@ -148,6 +151,7 @@ namespace Econophysics
         private void updateEndowment(double price)
         {
             _now.Endowment = Now.Cash + Now.Stocks * price;
+            _now.Endowment = Math.Round(Now.Endowment, 1);
         }
         private void setDividend(Market market,Parameters parameters)
         {
