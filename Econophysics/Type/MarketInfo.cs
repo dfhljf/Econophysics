@@ -28,6 +28,10 @@ namespace Econophysics
             /// </summary>
             public int NumberOfPeople { get; set; }
             /// <summary>
+            /// 机器人数目
+            /// </summary>
+            public int NumberOfAndroids { get; set; }
+            /// <summary>
             /// 代理人的平均资产
             /// </summary>
             public double AverageEndowment { get; set; }

@@ -30,6 +30,7 @@ namespace Interface
         protected void BuildExp_Click(object sender, EventArgs e)
         {
             Experiment.Build(Convert.ToInt32(ExpId.SelectedValue), getParameters());
+            Experiment.AddAndroids(AndroidCount.Enabled ? Convert.ToInt32(AndroidCount.Text) : 0);
             refresh(Experiment.Now.State);
         }
         protected void StartExp_Click(object sender, EventArgs e)
@@ -55,10 +56,12 @@ namespace Interface
             {
                 loadParameters(_eht[expId]);
                 Turn.Text = _eht[expId].Experiment.StartTurn.ToString();
+                AndroidCount.Enabled = false;
             }
             else if (expId == 0)
             {
                 Turn.Text = "0";
+                AndroidCount.Enabled = true;
             }
         }
         protected void RemovePause_Click(object sender, EventArgs e)
@@ -85,7 +88,7 @@ namespace Interface
         private void Initialize()
         {
             BuildExp.Attributes.Add("onclick ", "return confirm('确定建立实验？');");
-            RecoveryExp.Attributes.Add("onclick ", "return confirm('确定恢复实验？');");
+            //RecoveryExp.Attributes.Add("onclick ", "return confirm('确定恢复实验？');");
             StartExp.Attributes.Add("onclick ", "return confirm('确定开始实验？');");
             ContinueExp.Attributes.Add("onclick ", "return confirm('确定继续实验？');");
             ForceExit.Attributes.Add("onclick", "return confirm('实验将在本轮计时结束时结束，确定？')");
@@ -117,6 +120,7 @@ namespace Interface
             PDividend.Text = "0.8";
             P.Text = "0.7";
             TransP.Text = "0.5";
+            AndroidCount.Text = "20";
             TimeWindow.Text = "15";
             PeriodOfTurn.Text = "10";
             MaxTurn.Text = "1200";
@@ -213,6 +217,7 @@ namespace Interface
                 case ExperimentState.Unbuilded:
                     Turn.Text = "0";
                     NumberOfPeople.Text = "0";
+                    NumberOfAndroids.Text = "0";
                     TimeTick.Text = "还未开始计时";
                     ExpId.Enabled = true;
                     ExpState.Text = "实验未建立";
@@ -220,7 +225,7 @@ namespace Interface
                     Parameters.Disabled = false;
                     PauseList.Disabled = true;
                     BuildExp.Enabled = true;
-                    RecoveryExp.Enabled = true;
+                    //RecoveryExp.Enabled = true;
                     StartExp.Enabled = false;
                     ContinueExp.Enabled = false;
                     ForceExit.Enabled = false;
@@ -230,6 +235,7 @@ namespace Interface
                 case ExperimentState.Builded:
                     Turn.Text = Experiment.Now.Turn.ToString();
                     NumberOfPeople.Text = Experiment.Market.Now.NumberOfPeople.ToString();
+                    NumberOfAndroids.Text = Experiment.Market.Now.NumberOfAndroids.ToString();
                     TimeTick.Text = "还未开始计时";
                     ExpId.Enabled = false;
                     ExpState.Text = "实验已建立，还未开始";
@@ -237,7 +243,7 @@ namespace Interface
                     Parameters.Disabled = true;
                     PauseList.Disabled = false;
                     BuildExp.Enabled = false;
-                    RecoveryExp.Enabled = false;
+                    //RecoveryExp.Enabled = false;
                     StartExp.Enabled = true;
                     ContinueExp.Enabled = false;
                     ForceExit.Enabled = false;
@@ -247,6 +253,7 @@ namespace Interface
                 case ExperimentState.Running:
                     Turn.Text = Experiment.Now.Turn.ToString();
                     NumberOfPeople.Text = Experiment.Market.Now.NumberOfPeople.ToString();
+                    NumberOfAndroids.Text = Experiment.Market.Now.NumberOfAndroids.ToString();
                     TimeTick.Text = (Experiment.TimeTick-1).ToString();
                     PriceImage.InnerHtml = getImage();
                     ExpId.Enabled = false;
@@ -255,7 +262,7 @@ namespace Interface
                     Parameters.Disabled = true;
                     PauseList.Disabled = false;
                     BuildExp.Enabled = false;
-                    RecoveryExp.Enabled = false;
+                    //RecoveryExp.Enabled = false;
                     StartExp.Enabled = false;
                     ContinueExp.Enabled = false;
                     ForceExit.Enabled = true;
@@ -265,6 +272,7 @@ namespace Interface
                 case ExperimentState.Suspend:
                     Turn.Text = Experiment.Now.Turn.ToString();
                     NumberOfPeople.Text = Experiment.Market.Now.NumberOfPeople.ToString();
+                    NumberOfAndroids.Text = Experiment.Market.Now.NumberOfAndroids.ToString();
                     TimeTick.Text = (Experiment.TimeTick - 1).ToString();
                     ExpId.Enabled = false;
                     ExpState.Text = "实验挂起，准备进入下一轮";
@@ -272,7 +280,7 @@ namespace Interface
                     Parameters.Disabled = true;
                     PauseList.Disabled = false;
                     BuildExp.Enabled = false;
-                    RecoveryExp.Enabled = false;
+                    //RecoveryExp.Enabled = false;
                     StartExp.Enabled = false;
                     ContinueExp.Enabled = false;
                     ResetExp.Enabled = false;
@@ -281,6 +289,7 @@ namespace Interface
                 case ExperimentState.Pause:
                     Turn.Text = Experiment.Now.Turn.ToString();
                     NumberOfPeople.Text = Experiment.Market.Now.NumberOfPeople.ToString();
+                    NumberOfAndroids.Text = Experiment.Market.Now.NumberOfAndroids.ToString();
                     TimeTick.Text = (Experiment.TimeTick - 1).ToString();
                     ExpId.Enabled = false;
                     ExpState.Text = "实验暂停中...";
@@ -288,7 +297,7 @@ namespace Interface
                     Parameters.Disabled = true;
                     PauseList.Disabled = false;
                     BuildExp.Enabled = false;
-                    RecoveryExp.Enabled = false;
+                    //RecoveryExp.Enabled = false;
                     StartExp.Enabled = false;
                     ContinueExp.Enabled = true;
                     ForceExit.Enabled = true;
@@ -298,6 +307,7 @@ namespace Interface
                 case ExperimentState.End:
                     Turn.Text = Experiment.Now.Turn.ToString();
                     NumberOfPeople.Text = Experiment.Market.Now.NumberOfPeople.ToString();
+                    NumberOfAndroids.Text = Experiment.Market.Now.NumberOfAndroids.ToString();
                     TimeTick.Text = "计时结束";
                     ExpId.Enabled = false;
                     ExpState.Text = "实验已结束";
@@ -305,7 +315,7 @@ namespace Interface
                     Parameters.Disabled = true;
                     PauseList.Disabled = false;
                     BuildExp.Enabled = false;
-                    RecoveryExp.Enabled = false;
+                    //RecoveryExp.Enabled = false;
                     StartExp.Enabled = false;
                     ContinueExp.Enabled = false;
                     ForceExit.Enabled = false;

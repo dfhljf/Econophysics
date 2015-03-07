@@ -112,6 +112,15 @@ namespace Interface {
         protected global::System.Web.UI.WebControls.Label NumberOfPeople;
         
         /// <summary>
+        /// NumberOfAndroids 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label NumberOfAndroids;
+        
+        /// <summary>
         /// Parameters 控件。
         /// </summary>
         /// <remarks>
@@ -274,6 +283,15 @@ namespace Interface {
         protected global::System.Web.UI.WebControls.TextBox TradeFee;
         
         /// <summary>
+        /// AndroidCount 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox AndroidCount;
+        
+        /// <summary>
         /// PeriodOfTurn 控件。
         /// </summary>
         /// <remarks>
@@ -335,15 +353,6 @@ namespace Interface {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button BuildExp;
-        
-        /// <summary>
-        /// RecoveryExp 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button RecoveryExp;
         
         /// <summary>
         /// StartExp 控件。

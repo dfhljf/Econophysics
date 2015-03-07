@@ -21,6 +21,7 @@ namespace Econophysics
             get
             {
                 _now.NumberOfPeople = Agents.Count(p=>p.Value.IsOnline);
+                _now.NumberOfAndroids = Androids.Count;
                 return _now;
             }
         }
@@ -28,12 +29,13 @@ namespace Econophysics
         /// 市场中的代理人
         /// </summary>
         public ConcurrentDictionary<int, Agent> Agents { get { return _agents; } }
+        public ConcurrentDictionary<int, Android> Androids { get { return _androids; } }
         /// <summary>
         /// 价格列表，数量由<see cref="Type.Para.Market.Count"/>确定
         /// </summary>
         internal List<double> PriceList { get { return _priceList; } }
-        internal ConcurrentDictionary<int, Agent> _agents;
-        
+        private ConcurrentDictionary<int, Agent> _agents;
+        private ConcurrentDictionary<int, Android> _androids;
         private MarketInfo _now;
         private List<double> _priceList;
         private MarketIO _marketIO;
@@ -41,6 +43,7 @@ namespace Econophysics
         internal Market(MarketInfo init,int count,List<double> priceList=null)
         {
             _agents = new ConcurrentDictionary<int, Agent>();
+            _androids = new ConcurrentDictionary<int, Android>();
             _now = new MarketInfo
             {
                 Price = init.Price,
@@ -73,11 +76,20 @@ namespace Econophysics
 
         internal void SyncUpdate(ExperimentInfo info,Parameters parameters)
         {
+            androidsTrade(info.Turn,parameters);
             updateMarket(parameters);
-
+            
             getAgentsOrder();
-            getAverageEndowment();
+            //getAverageEndowment();
             store(info,parameters);
+        }
+
+        private void androidsTrade(int turn,Parameters parameters)
+        {
+            foreach (Android android in Androids.Values)
+            {
+                android.Trade(turn==0?0:android.AI(this,parameters), this, parameters);
+            }
         }
 
         private void getAgentsOrder()
@@ -94,7 +106,7 @@ namespace Econophysics
         {
             if (!Agents.IsEmpty)
             {
-                _now.AverageEndowment = Agents.Average(p => p.Value.Now.Endowment);
+                _now.AverageEndowment = (Agents.Sum(p => p.Value.Now.Endowment)+Androids.Sum(p=>p.Value.Now.Endowment))/(Agents.Count+Androids.Count);
             }  
         }
         private void store(ExperimentInfo info,Parameters parameters)
@@ -105,18 +117,27 @@ namespace Econophysics
                 agent.store(info);
                 agent.clear(info.Turn,this,parameters);
             }
+            foreach (Android android in Androids.Values)
+            {
+                android.store(info);
+                android.clear(info.Turn, this, parameters);
+            }
         }
         private void updateMarket(Parameters parameters)
         {
-            _now.Returns = Agents.Sum(p => p.Value.Now.TradeStocks);
-            _now.Volume = Agents.Sum(p => Math.Abs(p.Value.Now.TradeStocks));
+            _now.Returns = Agents.Sum(p => p.Value.Now.TradeStocks) + Androids.Sum(p => p.Value.Now.TradeStocks);
+            _now.Volume = Agents.Sum(p => Math.Abs(p.Value.Now.TradeStocks)) + Androids.Sum(p => Math.Abs(p.Value.Now.TradeStocks));
             _priceList.RemoveAt(0);
-            _now.Price = Math.Round(Now.Price * Math.Exp(parameters.Market.Lambda * Now.Returns / (Agents.Count + 1)), 2);
+            _now.Price = Math.Round(Now.Price * Math.Exp(parameters.Market.Lambda * Now.Returns / (Agents.Count +Androids.Count+ 1)), 2);
             _priceList.Add(Now.Price);
             updateState(parameters);
             foreach (Agent agent in Agents.Values)
             {
                 agent.syncUpdate(Now.Price);
+            }
+            foreach (Android android in Androids.Values)
+            {
+                android.syncUpdate(Now.Price);
             }
         }
         private void updateState(Parameters parameters)

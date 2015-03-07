@@ -14,11 +14,11 @@
         <div>
             <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                 <ContentTemplate>
-                    
-                    <table style="float:left;">
+
+                    <table style="float: left;">
                         <tr>
                             <th>编号</th>
-                            </tr>
+                        </tr>
                         <tr>
                             <td>
                                 <asp:DropDownList ID="ExpId" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ExpId_SelectedIndexChanged">
@@ -36,19 +36,26 @@
                                         <th>轮次</th>
                                         <th>倒计时</th>
                                         <th>在线人数</th>
+                                        <th>机器人数</th>
                                     </tr>
                                     <tr>
-                                        <td><asp:Label ID="ExpState" runat="server"></asp:Label></td>
-                                        <td><asp:Label ID="Turn" runat="server"></asp:Label></td>
-                                        <td><asp:Label ID="TimeTick" runat="server"></asp:Label></td>
-                                        <td><asp:Label ID="NumberOfPeople" runat="server"></asp:Label></td>
-                                        </tr>
-                                    </table>
+                                        <td>
+                                            <asp:Label ID="ExpState" runat="server"></asp:Label></td>
+                                        <td>
+                                            <asp:Label ID="Turn" runat="server"></asp:Label></td>
+                                        <td>
+                                            <asp:Label ID="TimeTick" runat="server"></asp:Label></td>
+                                        <td>
+                                            <asp:Label ID="NumberOfPeople" runat="server"></asp:Label></td>
+                                        <td>
+                                            <asp:Label ID="NumberOfAndroids" runat="server"></asp:Label></td>
+                                    </tr>
+                                </table>
 
                             </ContentTemplate>
                         </asp:UpdatePanel>
                     </div>
-                    <div id="Parameters" runat="server" style="position:absolute;left:0;">
+                    <div id="Parameters" runat="server" style="position: absolute; left: 0;">
 
                         <table id="Market">
                             <tr>
@@ -153,6 +160,9 @@
 
                         </table>
                         <table id="Exp">
+                            <tr><td>机器人数</td>
+                                <td><asp:TextBox ID="AndroidCount" runat="server">20</asp:TextBox></td>
+                            </tr>
                             <tr>
                                 <td>每轮时间</td>
                                 <td>
@@ -171,43 +181,44 @@
                         </table>
                         <asp:Button ID="ResetParameters" runat="server" Text="重置参数" OnClick="ResetParameters_Click" />
                     </div>
-                    
+
 
 
 
                     <div id="Operate">
                         <asp:UpdatePanel ID="UpdatePanel3" runat="server" UpdateMode="Conditional">
                             <ContentTemplate>
-                                                                <table style="position:absolute;right:0;">
+                                <table style="position: absolute; right: 0;">
                                     <tr>
-                                        <td id="PriceImage" runat="server"><object data="PriceImage.svg" width="900" height="500" type="image/svg+xml"/></td>
-                                        </tr>
+                                        <td id="PriceImage" runat="server">
+                                            <object data="PriceImage.svg" width="900" height="500" type="image/svg+xml" />
+                                        </td>
+                                    </tr>
                                 </table>
-                                <div style="position:absolute;right:20px;top:600px;">
-                                <asp:Button ID="BuildExp" runat="server" Text="建立实验" OnClick="BuildExp_Click" />
-                                <asp:Button ID="RecoveryExp" runat="server" Text="恢复实验" />
-                                <asp:Button ID="StartExp" runat="server" Text="开始实验" OnClick="StartExp_Click" />
-                                <asp:Button ID="ContinueExp" runat="server" Text="继续实验" OnClick="ContinueExp_Click" />
-                                    <asp:Button ID="ForceExit" runat="server" Text="强制结束" OnClick="ForceExit_Click"/>
-                                <asp:Button ID="ResetExp" runat="server" Text="重置实验" OnClick="ResetExp_Click" />
-                                    </div>
+                                <div style="position: absolute; right: 20px; top: 600px;">
+                                    <asp:Button ID="BuildExp" runat="server" Text="建立实验" OnClick="BuildExp_Click" />
+                                 <%--   <asp:Button ID="RecoveryExp" runat="server" Text="恢复实验" />--%>
+                                    <asp:Button ID="StartExp" runat="server" Text="开始实验" OnClick="StartExp_Click" />
+                                    <asp:Button ID="ContinueExp" runat="server" Text="继续实验" OnClick="ContinueExp_Click" />
+                                    <asp:Button ID="ForceExit" runat="server" Text="强制结束" OnClick="ForceExit_Click" />
+                                    <asp:Button ID="ResetExp" runat="server" Text="重置实验" OnClick="ResetExp_Click" />
+                                </div>
                             </ContentTemplate>
                             <Triggers>
                                 <asp:AsyncPostBackTrigger ControlID="Timer1" EventName="Tick" />
                             </Triggers>
                         </asp:UpdatePanel>
-
-                                            <div id="PauseList" runat="server" style="position:absolute;right:600px;top:600px;">
-                        <asp:ListBox ID="CurrentPauseList" runat="server" AutoPostBack="True" SelectionMode="Multiple"></asp:ListBox>
-                        <asp:Button ID="RemovePause" runat="server" Text="移除暂停" OnClick="RemovePause_Click" />
-                        <asp:TextBox ID="PauseTurn" runat="server"></asp:TextBox>
-                        <asp:Button ID="AddPause" runat="server" Text="添加暂停" OnClick="AddPause_Click" />
-                    </div>
+                        <div id="PauseList" runat="server" style="position: absolute; right: 600px; top: 600px;">
+                            <asp:ListBox ID="CurrentPauseList" runat="server" AutoPostBack="True" SelectionMode="Multiple"></asp:ListBox>
+                            <asp:Button ID="RemovePause" runat="server" Text="移除暂停" OnClick="RemovePause_Click" />
+                            <asp:TextBox ID="PauseTurn" runat="server"></asp:TextBox>
+                            <asp:Button ID="AddPause" runat="server" Text="添加暂停" OnClick="AddPause_Click" />
+                        </div>
                     </div>
                 </ContentTemplate>
                 <Triggers>
                     <asp:AsyncPostBackTrigger ControlID="BuildExp" EventName="Click" />
-                    <asp:AsyncPostBackTrigger ControlID="RecoveryExp" EventName="Click" />
+                    <%--<asp:AsyncPostBackTrigger ControlID="RecoveryExp" EventName="Click" />--%>
                     <asp:AsyncPostBackTrigger ControlID="StartExp" EventName="Click" />
                     <asp:AsyncPostBackTrigger ControlID="ContinueExp" EventName="Click" />
                     <asp:AsyncPostBackTrigger ControlID="ResetExp" EventName="Click" />

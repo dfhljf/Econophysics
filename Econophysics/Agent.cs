@@ -79,16 +79,15 @@ namespace Econophysics
         /// 代理人交易
         /// </summary>
         /// <param name="tradeStocks">交易股票数量，大于0买，小于0卖</param>
-        internal void Trade(int tradeStocks,double price,double tradeFee)
+        internal void Trade(int tradeStocks, Market market, Parameters parameters)
         {
             lock (_lockThis)
             {
-
                 if (_isTrade)
                 {
                     throw ErrorList.TradeTwice;
                 }
-                if (Now.Stocks+tradeStocks>=0&&!updateCash(tradeStocks,price,tradeFee))
+                if (Now.Stocks+tradeStocks>=0&&!updateCash(tradeStocks,market.Now.Price,parameters.Agent.TradeFee))
                 {
                     throw ErrorList.CashOut;
                 }
@@ -96,12 +95,11 @@ namespace Econophysics
                 {
                     throw ErrorList.InsufficientStocks;
                 }
-                updateEndowment(price);
+                updateEndowment(market.Now.Price);
                 _now.TradeStocks = tradeStocks;
                 _isTrade = true;
             }
         }
-
         internal void syncUpdate(double price)
         {
             _now.Cash += Now.Dividend * Now.Stocks;

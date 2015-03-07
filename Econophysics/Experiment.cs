@@ -42,7 +42,7 @@ namespace Econophysics
                     case ExperimentState.Running:
                     case ExperimentState.Suspend:
                     case ExperimentState.Pause:
-                        return _timeTick;
+                        return _timeTick==0?1:_timeTick;
                     default:
                         return -1;
                 }
@@ -224,6 +224,18 @@ namespace Econophysics
             
         }
         /// <summary>
+        /// 添加机器人
+        /// </summary>
+        /// <param name="count">数量</param>
+        public static void AddAndroids(int count)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                int tmp=256+Market.Now.NumberOfAndroids;
+                Market.Androids.TryAdd(tmp, new Android(tmp, Parameters.Agent.Init));
+            }
+        }
+        /// <summary>
         /// 交易
         /// </summary>
         /// <param name="agentId">代理人编号</param>
@@ -244,7 +256,7 @@ namespace Econophysics
             }
             try
             {
-                Market.Agents[agentId].Trade(tradeStocks,Market.Now.Price,Parameters.Agent.TradeFee);
+                Market.Agents[agentId].Trade(tradeStocks,Market,Parameters);
             }
             catch (Exception)
             {
@@ -257,7 +269,7 @@ namespace Econophysics
             {
                 case ExperimentState.Running:
                     _timeTick--;
-                    if (TimeTick == 0)
+                    if (_timeTick == 0)
                     {
                         nextTurn();
                     }
@@ -336,6 +348,7 @@ namespace Econophysics
             _parameters = Histories[expId];
             _parameters.Graphic.Init = parameters.Graphic.Init;
             _parameters.Graphic.Init.Count=parameters.Market.Count;
+            _parameters.Experiment = parameters.Experiment;
             _now.State = ExperimentState.Pause;
             List<double> priceList=new List<double>();
             Hashtable mht = _experimentIO.Read(string.Format("select * from market where ExperimentId={0} order by turn desc limit {1}", expId, Parameters.Market.Count));
@@ -355,10 +368,15 @@ namespace Econophysics
 
         private static void recoveryAgents(int expId, int turn)
         {
-            Hashtable aht = _experimentIO.Read(string.Format("select * from agents where ExperimentId={0} and Turn={1}", expId, turn));
+            Hashtable aht = _experimentIO.Read(string.Format("select * from agents where ExperimentId={0} and Turn={1} and Id<=255", expId, turn));
             foreach (AgentKey agent in aht.Keys)
             {
-                _market.Agents.TryAdd(agent.Id,new Agent(agent.Id,(AgentInfo)aht[agent]));
+                Market.Agents.TryAdd(agent.Id,new Agent(agent.Id,(AgentInfo)aht[agent]));
+            }
+            aht = _experimentIO.Read(string.Format("select * from agents where ExperimentId={0} and Turn={1} and Id>255", expId, turn));
+            foreach (AgentKey android in aht.Keys)
+            {
+                Market.Androids.TryAdd(android.Id, new Android(android.Id, (AgentInfo)aht[android]));
             }
         }
         private static void exit()
