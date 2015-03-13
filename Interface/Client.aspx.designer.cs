@@ -121,15 +121,6 @@ namespace Interface {
         protected global::System.Web.UI.HtmlControls.HtmlTableCell PriceImage;
         
         /// <summary>
-        /// DividendTime 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label DividendTime;
-        
-        /// <summary>
         /// Dividend 控件。
         /// </summary>
         /// <remarks>
@@ -137,6 +128,15 @@ namespace Interface {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label Dividend;
+        
+        /// <summary>
+        /// DividendTime 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label DividendTime;
         
         /// <summary>
         /// DividendIncome 控件。
@@ -163,7 +163,7 @@ namespace Interface {
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TradeStocks;
+        protected global::System.Web.UI.WebControls.RadioButtonList TradeStocks;
         
         /// <summary>
         /// TradeFee 控件。

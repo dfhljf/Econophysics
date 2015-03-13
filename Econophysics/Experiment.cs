@@ -20,7 +20,7 @@ namespace Econophysics
         /// <summary>
         /// 所有可设定参数
         /// </summary>
-        public static Parameters Parameters { get {return _parameters;} }
+        public static Parameters Parameters { get { return _parameters; } }
         /// <summary>
         /// 所有可恢复的历史记录
         /// </summary>
@@ -42,7 +42,7 @@ namespace Econophysics
                     case ExperimentState.Running:
                     case ExperimentState.Suspend:
                     case ExperimentState.Pause:
-                        return _timeTick==0?1:_timeTick;
+                        return _timeTick == 0 ? 1 : _timeTick;
                     default:
                         return -1;
                 }
@@ -63,6 +63,7 @@ namespace Econophysics
         private static Parameters _parameters;
         private static Dictionary<int, Parameters> _histories;
         private static bool _isForceExit;
+        private static object _lockThis = new object();
 
         static Experiment()
         {
@@ -84,7 +85,7 @@ namespace Econophysics
         /// <returns>实验状态<see cref="Econophysics.Type.ExperimentState"/></returns>
         public static ExperimentState Build(int expId = 0, Parameters parameters = new Parameters())
         {
-            if (Now.State!=ExperimentState.Unbuilded)
+            if (Now.State != ExperimentState.Unbuilded)
             {
                 return Now.State;
             }
@@ -134,7 +135,7 @@ namespace Econophysics
         /// <returns>是否成功</returns>
         public static bool AddPause(int turn)
         {
-            if (Now.State==ExperimentState.Unbuilded)
+            if (Now.State == ExperimentState.Unbuilded)
             {
                 return false;
             }
@@ -190,7 +191,7 @@ namespace Econophysics
             PauseList.Clear();
             _isForceExit = false;
             return Now.State;
-        }        
+        }
         /// <summary>
         /// 强制退出
         /// </summary>
@@ -204,7 +205,7 @@ namespace Econophysics
         /// <param name="id">代理人编号</param>
         public static void AddAgent(int id)
         {
-            if (Now.State==ExperimentState.Unbuilded||Now.State==ExperimentState.End)
+            if (Now.State == ExperimentState.Unbuilded || Now.State == ExperimentState.End)
             {
                 throw ErrorList.NotAllowLogin;
             }
@@ -214,14 +215,14 @@ namespace Econophysics
             }
             try
             {
-                   Market.Agents.TryAdd(id, new Agent(id,Parameters.Agent.Init));
-                   Market.Agents[id].Login();
+                Market.Agents.TryAdd(id, new Agent(id, Parameters.Agent.Init));
+                Market.Agents[id].Login();
             }
             catch (Exception)
             {
                 throw;
             }
-            
+
         }
         /// <summary>
         /// 添加机器人
@@ -231,7 +232,7 @@ namespace Econophysics
         {
             for (int i = 0; i < count; i++)
             {
-                int tmp=256+Market.Now.NumberOfAndroids;
+                int tmp = 256 + Market.Now.NumberOfAndroids;
                 Market.Androids.TryAdd(tmp, new Android(tmp, Parameters.Agent.Init));
             }
         }
@@ -256,7 +257,7 @@ namespace Econophysics
             }
             try
             {
-                Market.Agents[agentId].Trade(tradeStocks,Market,Parameters);
+                Market.Agents[agentId].Trade(tradeStocks, Market, Parameters);
             }
             catch (Exception)
             {
@@ -265,26 +266,31 @@ namespace Econophysics
         }
         private static void setTimeTick(object sender, ElapsedEventArgs e)
         {
-            switch (Now.State)
+            //lock
+            lock (_lockThis)
             {
-                case ExperimentState.Running:
-                    _timeTick--;
-                    if (_timeTick == 0)
-                    {
-                        nextTurn();
-                    }
-                    break;
-                case ExperimentState.Pause:
-                    if (_isForceExit)
-                    {
-                        exit();
-                        return;
-                    }
-                    _timeTick++;
-                    break;
-                default:
-                    break;
+                switch (Now.State)
+                {
+                    case ExperimentState.Running:
+                        _timeTick--;
+                        if (_timeTick == 0)
+                        {
+                            nextTurn();
+                        }
+                        break;
+                    case ExperimentState.Pause:
+                        if (_isForceExit)
+                        {
+                            exit();
+                            return;
+                        }
+                        _timeTick++;
+                        break;
+                    default:
+                        break;
+                }
             }
+
         }
         private static void store()
         {
@@ -293,14 +299,14 @@ namespace Econophysics
         private static void nextTurn()
         {
             _now.State = ExperimentState.Suspend;
-            Market.SyncUpdate(Now,Parameters);
+            Market.SyncUpdate(Now, Parameters);
             _graph.Draw();
-            if (_isForceExit||Now.Turn == Parameters.Experiment.MaxTurn)
+            if (_isForceExit || Now.Turn == Parameters.Experiment.MaxTurn)
             {
                 exit();
                 return;
             }
-            bool isPause=PauseList.ContainsKey(Now.Turn);
+            bool isPause = PauseList.ContainsKey(Now.Turn);
             _timeTick = isPause ? 0 : Parameters.Experiment.PeriodOfTurn;
             _now.State = isPause ? ExperimentState.Pause : ExperimentState.Running;
             _now.Turn = isPause ? Now.Turn : Now.Turn + 1;
@@ -317,7 +323,7 @@ namespace Econophysics
                 {
                     para.Agent.Init = (AgentInfo)aht[ak];
                 }
-                
+
                 Hashtable mht = _experimentIO.Read(string.Format("select * from market where ExperimentId={0} order by turn desc limit 1", expId));
                 foreach (MarketKey mk in mht.Keys)
                 {
@@ -332,7 +338,7 @@ namespace Econophysics
             _now.Index = _experimentIO.Read() + 1;
             _parameters = parameters;
             _now.State = ExperimentState.Builded;
-            _market = new Market(parameters.Market.Init,parameters.Market.Count);
+            _market = new Market(parameters.Market.Init, parameters.Market.Count);
             _graph = new Graphic(parameters.Graphic.Init);
             _timeTick = Parameters.Experiment.PeriodOfTurn;
             _now.Turn = Parameters.Experiment.StartTurn;
@@ -342,27 +348,27 @@ namespace Econophysics
                 File.Delete(Parameters.Graphic.Init.Url);
             }
         }
-        private static void recovery(int expId,Parameters parameters)
+        private static void recovery(int expId, Parameters parameters)
         {
             _now.Index = expId;
             _parameters = Histories[expId];
             _parameters.Graphic.Init = parameters.Graphic.Init;
-            _parameters.Graphic.Init.Count=parameters.Market.Count;
+            _parameters.Graphic.Init.Count = parameters.Market.Count;
             _parameters.Experiment = parameters.Experiment;
             _now.State = ExperimentState.Pause;
-            List<double> priceList=new List<double>();
+            List<double> priceList = new List<double>();
             Hashtable mht = _experimentIO.Read(string.Format("select * from market where ExperimentId={0} order by turn desc limit {1}", expId, Parameters.Market.Count));
-           
+
             foreach (MarketInfo mi in mht.Values)
             {
                 priceList.Insert(0, mi.Price);
             }
-            _market=new Market(Parameters.Market.Init,Parameters.Market.Count,priceList);
+            _market = new Market(Parameters.Market.Init, Parameters.Market.Count, priceList);
             _graph = new Graphic(Parameters.Graphic.Init);
             _graph.Draw();
             _timeTick = 0;
             _now.Turn = Parameters.Experiment.StartTurn;
-            recoveryAgents(expId,Now.Turn);
+            recoveryAgents(expId, Now.Turn);
             _timer.Start();
         }
 
@@ -371,7 +377,7 @@ namespace Econophysics
             Hashtable aht = _experimentIO.Read(string.Format("select * from agents where ExperimentId={0} and Turn={1} and Id<=255", expId, turn));
             foreach (AgentKey agent in aht.Keys)
             {
-                Market.Agents.TryAdd(agent.Id,new Agent(agent.Id,(AgentInfo)aht[agent]));
+                Market.Agents.TryAdd(agent.Id, new Agent(agent.Id, (AgentInfo)aht[agent]));
             }
             aht = _experimentIO.Read(string.Format("select * from agents where ExperimentId={0} and Turn={1} and Id>255", expId, turn));
             foreach (AgentKey android in aht.Keys)
@@ -384,6 +390,6 @@ namespace Econophysics
             _now.State = ExperimentState.End;
             _timer.Stop();
         }
-    
+
     }
 }

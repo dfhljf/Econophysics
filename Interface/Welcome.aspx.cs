@@ -39,7 +39,7 @@ namespace Interface
         {
             try
             {
-                Experiment.AddAgent(1);
+                Experiment.AddAgent(Convert.ToInt32(HttpContext.Current.Request.UserHostAddress.Split('.').Last()));
                 Response.Redirect("Client.aspx");
             }
             catch (Exception)

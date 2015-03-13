@@ -62,6 +62,7 @@ namespace Interface
             {
                 Turn.Text = "0";
                 AndroidCount.Enabled = true;
+                resetParameters();
             }
         }
         protected void RemovePause_Click(object sender, EventArgs e)
