@@ -25,7 +25,7 @@ set(selectExpDialog,'Visible','on');
 %% 函数回调
 function Select_Callback(source,eventdata)
 %% 载入实验数据
-[parameters market agents]=extractdata(str2num(hexpList.String(hexpList.Value)));
+[parameters market agents]=ExtractData(str2num(hexpList.String(hexpList.Value)));
 %% 关闭数据库连接
 mysql('close');
 close(selectExpDialog);

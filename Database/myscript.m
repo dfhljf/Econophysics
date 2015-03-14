@@ -1,4 +1,4 @@
-function myscript( path )
+function MyScript( path )
 %MYSCRIPT 执行给定的sql脚本文件
 %   脚本文件不返回数据集
 sql=importdata(path);

@@ -88,7 +88,7 @@ namespace Econophysics
         {
             foreach (Android android in Androids.Values)
             {
-                //android.Trade(turn==0?0:android.AI(this,parameters), this, parameters);
+                android.Trade(turn==0?0:android.AI(this,parameters), this, parameters);
             }
         }
 

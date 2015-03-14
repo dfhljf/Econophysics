@@ -79,7 +79,7 @@ namespace Econophysics
         /// 代理人交易
         /// </summary>
         /// <param name="tradeStocks">交易股票数量，大于0买，小于0卖</param>
-        internal void Trade(int tradeStocks, Market market, Parameters parameters)
+        internal virtual void Trade(int tradeStocks, Market market, Parameters parameters)
         {
             lock (_lockThis)
             {
