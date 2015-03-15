@@ -12,7 +12,7 @@ end
         oldCash=agents(agents(:,1)==i-1,3);
         dividend=agents(agents(:,1)==i,6);
         % 统计交易数量
-        if market(2,4)~=sum(tradeStocks)||market(2,2)~=round(market(1,2)*exp(parameters.Lambda*sum(tradeStocks)/(length(tradeStocks)+1)),2)
+        if market(2,4)~=sum(tradeStocks)||abs(market(2,2)-market(1,2)*exp(parameters.Lambda*sum(tradeStocks)/(length(tradeStocks)+1)))>0.01
             ErrorCode=1;
             return;
         end
@@ -24,7 +24,7 @@ end
             stockTmp(cashOutIndex)=stockTmp(cashOutIndex)-1;
             cashOutIndex=find(cashTmp<0);
         end
-        if any(stockTmp~=agents(agents(:,1)==i,4))||any(cashTmp~=agents(agents(:,1)==i,3))
+        if any(stockTmp~=agents(agents(:,1)==i,4))||any(abs(cashTmp-agents(agents(:,1)==i,3))>0.1)
             ErrorCode=2;
             return;
         end

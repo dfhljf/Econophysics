@@ -33,7 +33,21 @@ HandleData(parameters,market,agents);
 end
 %% 数据处理
 function HandleData(parameters,market,agents)
-    Verify(parameters,market,agents);
+    if any(Verify(parameters,market,agents))
+        errordlg('数据验证未通过');
+        return;
+    end
+    subplot(2,2,1);
     plot(market(:,1),market(:,2),'*-');
+    r=Returns(market(:,2),1,0);
+    [p x]=PDF(r,5);
+    subplot(2,2,2);
+    plot(x,p,'.');
+    A=AutoCorrelation(abs(r),1,100);
+    subplot(2,2,3);
+    plot(A(:,1),A(:,2),'o');
+    L=Leverage(r,1,100);
+    subplot(2,2,4);
+    plot(L(:,1),L(:,2),'^');
 end
 end
