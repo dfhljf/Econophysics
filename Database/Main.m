@@ -33,6 +33,7 @@ HandleData(parameters,market,agents);
 end
 %% 数据处理
 function HandleData(parameters,market,agents)
+    Verify(parameters,market,agents);
     plot(market(:,1),market(:,2),'*-');
 end
 end
