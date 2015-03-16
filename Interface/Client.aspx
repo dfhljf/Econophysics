@@ -69,13 +69,17 @@
                     </table>
 
 
+                                <div style="position:absolute;right:0.5%;top:71%;height: 15%; width: 31.5%; float: left; background-color: #99FF99;">
+                <asp:Button ID="Sell" runat="server" Text="卖" OnClick="Sell_Click" Height="80%" BackColor="#6699FF" Width="45%" Font-Size="XX-Large" Font-Names="Microsoft YaHei" Style="margin: 2% 0 0 3%;" />
+                <asp:Button ID="Buy" runat="server" Text="买" OnClick="Buy_Click" Height="80%" BackColor="#FF5050" Width="45%" Font-Size="XX-Large" Font-Names="Microsoft YaHei" Style="margin: 2% 0 0 3%;" />
 
+            </div>
 
                 </ContentTemplate>
-                <Triggers>
+<%--                <Triggers>
                                             <asp:AsyncPostBackTrigger ControlID="Buy" EventName="Click" />
                                             <asp:AsyncPostBackTrigger ControlID="Sell" EventName="Click" />
-                                        </Triggers>
+                                        </Triggers>--%>
             </asp:UpdatePanel>
             <div style="position:absolute;right:0.5%;top:55.5%;height: 20%; width: 31.5%;">
             <ul style="list-style: none;  margin: 0 0 0 0; padding: 10% 0 10% 2%; text-align: center; font-size: x-large; background-color: #99FF99;">
@@ -97,11 +101,7 @@
             </ul>
                 </div>
 
-            <div style="position:absolute;right:0.5%;top:71%;height: 15%; width: 31.5%; float: left; background-color: #99FF99;">
-                <asp:Button ID="Sell" runat="server" Text="卖" OnClick="Sell_Click" Height="80%" BackColor="#6699FF" Width="45%" Font-Size="XX-Large" Font-Names="Microsoft YaHei" Style="margin: 2% 0 0 3%;" />
-                <asp:Button ID="Buy" runat="server" Text="买" OnClick="Buy_Click" Height="80%" BackColor="#FF5050" Width="45%" Font-Size="XX-Large" Font-Names="Microsoft YaHei" Style="margin: 2% 0 0 3%;" />
 
-            </div>
 
         </div>
     </form>

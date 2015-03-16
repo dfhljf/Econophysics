@@ -16,7 +16,13 @@ namespace Interface
         {
             if (!IsPostBack)
             {
-                Id.Text = HttpContext.Current.Request.UserHostAddress.Split('.').Last();
+#if DEBUG
+                Session["Id"] = 1;
+#else
+                Session["Id"] = Convert.ToInt32( HttpContext.Current.Request.UserHostAddress.Split( '.' ).Last() );
+#endif
+
+                Id.Text = Session["Id"].ToString();
                 if (Experiment.Now.State == ExperimentState.Unbuilded || !Experiment.Market.Agents.ContainsKey(Convert.ToInt32(Id.Text)))
                 {
                     Response.Redirect("Welcome.aspx");
@@ -85,7 +91,6 @@ namespace Interface
         }
         private void refresh()
         {
-
             Turn.Text = Experiment.Now.Turn.ToString();
             TimeTick.Text = (Experiment.TimeTick == -1) ? "计时停止" : (Experiment.TimeTick - 1).ToString();
             Cash.Text = Experiment.Market.Agents[Convert.ToInt32(Id.Text)].Now.Cash.ToString();
@@ -94,7 +99,7 @@ namespace Interface
             Dividend.Text = Experiment.Market.Agents[Convert.ToInt32(Id.Text)].Now.Dividend.ToString();
             DividendTime.Text = (Experiment.Parameters.Agent.PeriodOfUpdateDividend - (Experiment.Now.Turn - 1) % Experiment.Parameters.Agent.PeriodOfUpdateDividend).ToString();
             DividendIncome.Text = (Convert.ToInt32(Stocks.Text) * Convert.ToDouble(Dividend.Text)).ToString();
-            Buy.Enabled = !Experiment.Market.Agents[Convert.ToInt32(Id.Text)].IsTrade;
+            Buy.Enabled = !Experiment.Market.Agents[Convert.ToInt32( Id.Text )].IsTrade;
             Sell.Enabled = Buy.Enabled;
         }
         private string getImage()
