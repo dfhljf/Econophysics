@@ -115,10 +115,14 @@ namespace Econophysics
             }
             try
             {
-                //if(Market.Now.NumberOfPeople==0)
-                //{
-                //    throw ErrorList.NotExistUsers;
-                //}
+#if DEBUG
+#else                
+                if(Market.Now.NumberOfPeople==0)
+                {
+                    throw ErrorList.NotExistUsers;
+                }
+#endif
+
 
                 store();
                 _now.State = ExperimentState.Running;
