@@ -5,6 +5,9 @@ using System.Text;
 
 namespace Econophysics.Type
 {
+    /// <summary>
+    /// 实验信息
+    /// </summary>
     public class ExperimentInfo
     {
         /// <summary>

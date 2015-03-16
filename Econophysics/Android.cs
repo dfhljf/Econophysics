@@ -6,6 +6,9 @@ using System.Text;
 
 namespace Econophysics
 {
+    /// <summary>
+    /// 机器人类
+    /// </summary>
     public class Android:Agent
     {
         internal Android(int id, AgentInfo init) : base(id, init) { }

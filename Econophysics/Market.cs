@@ -29,6 +29,9 @@ namespace Econophysics
         /// 市场中的代理人
         /// </summary>
         public ConcurrentDictionary<int, Agent> Agents { get { return _agents; } }
+        /// <summary>
+        /// 市场中的机器人
+        /// </summary>
         public ConcurrentDictionary<int, Android> Androids { get { return _androids; } }
         /// <summary>
         /// 价格列表，数量由<see cref="Type.Para.Market.Count"/>确定

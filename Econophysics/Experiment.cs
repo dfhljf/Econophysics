@@ -25,6 +25,9 @@ namespace Econophysics
         /// 所有可恢复的历史记录
         /// </summary>
         public static Dictionary<int, Parameters> Histories { get { return _histories; } }
+        /// <summary>
+        /// 实验信息
+        /// </summary>
         public static ExperimentInfo Now { get { return _now; } }
         /// <summary>
         /// 暂停列表

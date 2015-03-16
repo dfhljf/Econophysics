@@ -57,6 +57,7 @@ namespace Econophysics
         /// 创建一个代理人对象实例
         /// </summary>
         /// <param name="id">代理人编号</param>
+        /// <param name="init">初始代理人信息</param>
         internal Agent(int id,AgentInfo init)
         {
             _now = new AgentInfo
@@ -79,6 +80,8 @@ namespace Econophysics
         /// 代理人交易
         /// </summary>
         /// <param name="tradeStocks">交易股票数量，大于0买，小于0卖</param>
+        /// <param name="market">市场状态</param>
+        /// <param name="parameters">实验参数</param>
         internal virtual void Trade(int tradeStocks, Market market, Parameters parameters)
         {
             lock (_lockThis)
