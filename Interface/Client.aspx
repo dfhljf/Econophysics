@@ -82,15 +82,15 @@
                                         </Triggers>--%>
             </asp:UpdatePanel>
             <div style="position:absolute;right:0.5%;top:55.5%;height: 20%; width: 31.5%;">
-            <ul style="list-style: none;  margin: 0 0 0 0; padding: 10% 0 10% 2%; text-align: center; font-size: x-large; background-color: #99FF99;">
+            <ul style="height:60%; list-style: none;  margin: 0 0 0 0; padding:10% 0 0 0; text-align: center; font-size: x-large; background-color: #99FF99;width:100%;">
                 <li style="width: 35%;">最大交易数量<br />
                     <asp:Label runat="server" ID="MaxStocks" Text="Label" />
                 </li>
 
                 <li style="width: 35%;">交易数量<br />
                    <%-- <asp:TextBox ID="TradeStocks" runat="server" Font-Size="X-Large" Width="80%"></asp:TextBox>--%>
-                    <asp:RadioButtonList runat="server" ID="TradeStocks" RepeatDirection="Horizontal" Font-Size="Large">
-                        <asp:ListItem>1</asp:ListItem>
+                    <asp:RadioButtonList runat="server" ID="TradeStocks" RepeatDirection="Horizontal" Font-Size="X-Large">
+                        <asp:ListItem Selected="True">1</asp:ListItem>
                         <asp:ListItem>5</asp:ListItem>
                         <asp:ListItem>10</asp:ListItem>
                     </asp:RadioButtonList>

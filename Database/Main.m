@@ -1,11 +1,11 @@
 function Main
 %% 环境变量设置
-addpath('D:\Files\Document\Code\Git\Econophysics\Database');
-addpath('D:\Files\Document\Code\Git\Econophysics\Database\Data');
-addpath('D:\Files\Document\Code\Git\Econophysics\Database\Initial');
+addpath(cd());
+addpath([cd() '\Data']);
+addpath([cd() '\Initial']);
 
 %% 数据库连接
-mysql('open','localhost','root','jianghui');
+mysql('open','localhost','root','p*@nmuy#!');
 mysql('use econophysics');
 
 %% 选择实验编号
